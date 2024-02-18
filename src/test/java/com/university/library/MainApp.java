@@ -16,13 +16,14 @@ public class MainApp {
             } else if ("Create".equalsIgnoreCase(action)) {
                 createAccount();
             } else if ("Exit".equalsIgnoreCase(action)) {
+                System.out.println("Exiting the Library Management System. Goodbye!");
                 break;
             } else {
                 System.out.println("Invalid option, please choose Login, Create, or Exit.");
             }
         }
 
-        scanner.close(); // Close the scanner to prevent resource leaks
+        scanner.close();
     }
 
     private static void login() {
@@ -30,8 +31,7 @@ public class MainApp {
         String username = scanner.nextLine();
 
         if (!accountManager.doesUsernameExist(username)) {
-            System.out.println("Username does not exist. Redirecting to account creation.");
-            createAccount();
+            System.out.println("Username does not exist. Please create an account.");
             return;
         }
 
@@ -46,20 +46,44 @@ public class MainApp {
     }
 
     private static void createAccount() {
+
+        String username = "";
+
+        while (true) {
         System.out.println("Enter username:");
-        String username = scanner.nextLine();
+        username = scanner.nextLine().trim();
+
+        if (accountManager.doesUsernameExist(username)) {
+            System.out.println("Username already exists. Try a different username.");
+        } else {
+            break;
+        }
+    }
+        
+
+        User.UserRole role = null;
+        while (role == null) {
+            System.out.println("Choose user role (STUDENT, STAFF, FREE_USER, PAID_USER):");
+            String roleInput = scanner.nextLine().toUpperCase();
+
+            if (!roleInput.equals("STUDENT") && !roleInput.equals("STAFF") && !roleInput.equals("FREE_USER") && !roleInput.equals("PAID_USER")) {
+                System.out.println("Invalid role. Please try again with a valid user role.");
+            } else {
+             role = User.UserRole.valueOf(roleInput);
+           }
+        }
 
         boolean isCreated = false;
         while (!isCreated) {
             System.out.println("Enter password (password must be at least 8 characters long):");
             String password = scanner.nextLine();
 
-            isCreated = accountManager.createUserAccount(username, password);
+            isCreated = accountManager.createUserAccount(username, password, role);
             if (!isCreated) {
                 System.out.println("Failed to create account. Please try again.");
             }
         }
 
-        System.out.println("Account creation successful.");
+        System.out.println("Account creation successful. Welcome, " + username + "!");
     }
 }
