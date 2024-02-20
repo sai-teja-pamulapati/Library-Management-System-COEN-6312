@@ -1,42 +1,55 @@
 package com.university.library.action;
 
-import com.university.library.model.User;
-
 import java.io.Console;
 import java.util.Scanner;
+
+import com.university.library.model.User;
+import com.university.library.repository.UserRepository;
 
 public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
+    private static UserRepository userRepository = UserRepository.getInstance();
 
     public static void login() {
         Console console = System.console();
-        System.out.println("Please enter your email Id");
-        String emailId = scanner.nextLine();
-        System.out.println("Please enter your password");
-        String password = new String(console.readPassword());
-        User user = User.login(emailId, password);
-        if (user == null){
-            System.out.println("Invalid Credentials!!");
+        if (console == null) {
+            System.out.println("No console available");
+            return;
         }
+        System.out.println("Please enter your email Id:");
+        String emailId = scanner.nextLine();
+        System.out.println("Please enter your password:");
+        String password = new String(console.readPassword());
+        
+        User user = userRepository.getUser(emailId);
+        if (user == null || !user.getPassword().equals(password)) {
+            System.out.println("Invalid Credentials!!");
+            return;
+        }
+        System.out.println("Login Successful!");
+
         switch (user.getUserRole()) {
             case ADMIN:
                 processAdminUser();
                 break;
-            case STUDENT :
+            case STUDENT:
                 processStudentUser();
                 break;
-            case STAFF :
+            case STAFF:
                 processStaffUser();
                 break;
-            case LIBRARIAN :
+            case LIBRARIAN:
                 processLibrarianUser();
                 break;
-            case FREE_USER :
+            case FREE_USER:
                 processFreeUser();
                 break;
-            case PAID_USER :
+            case PAID_USER:
                 processPaidUser();
+                break;
+            default:
+                System.out.println("Invalid user role.");
                 break;
         }
     }
@@ -91,7 +104,4 @@ public class UserLogin {
     private static void processAdminUser() {
     }
 
-    public static void register() {
-
-    }
 }
