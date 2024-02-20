@@ -50,6 +50,48 @@ public class UserLogin {
     }
 
     private static void processLibrarianUser() {
+        while(true){
+            try{
+                System.out.println("Choose from the following options\n" + 
+                "1: Browse Catalouge\n" +
+                "2: See browsing history\n" +
+                "3: View Newsletter\n" +
+                "4: View Notifications\n" +
+                "5: Add Book\n" +
+                "6: Remove Book\n" +
+                "7: Update Book Details\n" +
+                "8: View Library Activities\n" +
+                "9: Update NewsLetter\n" +
+                "10: Logout\n");
+                String Librariancommands = scanner.nextLine();
+                switch(Librariancommands){
+                    case "1":
+                        //Left
+                    case "2":
+                        //left
+                    case "3":
+                        //left
+                    case "4":
+                        //left
+                    case "5":
+                        //left
+                    case "6":
+                        //left
+                    case "7":
+                        //left
+                    case "8":
+                        //left
+                    case "9":
+                        //left
+                    case "10":
+                        //left
+                    default:
+                        throw new IllegalArgumentException("Invalid Option!");
+                }
+            }catch(Exception e){
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
 
     }
 
