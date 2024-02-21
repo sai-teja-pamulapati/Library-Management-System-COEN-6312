@@ -1,14 +1,12 @@
 package com.university.library.repository;
 
 import java.util.HashMap;
-
 import com.university.library.model.User;
 
 public class UserRepository {
 
     private static UserRepository instance;
     private HashMap<String, User> users = new HashMap<>();
-
     private UserRepository() {}
 
     public static synchronized UserRepository getInstance() {
