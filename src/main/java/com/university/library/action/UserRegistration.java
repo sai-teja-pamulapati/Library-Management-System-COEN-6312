@@ -80,20 +80,7 @@ public class UserRegistration {
             break;
         }
 
-        User user = new User();
-        user.setName(name);
-        user.setEmailId(emailId);
-        user.setPassword(password);
-        user.setMobileNumber(mobileNumber);
-        user.setAddress(address);
-        user.setDateOfBirth(dateOfBirth);
-        user.setGender(gender);
-        user.setUserRole(userRole);
+        User.register(name, emailId, password, mobileNumber, address, dateOfBirth, gender, userRole, userRepository);
 
-        if (userRepository.addUser(user)) {
-            System.out.println("User registered successfully!");
-        } else {
-            System.out.println("Registration failed. User with this email already exists.");
-        }
     }
 }

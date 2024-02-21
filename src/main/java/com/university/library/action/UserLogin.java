@@ -2,7 +2,8 @@ package com.university.library.action;
 
 import java.io.Console;
 import java.util.Scanner;
-import com.university.library.model.users.User; 
+
+import com.university.library.model.users.User;
 import com.university.library.repository.UserRepository;
 
 public class UserLogin {
@@ -16,17 +17,16 @@ public class UserLogin {
             System.out.println("No console available");
             return;
         }
+
         System.out.println("Please enter your email Id:");
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
-        
-        User user = userRepository.getUser(emailId);
-        if (user == null || !user.getPassword().equals(password)) {
-            System.out.println("Invalid Credentials!!");
+
+        User user = User.login(emailId, password, userRepository);
+        if (user == null) {
             return;
         }
-        System.out.println("Login Successful!");
 
         switch (user.getUserRole()) {
             case ADMIN:
@@ -76,7 +76,7 @@ public class UserLogin {
                 "9: Update NewsLetter\n" +
                 "10: Logout\n");
                 String Librariancommands = scanner.nextLine();
-                switch(Librariancommands){
+                switch(Librariancommands) {
                     case "1":
                         //Left
                     case "2":
@@ -100,7 +100,7 @@ public class UserLogin {
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
-            }catch(Exception e){
+            } catch(Exception e) {
                 System.out.println(e.getLocalizedMessage());
             }
         }
