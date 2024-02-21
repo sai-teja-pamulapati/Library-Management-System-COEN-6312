@@ -3,8 +3,11 @@ package com.university.library.repository;
 import com.university.library.model.assets.Asset;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AssetRepository {
+
+    private static final AtomicInteger assetIdGenerator = new AtomicInteger(0);
 
     private static AssetRepository instance;
     private HashMap<String, Asset> assets = new HashMap<>();
@@ -24,9 +27,7 @@ public class AssetRepository {
     }
 
     public boolean addAsset(Asset asset) {
-        if (exists(asset.getAssetId())) {
-            return false;
-        }
+        asset.setAssetId(String.valueOf(assetIdGenerator.getAndIncrement()));
         assets.put(asset.getAssetId(), asset);
         return true;
     }

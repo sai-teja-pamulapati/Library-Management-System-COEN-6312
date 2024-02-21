@@ -1,6 +1,8 @@
 package com.university.library.model.assets.physical;
 
-public abstract class Physical {
+import com.university.library.model.assets.Asset;
+
+public abstract class Physical extends Asset {
     // Attributes
     private String floor;
     private String row;

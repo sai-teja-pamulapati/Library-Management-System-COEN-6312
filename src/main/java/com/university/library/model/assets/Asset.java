@@ -6,7 +6,7 @@ public abstract class Asset {
     private String title;
     private String preview;
     private String logo;
-    private boolean availability;
+    private boolean availability = true;
 
     // Constructors
     public Asset() {
