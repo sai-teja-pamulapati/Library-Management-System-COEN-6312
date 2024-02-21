@@ -24,7 +24,7 @@ public class UserRepository {
         return instance;
     }
 
-    private boolean exists(String emailId) {
+    public boolean exists(String emailId) {
         return users.containsKey(emailId);
     }
 

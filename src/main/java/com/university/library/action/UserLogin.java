@@ -64,7 +64,7 @@ public class UserLogin {
     private static void processLibrarianUser() {
         while(true){
             try{
-                System.out.println("Choose from the following options\n" + 
+                System.out.println("Choose from the following options\n" +
                 "1: Browse Catalouge\n" +
                 "2: See browsing history\n" +
                 "3: View Newsletter\n" +
@@ -143,6 +143,41 @@ public class UserLogin {
     }
 
     private static void processAdminUser() {
+        while (true) {
+			try {
+                System.out.print("Choose from the following options\n" +
+                    "1. Add User\n" +
+                    "2. Remove User\n" +
+                    "3. Block User\n" +
+                    "4. Update Newsletter\n" +
+                    "5. View User Activities\n" +
+                    "6. Logout\n");
+                String studentCommands = scanner.nextLine();
+                switch (studentCommands) {
+                    case "1":
+                        // TODO
+                        break;
+                    case "2":
+                        // TODO
+                        break;
+                    case "3":
+                        // TODO
+                        break;
+                    case "4":
+                        // TODO
+                        break;
+                    case "5":
+                        // TODO
+                        break;
+                    case "6":
+                        return;
+                    default:
+                        throw new IllegalArgumentException("Invalid option!");
+                }
+			} catch (Exception e) {
+				System.out.println(e.getLocalizedMessage());
+			}
+		}
     }
 
 }
