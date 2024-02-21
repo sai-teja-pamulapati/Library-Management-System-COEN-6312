@@ -1,6 +1,6 @@
 package com.university.library.model.assets;
 
-public class Assets {
+public abstract class Asset {
     // Attributes
     private String assetId;
     private String title;
@@ -9,11 +9,11 @@ public class Assets {
     private boolean availability;
 
     // Constructors
-    public Assets() {
+    public Asset() {
         // Default constructor
     }
 
-    public Assets(String assetId, String title, String preview, String logo, boolean availability) {
+    public Asset(String assetId, String title, String preview, String logo, boolean availability) {
         this.assetId = assetId;
         this.title = title;
         this.preview = preview;

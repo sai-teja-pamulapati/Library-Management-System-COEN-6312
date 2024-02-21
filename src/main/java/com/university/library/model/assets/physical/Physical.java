@@ -1,6 +1,6 @@
 package com.university.library.model.assets.physical;
 
-public class Physical {
+public abstract class Physical {
     // Attributes
     private String floor;
     private String row;
