@@ -36,30 +36,25 @@ public class UserRegistration {
         
         String gender = "";
         while(true) {
-            try {
-                System.out.print("Please select your gender:\n" +
-                    "1. Male\n" +
-                    "2. Female\n" +
-                    "3. Other\n");
-                String genderOption = scanner.nextLine();
-                switch (genderOption) {
-                    case "1":
-                        gender = "Male";
-                        break;
-                    case "2":
-                        gender = "Female";
-                        break;
-                    case "3":
-                        gender = "Other";
-                        break;
-                    default:
-                        System.out.println("Invalid option!");
-                        continue;
-                    }
-                } catch (Exception e) {
-                System.out.println(e.getLocalizedMessage());
-                return;
-            }
+            System.out.print("Please select your gender:\n" +
+                "1. Male\n" +
+                "2. Female\n" +
+                "3. Other\n");
+            String genderOption = scanner.nextLine();
+            switch (genderOption) {
+                case "1":
+                    gender = "Male";                        
+                    break;
+                case "2":
+                    gender = "Female";
+                    break;
+                case "3":
+                    gender = "Other";
+                    break;
+                default:
+                    System.out.println("Invalid option!");
+                    continue;
+                }
             break;
         }
 
