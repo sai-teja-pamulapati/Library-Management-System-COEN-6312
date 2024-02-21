@@ -3,8 +3,8 @@ package com.university.library.action;
 import java.io.Console;
 import java.util.Scanner;
 
-import com.university.library.model.User;
-import com.university.library.model.UserRole;
+import com.university.library.model.users.User;
+import com.university.library.model.users.UserRole;
 import com.university.library.repository.UserRepository;
 
 public class UserRegistration {

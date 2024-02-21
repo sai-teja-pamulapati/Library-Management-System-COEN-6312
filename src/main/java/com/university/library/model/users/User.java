@@ -1,4 +1,5 @@
-package com.university.library.model;
+package com.university.library.model.users;
+
 
 public class User {
     private String name;
@@ -10,6 +11,7 @@ public class User {
     private String dateOfBirth;
     private String gender;
 
+    
     public User() {}
 
     public User(String name, String emailId, String password, String mobileNumber, 
@@ -25,6 +27,7 @@ public class User {
     }
 
     public static User login(String emailId , String password) {
+        // TODO code
         User user = new User();
         user.setUserRole(UserRole.STUDENT);
         return user;

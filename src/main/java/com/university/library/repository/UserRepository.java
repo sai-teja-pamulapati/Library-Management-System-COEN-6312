@@ -1,8 +1,8 @@
 package com.university.library.repository;
 
 import java.util.HashMap;
-import com.university.library.model.UserRole;
-import com.university.library.model.User;
+import com.university.library.model.users.User;
+import com.university.library.model.users.UserRole;
 
 public class UserRepository {
 
