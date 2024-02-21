@@ -1,3 +1,6 @@
+package com.university.library;
+
+
 import java.util.Scanner;
 
 public class AccCreation {

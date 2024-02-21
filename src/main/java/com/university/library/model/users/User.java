@@ -1,4 +1,5 @@
-package com.university.library.model;
+package com.university.library.model.users;
+
 
 public class User {
     private String name;

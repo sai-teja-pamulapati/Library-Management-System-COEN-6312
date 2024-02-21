@@ -1,3 +1,4 @@
+package com.university.library;
 public class User {
 
     public enum UserRole {
