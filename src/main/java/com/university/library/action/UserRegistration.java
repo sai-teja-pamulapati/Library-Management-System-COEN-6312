@@ -87,7 +87,12 @@ public class UserRegistration {
         }
 
         User newUser = new User(name, emailId, password, mobileNumber, address, dateOfBirth, gender, userRole);
-        User.register(newUser);
 
+        boolean added = userRepository.addUser(newUser);
+        if (added) {
+            System.out.println("User registered successfully!");
+        } else {
+            System.out.println("User registration failed. Email ID already exists.");
+        }
     }
 }
