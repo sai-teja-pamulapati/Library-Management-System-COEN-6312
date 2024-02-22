@@ -171,7 +171,7 @@ public class UserLogin {
                     UserRegistration.register(false);
                         break;
                     case "2":
-                        // TODO
+                    UserRemoval.removeUser();
                         break;
                     case "3":
                         // TODO

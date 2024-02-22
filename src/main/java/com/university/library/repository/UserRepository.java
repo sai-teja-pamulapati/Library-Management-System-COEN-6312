@@ -32,6 +32,14 @@ public class UserRepository {
         return true;
     }
 
+    public boolean removeUser(String emailId) {
+        if (users.containsKey(emailId)) {
+            users.remove(emailId);
+            return true;
+        }
+        return false;
+    }
+
     public User getUser(String emailId) {
         return users.get(emailId);
     }

@@ -23,6 +23,10 @@ public class User {
         return null;
     }
 
+    public boolean removeUser() {
+        return userRepository.removeUser(this.emailId);
+    }
+
     public User() {}
 
     public User(String name, String emailId, String password, String mobileNumber, 
