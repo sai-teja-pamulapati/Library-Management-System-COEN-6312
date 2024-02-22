@@ -12,6 +12,15 @@ public class User {
     private String dateOfBirth;
     private String gender;
 
+    private static UserRepository userRepository = UserRepository.getInstance();
+
+    public User addUser() {
+        if (userRepository.addUser(this)) {
+            return this;
+        }
+        return null;
+    }
+
     public User() {}
 
     public User(String name, String emailId, String password, String mobileNumber, 

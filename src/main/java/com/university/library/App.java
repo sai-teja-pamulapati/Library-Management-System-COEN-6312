@@ -35,12 +35,14 @@ public class App {
 
     private static void initializeSystem() {
         // Hardcoded sample users
-        userRepository.addUser(new User("Admin", "admin@gmail.com", "admin123", "1234567890", "123 Main St", "1990-01-01", "Male", UserRole.ADMIN));
-        userRepository.addUser(new User("John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female", UserRole.STAFF));
-        userRepository.addUser(new User("Sam Wilson", "sam.wilson@gmail.com", "sam123", "1122334455", "789 Pine St", "1993-03-03", "Other", UserRole.LIBRARIAN));
+        User user = new User("Admin" , "admin@gmail.com" , "admin123" , "1234567890" , "123 Main St" , "1990-01-01" , "Male" , UserRole.ADMIN);
+        User user1 = new User("John Smith" , "john.smith@gmail.com" , "john123" , "0987654321" , "456 Elm St" , "1992-02-02" , "Female" , UserRole.STAFF);
+        User user2 = new User("Sam Wilson" , "sam.wilson@gmail.com" , "sam123" , "1122334455" , "789 Pine St" , "1993-03-03" , "Other" , UserRole.LIBRARIAN);
+        user.addUser();
+        user1.addUser();
+        user2.addUser();
 
         // Hardcoded Assets
-
         addAssets();
         }
 
