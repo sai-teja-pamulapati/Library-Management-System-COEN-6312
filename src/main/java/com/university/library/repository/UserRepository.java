@@ -1,6 +1,7 @@
 package com.university.library.repository;
 
 import java.util.HashMap;
+
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
 
@@ -9,8 +10,7 @@ public class UserRepository {
     private static UserRepository instance;
     private HashMap<String, User> users = new HashMap<>();
 
-    private UserRepository() {
-        }
+    private UserRepository() {}
     
 
     public static synchronized UserRepository getInstance() {
