@@ -1,6 +1,7 @@
 package com.university.library.action;
 
 import com.university.library.model.assets.Asset;
+import com.university.library.model.assets.physical.Book;
 import com.university.library.repository.AssetRepository;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
@@ -73,18 +74,46 @@ public class AssetSearch {
     }
 
     private void searchByISBN() {
-
+        System.out.print("Please Enter the ISBN of the book you want to search \n" +
+                "7. Go back\n");
+        String searchWord = scanner.nextLine();
+        List<Asset> allAssets = assetRepository.getAllAssets();
+        List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
+                .filter(asset -> asset instanceof Book).map(asset -> (Book)asset)
+                .map(Book::getIsbn).collect(Collectors.toList());
+        searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
     }
 
     private void searchByKeywords() {
-
+        System.out.print("Please Enter the Keyword to search \n" +
+                "7. Go back\n");
+        String searchWord = scanner.nextLine();
+        List<Asset> allAssets = assetRepository.getAllAssets();
+        List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
+                .filter(asset -> asset instanceof Book).map(asset -> (Book)asset)
+                .map(Book::toString).collect(Collectors.toList());
+        searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
     }
 
     private void searchByAuthor() {
-
+        System.out.print("Please Enter the Author of the book you want to search \n" +
+                "7. Go back\n");
+        String searchWord = scanner.nextLine();
+        List<Asset> allAssets = assetRepository.getAllAssets();
+        List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
+                .filter(asset -> asset instanceof Book).map(asset -> (Book)asset)
+                .map(Book::getAuthor).collect(Collectors.toList());
+        searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
     }
 
     private void searchByTitle() {
+        System.out.print("Please Enter the Title of the book you want to search \n" +
+                "7. Go back\n");
+        String searchWord = scanner.nextLine();
+        List<Asset> allAssets = assetRepository.getAllAssets();
+        List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
+                .map(Asset::getTitle).collect(Collectors.toList());
+        searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
     }
 
     private void search() {
@@ -94,6 +123,10 @@ public class AssetSearch {
         List<Asset> allAssets = assetRepository.getAllAssets();
         List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
                         .map(Asset::toString).collect(Collectors.toList());
+        searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
+    }
+
+    private void searchAndProcessCheckout(String searchWord , List<String> assetStringArray , List<Asset> allAssets) {
         List<ExtractedResult> extractedResults = FuzzySearch.extractSorted(searchWord , assetStringArray, 40);
 //        System.out.println(extractedResults);
 
@@ -108,5 +141,6 @@ public class AssetSearch {
         System.out.println("*********************************************");
         System.out.println("Please enter the asset id that you want to Borrow: ");
         String requestedAssetId = scanner.nextLine();
+
     }
 }
