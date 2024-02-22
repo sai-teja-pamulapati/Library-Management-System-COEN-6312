@@ -53,4 +53,14 @@ public abstract class Physical extends Asset {
     public void setShelf(String shelf) {
         this.shelf = shelf;
     }
+
+    @Override
+    public String toString() {
+        return "Physical{" +
+                "floor='" + floor + '\'' +
+                ", row='" + row + '\'' +
+                ", section='" + section + '\'' +
+                ", shelf='" + shelf + '\'' +
+                '}';
+    }
 }

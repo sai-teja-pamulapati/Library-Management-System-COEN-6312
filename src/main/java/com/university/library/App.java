@@ -9,6 +9,7 @@ import com.university.library.action.UserLogin;
 import com.university.library.action.UserRegistration;
 import com.university.library.model.assets.Asset;
 import com.university.library.model.assets.physical.Book;
+import com.university.library.model.assets.physical.Laptop;
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
 import com.university.library.repository.AssetRepository;
@@ -21,9 +22,9 @@ public class App {
 
 
     public static void main(String[] args) {
+        initializeSystem();
         while (true) {
             try {
-                initializeSystem();
                 executeWorkFlow();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -37,9 +38,11 @@ public class App {
         User user = new User("Admin" , "admin@gmail.com" , "admin123" , "1234567890" , "123 Main St" , "1990-01-01" , "Male" , UserRole.ADMIN);
         User user1 = new User("John Smith" , "john.smith@gmail.com" , "john123" , "0987654321" , "456 Elm St" , "1992-02-02" , "Female" , UserRole.STAFF);
         User user2 = new User("Sam Wilson" , "sam.wilson@gmail.com" , "sam123" , "1122334455" , "789 Pine St" , "1993-03-03" , "Other" , UserRole.LIBRARIAN);
+        User user3 = new User("Sai Teja" , "1" , "1" , "1122334455" , "789 Pine St" , "1993-03-03" , "Other" , UserRole.STUDENT);
         user.addUser();
         user1.addUser();
         user2.addUser();
+        user3.addUser();
 
         // Hardcoded Assets
         addAssets();
@@ -77,6 +80,11 @@ public class App {
             for (JsonElement book : books) {
                 Asset book1 = gson.fromJson(book , Book.class);
                 assetRepository.addAsset(book1);
+            }
+            JsonArray laptops = jsonObject.get("laptops").getAsJsonArray();
+            for (JsonElement laptop : laptops) {
+                Asset laptop1 = gson.fromJson(laptop , Laptop.class);
+                assetRepository.addAsset(laptop1);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

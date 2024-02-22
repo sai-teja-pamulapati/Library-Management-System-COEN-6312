@@ -3,6 +3,7 @@ package com.university.library.repository;
 import com.university.library.model.assets.Asset;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AssetRepository {
@@ -34,6 +35,10 @@ public class AssetRepository {
 
     public Asset getAsset(String assetId) {
         return assets.get(assetId);
+    }
+
+    public List<Asset> getAllAssets() {
+        return assets.values().stream().toList();
     }
 
     public Asset removeAsset(String assetId) {

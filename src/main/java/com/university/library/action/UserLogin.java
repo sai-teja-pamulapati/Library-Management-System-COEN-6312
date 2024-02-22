@@ -3,13 +3,14 @@ package com.university.library.action;
 import java.io.Console;
 import java.util.Scanner;
 
+import com.university.library.model.assets.Asset;
 import com.university.library.model.users.User;
 import com.university.library.repository.UserRepository;
 
 public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
-    private static UserRepository userRepository = UserRepository.getInstance();
+    private static AssetSearch assetSearch = AssetSearch.getInstance();
 
     public static void login() {
         Console console = System.console();
@@ -115,14 +116,17 @@ public class UserLogin {
          while (true) {
 			try {
                 System.out.print("Choose from the following options\n" +
-                    "1. Browse Catalogue\n" +
-                    "2. See borrowing history\n" +
-                    "3. View Newsletter\n" + 
-                    "4. Logout\n");
+                        "1. Browse Catalogue\n" +
+                        "2. View borrowing history\n" +
+                        "3. View Newsletter\n" +
+                        "4. View Notifications\n" +
+                        "5. Book/Cancel Discussion Room\n" +
+                        "6. Pay Fines\n" +
+                        "7. Logout\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                        // TODO
+                        assetSearch.browse();
                         break;
                     case "2":
                         // TODO 
@@ -131,7 +135,15 @@ public class UserLogin {
                         // Todo
                         break;
                     case "4": 
-                        return;     
+                        return;
+                    case "5":
+                        // TODO
+                        break;
+                    case "6":
+                        // Todo
+                        break;
+                    case "7":
+                        return;
                     default:
                         throw new IllegalArgumentException("Invalid option!");
                 }

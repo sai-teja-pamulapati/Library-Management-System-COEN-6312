@@ -61,4 +61,15 @@ public abstract class Asset {
     public void setAvailability(boolean availability) {
         this.availability = availability;
     }
+
+    @Override
+    public String toString() {
+        return "Asset{" +
+                "assetId='" + assetId + '\'' +
+                ", title='" + title + '\'' +
+                ", preview='" + preview + '\'' +
+                ", logo='" + logo + '\'' +
+                ", availability=" + availability +
+                '}';
+    }
 }
