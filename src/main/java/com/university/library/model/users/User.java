@@ -16,8 +16,10 @@ public class User {
 
     public User addUser() {
         if (userRepository.addUser(this)) {
+            System.out.println("User registered successfully!");
             return this;
         }
+        System.out.println("Registration failed.");
         return null;
     }
 
@@ -35,7 +37,7 @@ public class User {
         this.userRole = userRole;
     }
 
-    public static User login(String emailId, String password, UserRepository userRepository) {
+    public static User login(String emailId , String password) {
         User user = userRepository.getUser(emailId);
         if (user == null || !user.getPassword().equals(password)) {
             System.out.println("Invalid Credentials!!");
@@ -45,23 +47,8 @@ public class User {
         return user;
     }
 
-    public static boolean register(String name, String emailId, String password, String mobileNumber,
-                                   String address, String dateOfBirth, String gender, UserRole userRole,
-                                   UserRepository userRepository) {
-        if (userRepository.getUser(emailId) != null) {
-            System.out.println("Registration failed. User with this email already exists.");
-            return false;
-        }
-        
-        User newUser = new User(name, emailId, password, mobileNumber, address, dateOfBirth, gender, userRole);
-        
-        if (userRepository.addUser(newUser)) {
-            System.out.println("User registered successfully!");
-            return true;
-        } else {
-            System.out.println("Registration failed.");
-            return false;
-        }
+    public static User register(User newUser) {
+        return newUser.addUser();
     }
 
     public String getName() {

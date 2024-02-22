@@ -17,7 +17,6 @@ import com.university.library.repository.UserRepository;
 public class App {
 
     private static Scanner scanner = new Scanner(System.in);
-    private static UserRepository userRepository = UserRepository.getInstance();
     private static AssetRepository assetRepository = AssetRepository.getInstance();
 
 

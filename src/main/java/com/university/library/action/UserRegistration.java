@@ -80,7 +80,9 @@ public class UserRegistration {
             break;
         }
 
-        User.register(name, emailId, password, mobileNumber, address, dateOfBirth, gender, userRole, userRepository);
+        User newUser = new User(name, emailId, password, mobileNumber, address, dateOfBirth, gender, userRole);
+
+        User.register(newUser);
 
     }
 }
