@@ -25,7 +25,7 @@ public class UserBlocking {
             System.out.println("User not found.");
         }
     }
-    
+
     public static void unblockUser() {
         System.out.println("Enter the email ID of the user you want to unblock:");
         String emailId = scanner.nextLine();
@@ -41,4 +41,5 @@ public class UserBlocking {
             System.out.println("User not found.");
         }
     }
+
 }

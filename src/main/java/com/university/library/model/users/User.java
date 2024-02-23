@@ -41,13 +41,11 @@ public class User {
         this.blocked = false;
         userRepository.updateUser(this);
     }
-    
+
     public void unBlockUser() {
         this.blocked = true;
         userRepository.updateUser(this);
     }
-    
-
 
     public User() {}
 
