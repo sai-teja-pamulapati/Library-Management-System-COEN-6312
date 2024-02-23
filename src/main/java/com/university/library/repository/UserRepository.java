@@ -40,6 +40,26 @@ public class UserRepository {
         return false;
     }
 
+    public boolean updateBlockedStatus(String emailId, boolean blocked) {
+        User user = users.get(emailId);
+        if (user != null) {
+            user.toggleBlockedStatus();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateUnblockedStatus(String emailId, boolean blocked) {
+        User user = users.get(emailId);
+        if (user != null) {
+            user.toggleUnblockedStatus();
+            return true;
+        }
+        return false;
+    }
+
+
+
     public User getUser(String emailId) {
         return users.get(emailId);
     }

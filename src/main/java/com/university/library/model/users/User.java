@@ -27,6 +27,34 @@ public class User {
         return userRepository.removeUser(this.emailId);
     }
 
+    private boolean blocked;
+
+    public void toggleBlockedStatus() {
+        blocked = !blocked;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public static void blockUser(String emailId) {
+        userRepository.updateBlockedStatus(emailId, true);
+    }
+
+    private boolean unblocked;
+
+    public void toggleUnblockedStatus() {
+        unblocked = !unblocked;
+    }
+
+    public boolean isUnblocked() {
+        return unblocked;
+    }
+    public static void unblockUser(String emailId) {
+        userRepository.updateUnblockedStatus(emailId, false);
+    }
+
+
     public User() {}
 
     public User(String name, String emailId, String password, String mobileNumber, 
