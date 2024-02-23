@@ -15,7 +15,7 @@ public class UserBlocking {
     String emailId = scanner.nextLine();
     User userToBlock = userRepository.getUser(emailId);
     if (userToBlock != null) {
-        User.blockUser(emailId);
+        userToBlock.blockUser();
         System.out.println("User blocked successfully!");
     } else {
         System.out.println("User not found.");

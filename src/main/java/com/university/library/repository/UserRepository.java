@@ -64,4 +64,7 @@ public class UserRepository {
         return users.get(emailId);
     }
 
+    public void updateUser(User user) {
+
+    }
 }

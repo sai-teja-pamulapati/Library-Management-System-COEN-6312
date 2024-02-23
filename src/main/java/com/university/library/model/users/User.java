@@ -37,8 +37,16 @@ public class User {
         return blocked;
     }
 
-    public static void blockUser(String emailId) {
-        userRepository.updateBlockedStatus(emailId, true);
+    public void blockUser() {
+        this.blocked = true;
+        userRepository.updateUser(this);
+//        userRepository.updateBlockedStatus(emailId, true);
+    }
+
+    public void unBlockUser() {
+        this.blocked = false;
+        userRepository.updateUser(this);
+//        userRepository.updateBlockedStatus(emailId, true);
     }
 
     private boolean unblocked;
