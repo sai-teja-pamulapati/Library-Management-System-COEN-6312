@@ -37,22 +37,16 @@ public class User {
         return blocked;
     }
 
-    public static void blockUser(String emailId) {
-        userRepository.updateBlockedStatus(emailId, true);
+    public void blockUser() {
+        this.blocked = false;
+        userRepository.updateUser(this);
     }
-
-    private boolean unblocked;
-
-    public void toggleUnblockedStatus() {
-        unblocked = !unblocked;
+    
+    public void unBlockUser() {
+        this.blocked = true;
+        userRepository.updateUser(this);
     }
-
-    public boolean isUnblocked() {
-        return unblocked;
-    }
-    public static void unblockUser(String emailId) {
-        userRepository.updateUnblockedStatus(emailId, false);
-    }
+    
 
 
     public User() {}

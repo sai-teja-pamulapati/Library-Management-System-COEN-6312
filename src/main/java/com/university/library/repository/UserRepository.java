@@ -8,10 +8,10 @@ import com.university.library.model.users.UserRole;
 public class UserRepository {
 
     private static UserRepository instance;
-    private HashMap<String, User> users = new HashMap<>();
+    private static HashMap<String, User> users = new HashMap<>();
 
     private UserRepository() {}
-    
+
 
     public static synchronized UserRepository getInstance() {
         if (instance == null) {
@@ -40,28 +40,16 @@ public class UserRepository {
         return false;
     }
 
-    public boolean updateBlockedStatus(String emailId, boolean blocked) {
-        User user = users.get(emailId);
-        if (user != null) {
-            user.toggleBlockedStatus();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean updateUnblockedStatus(String emailId, boolean blocked) {
-        User user = users.get(emailId);
-        if (user != null) {
-            user.toggleUnblockedStatus();
-            return true;
-        }
-        return false;
-    }
-
-
 
     public User getUser(String emailId) {
         return users.get(emailId);
+    }
+
+    public void updateUser(User user) {
+        if (exists(user.getEmailId())) {
+            User existingUser = users.get(user.getEmailId());
+            existingUser.toggleBlockedStatus();
+        }
     }
 
 }

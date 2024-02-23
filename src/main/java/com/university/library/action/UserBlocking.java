@@ -11,24 +11,32 @@ public class UserBlocking {
     private static UserRepository userRepository = UserRepository.getInstance();
 
     public static void blockUser() {
-    System.out.println("Enter the email ID of the user you want to block:");
-    String emailId = scanner.nextLine();
-    User userToBlock = userRepository.getUser(emailId);
-    if (userToBlock != null) {
-        User.blockUser(emailId);
-        System.out.println("User blocked successfully!");
-    } else {
-        System.out.println("User not found.");
+        System.out.println("Enter the email ID of the user you want to block:");
+        String emailId = scanner.nextLine();
+        User userToBlock = userRepository.getUser(emailId);
+        if (userToBlock != null) {
+            if (userToBlock.isBlocked()) {
+                System.out.println("User is already blocked.");
+            } else {
+                userToBlock.blockUser();
+                System.out.println("User blocked successfully!");
+            }
+        } else {
+            System.out.println("User not found.");
+        }
     }
-    }
-
+    
     public static void unblockUser() {
         System.out.println("Enter the email ID of the user you want to unblock:");
         String emailId = scanner.nextLine();
         User userToUnblock = userRepository.getUser(emailId);
         if (userToUnblock != null) {
-            User.unblockUser(emailId);
-            System.out.println("User unblocked successfully!");
+            if (!userToUnblock.isBlocked()) {
+                System.out.println("User is already unblocked.");
+            } else {
+                userToUnblock.unBlockUser();
+                System.out.println("User unblocked successfully!");
+            }
         } else {
             System.out.println("User not found.");
         }
