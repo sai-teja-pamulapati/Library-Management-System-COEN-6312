@@ -1,8 +1,10 @@
 package com.university.library.model.assets;
 
 import com.university.library.App;
+import com.university.library.model.LoanAsset;
 import com.university.library.model.users.User;
 import com.university.library.repository.AssetRepository;
+import com.university.library.repository.LoanAssetRepository;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Date;
@@ -15,6 +17,7 @@ public abstract class Asset {
     private String logo;
     private boolean availability = true;
     private static AssetRepository assetRepository = AssetRepository.getInstance();
+    private static LoanAssetRepository loanAssetRepository = LoanAssetRepository.getInstance();
 
     // Constructors
     public Asset() {
@@ -84,5 +87,19 @@ public abstract class Asset {
 
     public void updateAsset() {
         assetRepository.update(this);
+    }
+
+    public void loanAsset() {
+        LoanAsset loanAsset = new LoanAsset();
+        Date today = new Date();
+        User user = App.getLoggedInUser();
+        loanAsset.setAssetId(this.getAssetId());
+        loanAsset.setUserId(user.getUserId());
+        loanAsset.setLoanDate(today);
+        loanAsset.setReturnDate(DateUtils.addDays(today, 30));
+        this.availability = false;
+        this.updateAsset();
+        loanAssetRepository.saveLoanAsset(loanAsset);
+        System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
     }
 }
