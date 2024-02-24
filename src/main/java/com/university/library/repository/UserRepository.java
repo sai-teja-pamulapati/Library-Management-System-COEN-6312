@@ -1,11 +1,14 @@
 package com.university.library.repository;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
 
 public class UserRepository {
+
+    private static final AtomicInteger assetIdGenerator = new AtomicInteger(0);
 
     private static UserRepository instance;
     private static HashMap<String, User> users = new HashMap<>();
@@ -28,6 +31,7 @@ public class UserRepository {
         if (exists(user.getEmailId())) {
             return false;
         }
+        user.setUserId(String.valueOf(assetIdGenerator.getAndIncrement()));
         users.put(user.getEmailId(), user);
         return true;
     }

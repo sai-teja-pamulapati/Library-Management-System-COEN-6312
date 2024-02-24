@@ -1,34 +1,35 @@
 package com.university.library.action;
 
-import java.io.Console;
 import java.util.Scanner;
 
-import com.university.library.model.assets.Asset;
+import com.university.library.App;
 import com.university.library.model.users.User;
-import com.university.library.repository.UserRepository;
 
 public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
-    private static AssetSearch assetSearch = AssetSearch.getInstance();
+    private static AssetManagement assetManagement = AssetManagement.getInstance();
+
 
     public static void login() {
-        Console console = System.console();
-        if (console == null) {
-            System.out.println("No console available");
-            return;
-        }
+//        Console console = System.console();
+//        if (console == null) {
+//            System.out.println("No console available");
+//            return;
+//        }
 
         System.out.println("Please enter your email Id:");
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
-        String password = new String(console.readPassword());
+//        String password = new String(console.readPassword());
+        String password = scanner.nextLine();
 
         User user = User.login(emailId, password);
         if (user == null) {
             return;
         }
 
+        App.setLoggedInUser(user);
         switch (user.getUserRole()) {
             case ADMIN:
                 processAdminUser();
@@ -52,6 +53,7 @@ public class UserLogin {
                 System.out.println("Invalid user role.");
                 break;
         }
+        App.setLoggedInUser(null);
     }
 
     private static void processFreeUser() {
@@ -126,10 +128,10 @@ public class UserLogin {
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                        assetSearch.browse();
+                        assetManagement.browse();
                         break;
                     case "2":
-                        // TODO 
+                        assetManagement.getBorrowingHistory();
                         break;
                     case "3":
                         // Todo

@@ -45,4 +45,7 @@ public class AssetRepository {
         return assets.remove(assetId);
     }
 
+    public void update(Asset asset) {
+        assets.put(asset.getAssetId(), asset);
+    }
 }

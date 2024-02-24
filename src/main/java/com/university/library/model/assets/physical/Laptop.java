@@ -11,23 +11,22 @@ public class Laptop extends Physical{
 
     @Override
     public String toString() {
-        return "Laptop{" +
-                "brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", processor='" + processor + '\'' +
-                ", ram='" + ram + '\'' +
-                ", storage='" + storage + '\'' +
-                ", displaySize='" + displaySize + '\'' +
-                ", weight='" + weight + '\'' +
-                ", floor='" + getFloor() + '\'' +
-                ", row='" + getRow() + '\'' +
-                ", section='" + getSection() + '\'' +
-                ", shelf='" + getShelf() + '\'' +
-                ", assetId='" + getAssetId() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", preview='" + getPreview() + '\'' +
-                ", logo='" + getLogo() + '\'' +
-                ", availability=" + isAvailable() +
-                '}';
+        return "Laptop Details: \n" +
+                "assetId : " + getAssetId() + '\n' +
+                "brand : " + brand + '\n' +
+                "model : " + model + '\n' +
+                "processor : " + processor + '\n' +
+                "ram : " + ram + '\n' +
+                "storage : " + storage + '\n' +
+                "displaySize : " + displaySize + '\n' +
+                "weight : " + weight + '\n' +
+                "floor : " + getFloor() + '\n' +
+                "row : " + getRow() + '\n' +
+                "section : " + getSection() + '\n' +
+                "shelf : " + getShelf() + '\n' +
+                "title : " + getTitle() + '\n' +
+                "preview : " + getPreview() + '\n' +
+                "logo : " + getLogo() + '\n' +
+                "availability : " + isAvailable();
     }
 }

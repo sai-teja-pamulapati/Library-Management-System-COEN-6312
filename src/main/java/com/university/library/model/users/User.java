@@ -3,6 +3,8 @@ package com.university.library.model.users;
 import com.university.library.repository.UserRepository;
 
 public class User {
+
+    private String userId;
     private String name;
     private String password;
     private String emailId;
@@ -11,6 +13,7 @@ public class User {
     private UserRole userRole;
     private String dateOfBirth;
     private String gender;
+    private boolean blocked;
 
     private static UserRepository userRepository = UserRepository.getInstance();
 
@@ -21,16 +24,6 @@ public class User {
         }
         System.out.println("Registration failed.");
         return null;
-    }
-
-    public boolean removeUser() {
-        return userRepository.removeUser(this.emailId);
-    }
-
-    private boolean blocked;
-
-    public void toggleBlockedStatus() {
-        blocked = !blocked;
     }
 
     public boolean isBlocked() {
@@ -137,5 +130,13 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

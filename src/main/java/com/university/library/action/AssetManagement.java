@@ -1,28 +1,30 @@
 package com.university.library.action;
 
+import com.university.library.App;
+import com.university.library.model.LoanAsset;
 import com.university.library.model.assets.Asset;
 import com.university.library.model.assets.physical.Book;
+import com.university.library.model.users.User;
 import com.university.library.repository.AssetRepository;
+import com.university.library.repository.LoanAssetRepository;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class AssetSearch {
+public class AssetManagement {
 
-    private static AssetSearch instance;
+    private static AssetManagement instance;
     private static Scanner scanner = new Scanner(System.in);
     private static AssetRepository assetRepository = AssetRepository.getInstance();
+    private static LoanAssetRepository loanAssetRepository = LoanAssetRepository.getInstance();
 
+    private AssetManagement() {}
 
-    private AssetSearch() {}
-
-    public static synchronized AssetSearch getInstance() {
+    public static synchronized AssetManagement getInstance() {
         if (instance == null) {
-            instance = new AssetSearch();
+            instance = new AssetManagement();
         }
         return instance;
     }
@@ -36,8 +38,7 @@ public class AssetSearch {
                         "3. Search by Author\n" +
                         "4. Search by Keywords\n" +
                         "5. Search by ISBN\n" +
-                        "6. Pay Fines\n" +
-                        "7. Go back\n");
+                        "6. Go back\n");
                 String searchCommands = scanner.nextLine();
                 switch (searchCommands) {
                     case "1":
@@ -56,9 +57,6 @@ public class AssetSearch {
                         searchByISBN();
                         break;
                     case "6":
-                        payFines();
-                        break;
-                    case "7":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid option!");
@@ -69,46 +67,44 @@ public class AssetSearch {
         }
     }
 
-    private void payFines() {
-
-    }
-
     private void searchByISBN() {
-        System.out.print("Please Enter the ISBN of the book you want to search \n" +
-                "7. Go back\n");
+        System.out.println("Please Enter the ISBN of the book you want to search");
         String searchWord = scanner.nextLine();
         List<Asset> allAssets = assetRepository.getAllAssets();
-        List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
+        List<Asset> assetSubList = allAssets.stream().filter(Objects::nonNull)
+                .filter(asset -> asset instanceof Book).map(asset -> (Book)asset).collect(Collectors.toList());
+        List<String> assetStringArray = assetSubList.stream().filter(Objects::nonNull)
                 .filter(asset -> asset instanceof Book).map(asset -> (Book)asset)
                 .map(Book::getIsbn).collect(Collectors.toList());
-        searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
+        searchAndProcessCheckout(searchWord, assetStringArray, assetSubList);
     }
 
     private void searchByKeywords() {
-        System.out.print("Please Enter the Keyword to search \n" +
-                "7. Go back\n");
+        System.out.println("Please Enter the Keyword to search");
         String searchWord = scanner.nextLine();
         List<Asset> allAssets = assetRepository.getAllAssets();
-        List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
+        List<Asset> assetSubList = allAssets.stream().filter(Objects::nonNull)
+                .filter(asset -> asset instanceof Book).map(asset -> (Book)asset).collect(Collectors.toList());
+        List<String> assetStringArray = assetSubList.stream().filter(Objects::nonNull)
                 .filter(asset -> asset instanceof Book).map(asset -> (Book)asset)
                 .map(Book::toString).collect(Collectors.toList());
-        searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
+        searchAndProcessCheckout(searchWord, assetStringArray, assetSubList);
     }
 
     private void searchByAuthor() {
-        System.out.print("Please Enter the Author of the book you want to search \n" +
-                "7. Go back\n");
+        System.out.println("Please Enter the Author of the book you want to search");
         String searchWord = scanner.nextLine();
         List<Asset> allAssets = assetRepository.getAllAssets();
-        List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
+        List<Asset> assetSubList = allAssets.stream().filter(Objects::nonNull)
+                .filter(asset -> asset instanceof Book).map(asset -> (Book)asset).collect(Collectors.toList());
+        List<String> assetStringArray = assetSubList.stream().filter(Objects::nonNull)
                 .filter(asset -> asset instanceof Book).map(asset -> (Book)asset)
                 .map(Book::getAuthor).collect(Collectors.toList());
-        searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
+        searchAndProcessCheckout(searchWord, assetStringArray, assetSubList);
     }
 
     private void searchByTitle() {
-        System.out.print("Please Enter the Title of the book you want to search \n" +
-                "7. Go back\n");
+        System.out.println("Please Enter the Title of the book you want to search");
         String searchWord = scanner.nextLine();
         List<Asset> allAssets = assetRepository.getAllAssets();
         List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
@@ -117,8 +113,7 @@ public class AssetSearch {
     }
 
     private void search() {
-        System.out.print("Please Enter your keyword followed by Enter to search \n" +
-                "7. Go back\n");
+        System.out.println("Please Enter your keyword followed by Enter to search");
         String searchWord = scanner.nextLine();
         List<Asset> allAssets = assetRepository.getAllAssets();
         List<String> assetStringArray = allAssets.stream().filter(Objects::nonNull)
@@ -126,21 +121,45 @@ public class AssetSearch {
         searchAndProcessCheckout(searchWord, assetStringArray, allAssets);
     }
 
-    private void searchAndProcessCheckout(String searchWord , List<String> assetStringArray , List<Asset> allAssets) {
-        List<ExtractedResult> extractedResults = FuzzySearch.extractSorted(searchWord , assetStringArray, 40);
+    private void searchAndProcessCheckout(String searchWord , List<String> assetStringArray , List<Asset> assetList) {
+        List<ExtractedResult> extractedResults = FuzzySearch.extractSorted(searchWord , assetStringArray, 50);
 //        System.out.println(extractedResults);
 
         List<Integer> indexesOfResults = extractedResults.stream().filter(Objects::nonNull).map(ExtractedResult::getIndex).collect(Collectors.toList());
-        List<Asset> searchedAssets = indexesOfResults.stream().map(allAssets::get).collect(Collectors.toList());
+        List<Asset> searchedAssets = indexesOfResults.stream().map(assetList::get).collect(Collectors.toList());
 
         for (int i = 0 ; i < searchedAssets.size() ; i++) {
-            System.out.println("*********************************************");
+            System.out.println("******************************************************************************************");
             Asset resultAsset = searchedAssets.get(i);
-            System.out.println(resultAsset);
+            if(resultAsset.isAvailable()){
+                System.out.println(resultAsset);
+            }
         }
-        System.out.println("*********************************************");
+        System.out.println("******************************************************************************************");
         System.out.println("Please enter the asset id that you want to Borrow: ");
         String requestedAssetId = scanner.nextLine();
+        Optional<Asset> requestedAssetOptional = assetList.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId() , requestedAssetId)).findFirst();
+        if(requestedAssetOptional.isEmpty()){
+            System.out.println("Requested Object doesnot exist");
+            return;
+        }
+        Asset requestedAsset = requestedAssetOptional.get();
+        requestedAsset.loanAsset();
+    }
+
+    public void getBorrowingHistory() {
+        User user = App.getLoggedInUser();
+        List<LoanAsset> loanedItemsForUser = loanAssetRepository.getLoanedItemsForUser(user.getUserId());
+        System.out.println();
+        for (int i = 0 ; i < loanedItemsForUser.size() ; i++) {
+            System.out.println("******************************************************************************************");
+            LoanAsset loanAsset = loanedItemsForUser.get(i);
+            Asset asset = assetRepository.getAsset(loanAsset.getAssetId());
+            System.out.println(asset);
+            System.out.println(loanAsset);
+        }
+        System.out.println("******************************************************************************************");
+        System.out.println();
 
     }
 }

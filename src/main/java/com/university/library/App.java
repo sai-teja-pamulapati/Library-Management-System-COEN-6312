@@ -15,10 +15,21 @@ import com.university.library.model.users.UserRole;
 import com.university.library.repository.AssetRepository;
 import com.university.library.repository.UserRepository;
 
+import javax.naming.Context;
+
 public class App {
 
     private static Scanner scanner = new Scanner(System.in);
     private static AssetRepository assetRepository = AssetRepository.getInstance();
+
+    private static User loggedInUser;
+    public static User getLoggedInUser(){
+        return loggedInUser;
+    }
+
+    public static void setLoggedInUser(User loggedInUser) {
+        App.loggedInUser = loggedInUser;
+    }
 
 
     public static void main(String[] args) {
