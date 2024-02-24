@@ -8,10 +8,10 @@ import com.university.library.model.users.UserRole;
 public class UserRepository {
 
     private static UserRepository instance;
-    private HashMap<String, User> users = new HashMap<>();
+    private static HashMap<String, User> users = new HashMap<>();
 
     private UserRepository() {}
-    
+
 
     public static synchronized UserRepository getInstance() {
         if (instance == null) {
@@ -32,8 +32,23 @@ public class UserRepository {
         return true;
     }
 
+    public boolean removeUser(String emailId) {
+        if (users.containsKey(emailId)) {
+            users.remove(emailId);
+            return true;
+        }
+        return false;
+    }
+
+
     public User getUser(String emailId) {
         return users.get(emailId);
+    }
+
+    public void updateUser(User user) {
+        if (exists(user.getEmailId())) {
+            users.put(user.getEmailId(), user);
+        }
     }
 
 }

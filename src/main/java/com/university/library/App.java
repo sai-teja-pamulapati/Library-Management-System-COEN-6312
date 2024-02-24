@@ -60,7 +60,7 @@ public class App {
                 UserLogin.login();
                 break;
             case "2":
-                UserRegistration.register();
+                UserRegistration.register(true);
                 break;
             case "3":
                 System.out.println("Bye");
@@ -90,4 +90,5 @@ public class App {
             e.printStackTrace();
         }
     }
+
 }

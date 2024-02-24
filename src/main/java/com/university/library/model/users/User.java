@@ -23,6 +23,30 @@ public class User {
         return null;
     }
 
+    public boolean removeUser() {
+        return userRepository.removeUser(this.emailId);
+    }
+
+    private boolean blocked;
+
+    public void toggleBlockedStatus() {
+        blocked = !blocked;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void blockUser() {
+        this.blocked = true;
+        userRepository.updateUser(this);
+    }
+
+    public void unBlockUser() {
+        this.blocked = false;
+        userRepository.updateUser(this);
+    }
+
     public User() {}
 
     public User(String name, String emailId, String password, String mobileNumber, 
