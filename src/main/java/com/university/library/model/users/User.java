@@ -38,12 +38,12 @@ public class User {
     }
 
     public void blockUser() {
-        this.blocked = false;
+        this.blocked = true;
         userRepository.updateUser(this);
     }
 
     public void unBlockUser() {
-        this.blocked = true;
+        this.blocked = false;
         userRepository.updateUser(this);
     }
 

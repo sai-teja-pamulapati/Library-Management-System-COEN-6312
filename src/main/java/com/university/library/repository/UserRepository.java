@@ -47,8 +47,7 @@ public class UserRepository {
 
     public void updateUser(User user) {
         if (exists(user.getEmailId())) {
-            User existingUser = users.get(user.getEmailId());
-            existingUser.toggleBlockedStatus();
+            users.put(user.getEmailId(), user);
         }
     }
 
