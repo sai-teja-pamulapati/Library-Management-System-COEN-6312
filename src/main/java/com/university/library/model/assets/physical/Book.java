@@ -9,7 +9,6 @@ public class Book extends Physical{
     private String author;
     private String subject;
     private String description;
-    private String subtitle;
 
     public String getIsbn() {
         return isbn;
@@ -59,14 +58,6 @@ public class Book extends Physical{
         this.description = description;
     }
 
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
-
     @Override
     public String toString() {
         return "Book Details: \n" +
@@ -77,7 +68,6 @@ public class Book extends Physical{
                 "author : " + author + '\n' +
                 "subject : " + subject + '\n' +
                 "description : " + description + '\n' +
-                "subtitle : " + subtitle + '\n' +
                 "floor : " + getFloor() + '\n' +
                 "row : " + getRow() + '\n' +
                 "section : " + getSection() + '\n' +
