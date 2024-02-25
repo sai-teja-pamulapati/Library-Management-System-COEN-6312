@@ -9,6 +9,7 @@ import com.university.library.model.users.User;
 public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
+    private static AssetManagement assetManagement = AssetManagement.getInstance();
 
     public static void login() {
         Console console = System.console();
@@ -126,9 +127,12 @@ public class UserLogin {
                         "7. Logout\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
+
                     case "1":
+                        assetManagement.browse();
                         break;
                     case "2":
+                        assetManagement.getBorrowingHistory();
                         break;
                     case "3":
                         // Todo
