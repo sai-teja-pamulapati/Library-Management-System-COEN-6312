@@ -138,7 +138,8 @@ public class UserLogin {
                         // Todo
                         break;
                     case "4": 
-                        return;
+                        //Todo
+                        break;
                     case "5":
                         // TODO
                         break;

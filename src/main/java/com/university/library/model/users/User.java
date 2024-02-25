@@ -17,13 +17,19 @@ public class User {
 
     private static UserRepository userRepository = UserRepository.getInstance();
 
-    public User addUser() {
+    public User addUser(boolean printMessage) {
         if (userRepository.addUser(this)) {
-            System.out.println("User registered successfully!");
+            if (printMessage) {
+                System.out.println("User registered successfully!");
+            }
             return this;
         }
         System.out.println("Registration failed.");
         return null;
+    }
+
+    public User addUser() {
+        return addUser(true);
     }
 
     public boolean isBlocked() {
