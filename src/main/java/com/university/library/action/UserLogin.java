@@ -93,36 +93,18 @@ public class UserLogin {
                         //left
                         break;
                     case "5":
-                        //assetManagement.addAsset();
-                        System.out.println("Enter the title of Asset");
-                        String tempTitle = scanner.nextLine();
-                        System.out.println("Enter URL for preview");
-                        String tempPreview = scanner.nextLine();
-                        System.out.println("Enter URL for Logo");
-                        String tempLogo = scanner.nextLine();
-                        System.out.println("Is the Asset available to loan");
-                        boolean tempAvailability = scanner.nextLine();
-                        Asset asset = new Asset(tempTitle, tempPreview, tempLogo, tempAvailability);
-                        boolean add = AssetRepository.addAsset(asset);
-                        if (add == true){
-                            System.out.println("Asset added Succesfully");
-                            List<Asset> allAssets = AssetRepository.getAllAssets();
-                            System.out.println("Updated list after adding an Asset" + allAssets);
-                        }
-                        else{
-                            System.out.println("Failed to add an Asset")
-                        }
+                        assetManagement.addBook();
                         break;
                     case "6":
-                        assetManagement.removeAsset();
+                        //assetManagement.removeAsset();
                         break;
                     case "7":
-                        assetManagement.updateBookDetails();
+                        //assetManagement.updateBookDetails();
                         break;
                     case "8":
-                        assetManagement.viewLibraryActivities();
+                        //assetManagement.viewLibraryActivities();
                     case "9":
-                        assetManagement.updateNewsLetter();
+                        //assetManagement.updateNewsLetter();
                     case "10":
                         return;
                     default:
