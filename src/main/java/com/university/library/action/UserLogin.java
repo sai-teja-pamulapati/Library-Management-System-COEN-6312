@@ -81,25 +81,50 @@ public class UserLogin {
                 String Librariancommands = scanner.nextLine();
                 switch(Librariancommands) {
                     case "1":
-                        //Left
+                        assetManagement.browse();
+                        break;
                     case "2":
-                        //left
+                        assetManagement.getBorrowingHistory();
+                        break;
                     case "3":
                         //left
+                        break;
                     case "4":
                         //left
+                        break;
                     case "5":
-                        //left
+                        //assetManagement.addAsset();
+                        System.out.println("Enter the title of Asset");
+                        String tempTitle = scanner.nextLine();
+                        System.out.println("Enter URL for preview");
+                        String tempPreview = scanner.nextLine();
+                        System.out.println("Enter URL for Logo");
+                        String tempLogo = scanner.nextLine();
+                        System.out.println("Is the Asset available to loan");
+                        boolean tempAvailability = scanner.nextLine();
+                        Asset asset = new Asset(tempTitle, tempPreview, tempLogo, tempAvailability);
+                        boolean add = AssetRepository.addAsset(asset);
+                        if (add == true){
+                            System.out.println("Asset added Succesfully");
+                            List<Asset> allAssets = AssetRepository.getAllAssets();
+                            System.out.println("Updated list after adding an Asset" + allAssets);
+                        }
+                        else{
+                            System.out.println("Failed to add an Asset")
+                        }
+                        break;
                     case "6":
-                        //left
+                        assetManagement.removeAsset();
+                        break;
                     case "7":
-                        //left
+                        assetManagement.updateBookDetails();
+                        break;
                     case "8":
-                        //left
+                        assetManagement.viewLibraryActivities();
                     case "9":
-                        //left
+                        assetManagement.updateNewsLetter();
                     case "10":
-                        //left
+                        return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }

@@ -32,6 +32,38 @@ public abstract class Asset {
         this.availability = availability;
     }
 
+    // asset functionalities
+
+    
+    // Libraran functionalities
+
+    private void addAsset(){
+ 
+
+    }
+
+    private void removeAsset(){
+        List<Asset> allAssets = assetRepository.getAllAssets();
+        System.out.println("Following is the list of Assets: " + allAssets);
+        System.out.println("Enter the asset ID to delete an asset: " );
+        String assetId = scanner.nextLine();
+        AssetRepository asset = new AssetRepository();
+        asset.asset.delete(assetId);
+        System.out.println("Updated list after adding an Asset" + allAssets);
+    }
+
+    private void updateBookDetails(){
+        System.out.println("Enter the Book Title to update a book details");
+        String title = scanner.nextLine();
+    }
+
+    private void updateNewsLetter(){
+
+    }
+
+    private void viewLibraryActivities(){
+
+    }
     // Getters and setters
     public String getAssetId() {
         return assetId;
