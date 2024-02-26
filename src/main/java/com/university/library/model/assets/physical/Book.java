@@ -2,7 +2,7 @@ package com.university.library.model.assets.physical;
 
 import java.util.Date;
 
-public class Book extends Physical{
+public class Book extends PhysicalAsset {
     private String isbn;
     private String publisher;
     private Date published;
