@@ -1,6 +1,6 @@
 package com.university.library.model.assets.physical;
 
-public class Laptop extends Physical{
+public class Laptop extends PhysicalAsset {
     private String brand;
     private String model;
     private String processor;

@@ -2,7 +2,7 @@ package com.university.library.model.assets.physical;
 
 import com.university.library.model.assets.Asset;
 
-public abstract class Physical extends Asset {
+public abstract class PhysicalAsset extends Asset {
     // Attributes
     private String floor;
     private String row;
@@ -10,11 +10,11 @@ public abstract class Physical extends Asset {
     private String shelf;
 
     // Constructors
-    public Physical() {
+    public PhysicalAsset() {
         // Default constructor
     }
 
-    public Physical(String floor, String row, String section, String shelf) {
+    public PhysicalAsset(String floor, String row, String section, String shelf) {
         this.floor = floor;
         this.row = row;
         this.section = section;
