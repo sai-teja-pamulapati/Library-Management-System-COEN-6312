@@ -158,7 +158,7 @@ public class UserLogin {
                     case "9":
                         //left
                     case "10":
-                        //left
+                        return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
@@ -231,7 +231,6 @@ public class UserLogin {
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                    User newUser = new User();
                     UserRegistration.register(false);
                         break;
                     case "2":
