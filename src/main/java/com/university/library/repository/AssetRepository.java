@@ -1,7 +1,6 @@
 package com.university.library.repository;
 
 import com.university.library.model.assets.Asset;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,9 +27,14 @@ public class AssetRepository {
     }
 
     public boolean addAsset(Asset asset) {
-        asset.setAssetId(String.valueOf(assetIdGenerator.getAndIncrement()));
-        assets.put(asset.getAssetId(), asset);
-        return true;
+        String newAssetId = String.valueOf(assetIdGenerator.getAndIncrement());
+        if (exists(newAssetId)) {
+            return false;
+        } else {
+            asset.setAssetId(newAssetId);
+            assets.put(asset.getAssetId(), asset);
+            return true;
+        }
     }
 
     public Asset getAsset(String assetId) {

@@ -2,7 +2,6 @@ package com.university.library.action;
 
 import java.io.Console;
 import java.util.Scanner;
-
 import com.university.library.App;
 import com.university.library.model.users.User;
 
@@ -22,7 +21,6 @@ public class UserLogin {
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
-//        String password = scanner.nextLine();
 
         User user = User.login(emailId, password);
         if (user == null) {
@@ -57,16 +55,77 @@ public class UserLogin {
     }
 
     private static void processFreeUser() {
+        while (true) {
+			try {
+                System.out.print("Choose from the following options\n" +
+                        "1. View Newsletter\n" +
+                        "2. View Notifications\n" +
+                        "3. Logout\n");
+                String studentCommands = scanner.nextLine();
+                switch (studentCommands) {
+
+                    case "1":
+                        // TODO
+                        break;
+                    case "2":
+                        // Todo
+                        break;
+                    case "3":
+                        return;
+                    default:
+                        throw new IllegalArgumentException("Invalid option!");
+                }
+			} catch (Exception e) {
+				System.out.println(e.getLocalizedMessage());
+			}
+		}
+
 
     }
 
     private static void processPaidUser() {
+        while (true) {
+			try {
+                System.out.print("Choose from the following options\n" +
+                        "1. Browse Catalogue\n" +
+                        "2. View borrowing history\n" +
+                        "3. View Newsletter\n" +
+                        "4. View Notifications\n" +
+                        "5. Pay Fines\n" +
+                        "6. Logout\n");
+                String studentCommands = scanner.nextLine();
+                switch (studentCommands) {
+
+                    case "1":
+                        assetManagement.browse();
+                        break;
+                    case "2":
+                        assetManagement.getBorrowingHistory();
+                        break;
+                    case "3":
+                        // Todo
+                        break;
+                    case "4": 
+                        //Todo
+                        break;
+                    case "5":
+                        //Todo
+                        break;
+                    case "6":
+                        return;
+                    default:
+                        throw new IllegalArgumentException("Invalid option!");
+                }
+			} catch (Exception e) {
+				System.out.println(e.getLocalizedMessage());
+			}
+		}
 
     }
 
     private static void processLibrarianUser() {
         while(true){
-            try{
+            try {
                 System.out.println("Choose from the following options\n" + 
                 "1: Browse Catalouge\n" +
                 "2: See browsing history\n" +

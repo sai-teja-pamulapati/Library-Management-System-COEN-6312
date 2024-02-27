@@ -13,9 +13,7 @@ import com.university.library.model.assets.physical.Laptop;
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
 import com.university.library.repository.AssetRepository;
-import com.university.library.repository.UserRepository;
 
-import javax.naming.Context;
 
 public class App {
 
