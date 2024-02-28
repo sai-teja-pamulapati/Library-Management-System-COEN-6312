@@ -1,7 +1,9 @@
 package com.university.library.repository;
 
 import com.university.library.model.DiscussionRoom;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DiscussionRoomRepository {
@@ -12,13 +14,13 @@ public class DiscussionRoomRepository {
         return roomId + "-" + date;
     }
 
-    private String createStudentDateKey(String studentId, String date) {
-        return studentId + "-" + date;
+    private String createStudentDateKey(String emailId, String date) {
+        return emailId + "-" + date;
     }
 
     public boolean addRoom(DiscussionRoom room) {
         String roomDateKey = createKey(room.getRoomId(), room.getBookingDate());
-        String studentDateKey = createStudentDateKey(room.getStudentId(), room.getBookingDate());
+        String studentDateKey = createStudentDateKey(room.getEmailId(), room.getBookingDate());
 
         if (bookingsByDateAndRoom.containsKey(roomDateKey) || bookingsByStudentAndDate.containsKey(studentDateKey)) {
             return false; // Room is already booked for this date or student has a booking on this date
@@ -33,18 +35,23 @@ public class DiscussionRoomRepository {
         return bookingsByDateAndRoom.get(createKey(roomId, bookingDate));
     }
 
-    public DiscussionRoom getRoomByStudentAndDate(String studentId, String bookingDate) {
-        return bookingsByStudentAndDate.get(createStudentDateKey(studentId, bookingDate));
+    public List<DiscussionRoom> getRoomsByStudentEmail(String emailId) {
+        List<DiscussionRoom> result = new ArrayList<>();
+        for (String key : bookingsByStudentAndDate.keySet()) {
+            if (key.startsWith(emailId + "-")) {
+                result.add(bookingsByStudentAndDate.get(key));
+            }
+        }
+        return result;
     }
 
     public boolean removeRoom(int roomId, String bookingDate) {
         String key = createKey(roomId, bookingDate);
         DiscussionRoom room = bookingsByDateAndRoom.remove(key);
         if (room != null) {
-            bookingsByStudentAndDate.remove(createStudentDateKey(room.getStudentId(), bookingDate));
+            bookingsByStudentAndDate.remove(createStudentDateKey(room.getEmailId(), bookingDate));
             return true;
         }
         return false;
     }
-    
 }

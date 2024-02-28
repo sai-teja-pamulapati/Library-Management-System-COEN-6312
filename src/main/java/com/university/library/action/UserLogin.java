@@ -62,9 +62,8 @@ public class UserLogin {
                         "1. View Newsletter\n" +
                         "2. View Notifications\n" +
                         "3. Logout\n");
-                String studentCommands = scanner.nextLine();
-                switch (studentCommands) {
-
+                String freeUserCommands = scanner.nextLine();
+                switch (freeUserCommands) {
                     case "1":
                         // TODO
                         break;
@@ -94,8 +93,8 @@ public class UserLogin {
                         "4. View Notifications\n" +
                         "5. Pay Fines\n" +
                         "6. Logout\n");
-                String studentCommands = scanner.nextLine();
-                switch (studentCommands) {
+                String paidUserCommands = scanner.nextLine();
+                switch (paidUserCommands) {
 
                     case "1":
                         assetManagement.browse();
@@ -138,8 +137,8 @@ public class UserLogin {
                 "8: View Library Activities\n" +
                 "9: Update NewsLetter\n" +
                 "10: Logout\n");
-                String Librariancommands = scanner.nextLine();
-                switch(Librariancommands) {
+                String librarianCommands = scanner.nextLine();
+                switch(librarianCommands) {
                     case "1":
                         //Left
                     case "2":
@@ -201,7 +200,7 @@ public class UserLogin {
                         //Todo
                         break;
                     case "5":
-                        roomManagement.bookOrCancelRoom();
+                        roomManagement.manageRoomBooking();
                         break;
                     case "6":
                         // Todo

@@ -3,36 +3,36 @@ package com.university.library.model;
 public class DiscussionRoom {
     private int roomId;
     private String bookingDate;
-    private String studentId; // Email of the student
+    private String emailId;
 
-    public DiscussionRoom(int roomId, String bookingDate, String studentId) {
+    public DiscussionRoom(int roomId, String bookingDate, String emailId) {
         this.roomId = roomId;
         this.bookingDate = bookingDate;
-        this.studentId = studentId;
+        this.emailId = emailId;
     }
 
-    // Getters and Setters
+    // Getters & Setters
     public int getRoomId() {
         return roomId;
-    }
-
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
     }
 
     public String getBookingDate() {
         return bookingDate;
     }
 
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
     public void setBookingDate(String bookingDate) {
         this.bookingDate = bookingDate;
     }
 
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 }
