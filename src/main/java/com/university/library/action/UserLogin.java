@@ -68,7 +68,8 @@ public class UserLogin {
                         "2: See browsing history\n" +
                         "3: View Newsletter\n" +
                         "4: View Notifications\n" +
-                        "5: Logout\n");
+                        "5: Pay Fines\n" +
+                        "6: Logout\n");
                 String Librariancommands = scanner.nextLine();
                 switch (Librariancommands) {
                     case "1":
@@ -79,9 +80,10 @@ public class UserLogin {
                         // views newsletter
                     case "4":
                         // View Notifications
-
-                    case "10":
-                        // Logout
+                    case "5":
+                        // View Notifications
+                    case "6":
+                        return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
