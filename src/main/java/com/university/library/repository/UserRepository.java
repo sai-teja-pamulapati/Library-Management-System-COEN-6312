@@ -1,21 +1,20 @@
 package com.university.library.repository;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
 
 public class UserRepository {
 
-    private static UserRepository instance;
-    private HashMap<String, User> users = new HashMap<>();
+    private static final AtomicInteger assetIdGenerator = new AtomicInteger(0);
 
-    private UserRepository() {
-        // Hardcoded sample users
-        addUser(new User("Admin", "admin@gmail.com", "admin123", "1234567890", "123 Main St", "1990-01-01", "Male", UserRole.ADMIN));
-        addUser(new User("John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female", UserRole.STAFF));
-        addUser(new User("Sam Wilson", "sam.wilson@gmail.com", "sam123", "1122334455", "789 Pine St", "1993-03-03", "Other", UserRole.LIBRARIAN));
-    }
-    
+    private static UserRepository instance;
+    private static HashMap<String, User> users = new HashMap<>();
+
+    private UserRepository() {}
+
 
     public static synchronized UserRepository getInstance() {
         if (instance == null) {
@@ -32,12 +31,28 @@ public class UserRepository {
         if (exists(user.getEmailId())) {
             return false;
         }
+        user.setUserId(String.valueOf(assetIdGenerator.getAndIncrement()));
         users.put(user.getEmailId(), user);
         return true;
     }
 
+    public boolean removeUser(String emailId) {
+        if (users.containsKey(emailId)) {
+            users.remove(emailId);
+            return true;
+        }
+        return false;
+    }
+
+
     public User getUser(String emailId) {
         return users.get(emailId);
+    }
+
+    public void updateUser(User user) {
+        if (exists(user.getEmailId())) {
+            users.put(user.getEmailId(), user);
+        }
     }
 
 }

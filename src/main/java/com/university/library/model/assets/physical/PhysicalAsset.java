@@ -1,6 +1,8 @@
 package com.university.library.model.assets.physical;
 
-public class Physical {
+import com.university.library.model.assets.Asset;
+
+public abstract class PhysicalAsset extends Asset {
     // Attributes
     private String floor;
     private String row;
@@ -8,11 +10,11 @@ public class Physical {
     private String shelf;
 
     // Constructors
-    public Physical() {
+    public PhysicalAsset() {
         // Default constructor
     }
 
-    public Physical(String floor, String row, String section, String shelf) {
+    public PhysicalAsset(String floor, String row, String section, String shelf) {
         this.floor = floor;
         this.row = row;
         this.section = section;
@@ -50,5 +52,15 @@ public class Physical {
 
     public void setShelf(String shelf) {
         this.shelf = shelf;
+    }
+
+    @Override
+    public String toString() {
+        return "Physical{" +
+                "floor='" + floor + '\'' +
+                ", row='" + row + '\'' +
+                ", section='" + section + '\'' +
+                ", shelf='" + shelf + '\'' +
+                '}';
     }
 }

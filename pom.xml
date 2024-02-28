@@ -19,6 +19,18 @@
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/me.xdrop/fuzzywuzzy -->
+    <dependency>
+      <groupId>me.xdrop</groupId>
+      <artifactId>fuzzywuzzy</artifactId>
+      <version>1.4.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.6</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -31,6 +43,11 @@
 			<!--suppress MavenPackageUpdate -->
 			<version>3.0</version>
 		</dependency>
+    <dependency>
+     <groupId>com.google.code.gson</groupId>
+     <artifactId>gson</artifactId>
+     <version>2.10.1</version>
+    </dependency>
   </dependencies>
 
   <build>

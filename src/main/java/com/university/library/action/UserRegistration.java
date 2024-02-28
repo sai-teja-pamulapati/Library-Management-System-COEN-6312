@@ -12,28 +12,34 @@ public class UserRegistration {
     private static Scanner scanner = new Scanner(System.in);
     private static UserRepository userRepository = UserRepository.getInstance();
 
-    public static void register() {
+    public static void register(boolean selfRegistration) {
 
         Console console = System.console();
 
-        System.out.println("Please enter your name:");
+        String prompt = selfRegistration ? "Please enter your name:" : "Please enter name of user:";
+        System.out.println(prompt);
         String name = scanner.nextLine();
-        
-        System.out.println("Please enter your email ID:");
+
+        prompt = selfRegistration ? "Please enter your email ID:" : "Please enter user's email ID:";
+        System.out.println(prompt);
         String emailId = scanner.nextLine();
-        
-        System.out.println("Please enter your password:");
+
+        prompt = selfRegistration ? "Please enter your password" : "Please enter user's desired password";
+        System.out.println(prompt);
         String password = new String(console.readPassword());
-        
-        System.out.println("Please enter your mobile number:");
+
+        prompt = selfRegistration ? "Please enter your mobile number" : "Please enter user's mobile number";
+        System.out.println(prompt);
         String mobileNumber = scanner.nextLine();
-        
-        System.out.println("Please enter your address:");
+
+        prompt = selfRegistration ? "Please enter your address" : "Please enter user's address";
+        System.out.println(prompt);
         String address = scanner.nextLine();
-        
-        System.out.println("Please enter your date of birth (YYYY-MM-DD):");
+
+        prompt = selfRegistration ? "Please enter your date of birth (YYYY-MM-DD)" : "Please enter user's date of birth (YYYY-MM-DD)";
+        System.out.println(prompt);
         String dateOfBirth = scanner.nextLine();
-        
+
         String gender = "";
         while(true) {
             System.out.print("Please select your gender:\n" +
@@ -43,7 +49,7 @@ public class UserRegistration {
             String genderOption = scanner.nextLine();
             switch (genderOption) {
                 case "1":
-                    gender = "Male";                        
+                    gender = "Male";
                     break;
                 case "2":
                     gender = "Female";
@@ -80,20 +86,13 @@ public class UserRegistration {
             break;
         }
 
-        User user = new User();
-        user.setName(name);
-        user.setEmailId(emailId);
-        user.setPassword(password);
-        user.setMobileNumber(mobileNumber);
-        user.setAddress(address);
-        user.setDateOfBirth(dateOfBirth);
-        user.setGender(gender);
-        user.setUserRole(userRole);
+        User newUser = new User(name, emailId, password, mobileNumber, address, dateOfBirth, gender, userRole);
 
-        if (userRepository.addUser(user)) {
+        boolean added = userRepository.addUser(newUser);
+        if (added) {
             System.out.println("User registered successfully!");
         } else {
-            System.out.println("Registration failed. User with this email already exists.");
+            System.out.println("User registration failed. Email ID already exists.");
         }
     }
 }

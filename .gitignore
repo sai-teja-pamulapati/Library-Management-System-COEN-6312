@@ -11,6 +11,7 @@
 .mtj.tmp/
 
 # Package Files #
+target/*
 *.jar
 *.war
 *.nar
@@ -28,3 +29,6 @@ replay_pid*
 
 # IDEA files
 .idea/*
+
+#VScode Files
+.vscode/settings.json

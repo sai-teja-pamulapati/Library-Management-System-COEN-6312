@@ -1,17 +1,17 @@
 package com.university.library.model.assets.digital;
 
-import com.university.library.model.assets.Assets;
+import com.university.library.model.assets.Asset;
 
-public class Digital extends Assets {
+public abstract class DigitalAsset extends Asset {
     // Attribute
     private String accessLink;
 
     // Constructors
-    public Digital() {
+    public DigitalAsset() {
         // Default constructor
     }
 
-    public Digital(String accessLink) {
+    public DigitalAsset(String accessLink) {
         this.accessLink = accessLink;
     }
 

@@ -1,7 +1,10 @@
 package com.university.library.model.users;
 
+import com.university.library.repository.UserRepository;
 
 public class User {
+
+    private String userId;
     private String name;
     private String password;
     private String emailId;
@@ -10,8 +13,39 @@ public class User {
     private UserRole userRole;
     private String dateOfBirth;
     private String gender;
+    private boolean blocked;
 
-    
+    private static UserRepository userRepository = UserRepository.getInstance();
+
+    public User addUser(boolean printMessage) {
+        if (userRepository.addUser(this)) {
+            if (printMessage) {
+                System.out.println("User registered successfully!");
+            }
+            return this;
+        }
+        System.out.println("Registration failed.");
+        return null;
+    }
+
+    public User addUser() {
+        return addUser(true);
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void blockUser() {
+        this.blocked = true;
+        userRepository.updateUser(this);
+    }
+
+    public void unBlockUser() {
+        this.blocked = false;
+        userRepository.updateUser(this);
+    }
+
     public User() {}
 
     public User(String name, String emailId, String password, String mobileNumber, 
@@ -27,10 +61,17 @@ public class User {
     }
 
     public static User login(String emailId , String password) {
-        // TODO code
-        User user = new User();
-        user.setUserRole(UserRole.STUDENT);
+        User user = userRepository.getUser(emailId);
+        if (user == null || !user.getPassword().equals(password)) {
+            System.out.println("Invalid Credentials!!");
+            return null;
+        }
+        System.out.println("Login Successful!");
         return user;
+    }
+
+    public static User register(User newUser) {
+        return newUser.addUser();
     }
 
     public String getName() {
@@ -95,5 +136,13 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
