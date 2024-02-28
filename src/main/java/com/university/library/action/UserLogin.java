@@ -22,7 +22,7 @@ public class UserLogin {
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
-//        String password = scanner.nextLine();
+        // String password = scanner.nextLine();
 
         User user = User.login(emailId, password);
         if (user == null) {
@@ -61,49 +61,77 @@ public class UserLogin {
     }
 
     private static void processPaidUser() {
+        while (true) {
+            try {
+                System.out.println("Choose from the following options\n" +
+                        "1: Browse Catalouge\n" +
+                        "2: See browsing history\n" +
+                        "3: View Newsletter\n" +
+                        "4: View Notifications\n" +
+                        "5: Logout\n");
+                String Librariancommands = scanner.nextLine();
+                switch (Librariancommands) {
+                    case "1":
+                        assetManagement.browse();
+                    case "2":
+                        assetManagement.getBorrowingHistory();
+                    case "3":
+                        // views newsletter
+                    case "4":
+                        // View Notifications
+
+                    case "10":
+                        // Logout
+                    default:
+                        throw new IllegalArgumentException("Invalid Option!");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
 
     }
 
     private static void processLibrarianUser() {
-        while(true){
-            try{
-                System.out.println("Choose from the following options\n" + 
-                "1: Browse Catalouge\n" +
-                "2: See browsing history\n" +
-                "3: View Newsletter\n" +
-                "4: View Notifications\n" +
-                "5: Add Book\n" +
-                "6: Remove Book\n" +
-                "7: Update Book Details\n" +
-                "8: View Library Activities\n" +
-                "9: Update NewsLetter\n" +
-                "10: Logout\n");
+        while (true) {
+            try {
+                System.out.println("Choose from the following options\n" +
+                        "1: Browse Catalouge\n" +
+                        "2: See browsing history\n" +
+                        "3: View Newsletter\n" +
+                        "4: View Notifications\n" +
+                        "5: Add Book\n" +
+                        "6: Remove Book\n" +
+                        "7: Update Book Details\n" +
+                        "8: View Library Activities\n" +
+                        "9: Update NewsLetter\n" +
+                        "10: Logout\n");
                 String Librariancommands = scanner.nextLine();
-                switch(Librariancommands) {
+                switch (Librariancommands) {
                     case "1":
-                        //Left
+                        // Left
                     case "2":
-                        //left
+                        // left
                     case "3":
-                        //left
+                        // left
                     case "4":
-                        //left
+                        // left
                     case "5":
-                        //left
+                        // left
                     case "6":
-                        //left
+                        // left
                     case "7":
-                        //left
+                        // left
                     case "8":
-                        //left
+                        // left
                     case "9":
-                        //left
+                        // left
                     case "10":
-                        //left
+                        // left
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 System.out.println(e.getLocalizedMessage());
             }
         }
@@ -114,9 +142,9 @@ public class UserLogin {
 
     }
 
-    private static void processStudentUser () {
-         while (true) {
-			try {
+    private static void processStudentUser() {
+        while (true) {
+            try {
                 System.out.print("Choose from the following options\n" +
                         "1. Browse Catalogue\n" +
                         "2. View borrowing history\n" +
@@ -137,8 +165,8 @@ public class UserLogin {
                     case "3":
                         // Todo
                         break;
-                    case "4": 
-                        //Todo
+                    case "4":
+                        // Todo
                         break;
                     case "5":
                         // TODO
@@ -151,38 +179,38 @@ public class UserLogin {
                     default:
                         throw new IllegalArgumentException("Invalid option!");
                 }
-			} catch (Exception e) {
-				System.out.println(e.getLocalizedMessage());
-			}
-		}
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
 
     }
 
     private static void processAdminUser() {
         while (true) {
-			try {
+            try {
                 System.out.print("Choose from the following options\n" +
-                    "1. Add User\n" +
-                    "2. Remove User\n" +
-                    "3. Block User\n" +
-                    "4. Unblock User\n" +
-                    "5. Update Newsletter\n" +
-                    "6. View User Activities\n" +
-                    "7. Logout\n");
+                        "1. Add User\n" +
+                        "2. Remove User\n" +
+                        "3. Block User\n" +
+                        "4. Unblock User\n" +
+                        "5. Update Newsletter\n" +
+                        "6. View User Activities\n" +
+                        "7. Logout\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                    User newUser = new User();
-                    UserRegistration.register(false);
+                        User newUser = new User();
+                        UserRegistration.register(false);
                         break;
                     case "2":
-                    UserRemoval.removeUser();
+                        UserRemoval.removeUser();
                         break;
                     case "3":
-                    UserBlocking.blockUser();
+                        UserBlocking.blockUser();
                         break;
                     case "4":
-                    UserBlocking.unblockUser();
+                        UserBlocking.unblockUser();
                         break;
                     case "5":
                         // TODO
@@ -195,10 +223,10 @@ public class UserLogin {
                     default:
                         throw new IllegalArgumentException("Invalid option!");
                 }
-			} catch (Exception e) {
-				System.out.println(e.getLocalizedMessage());
-			}
-		}
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
     }
 
 }
