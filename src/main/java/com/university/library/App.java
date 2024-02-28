@@ -1,4 +1,5 @@
 package com.university.library;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
@@ -21,14 +22,14 @@ public class App {
     private static AssetRepository assetRepository = AssetRepository.getInstance();
 
     private static User loggedInUser;
-    public static User getLoggedInUser(){
+
+    public static User getLoggedInUser() {
         return loggedInUser;
     }
 
     public static void setLoggedInUser(User loggedInUser) {
         App.loggedInUser = loggedInUser;
     }
-
 
     public static void main(String[] args) {
         initializeSystem();
@@ -41,17 +42,24 @@ public class App {
         }
     }
 
-
     private static void initializeSystem() {
         // Hardcoded sample users
-        new User("Admin", "admin@gmail.com", "admin123", "1234567890", "123 Main St", "1990-01-01", "Male", UserRole.ADMIN).addUser(false);
-        new User("John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female", UserRole.STAFF).addUser(false);
-        new User("Sam Wilson", "sam.wilson@gmail.com", "sam123", "1122334455", "789 Pine St", "1993-03-03", "Other", UserRole.LIBRARIAN).addUser(false);
-        new User("Sai Teja", "1", "1", "1122334455", "789 Pine St", "1993-03-03", "Other", UserRole.STUDENT).addUser(false);
+        new User("Admin", "admin@gmail.com", "admin123", "1234567890", "123 Main St", "1990-01-01", "Male",
+                UserRole.ADMIN).addUser(false);
+        new User("John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female",
+                UserRole.STAFF).addUser(false);
+        new User("Sam Wilson", "sam.wilson@gmail.com", "sam123", "1122334455", "789 Pine St", "1993-03-03", "Other",
+                UserRole.LIBRARIAN).addUser(false);
+        new User("Sai Teja", "1", "1", "1122334455", "789 Pine St", "1993-03-03", "Other", UserRole.STUDENT)
+                .addUser(false);
+        new User("ram", "ram@gmail.com", "ram@123", "9632574125", "852 marc St", "0125-12-12", "Other",
+                UserRole.PAID_USER).addUser(false);
+        new User("zaik", "zaik@gmail.com", "zaik@123", "789456233", "753 mathie St", "8963-12-12", "Male",
+                UserRole.FREE_USER).addUser(false);
 
         // Hardcoded Assets
         addAssets();
-        }
+    }
 
     private static void executeWorkFlow() {
         System.out.print("Welcome to Library Management System \n" +
@@ -74,6 +82,7 @@ public class App {
                 throw new IllegalArgumentException("Invalid option!");
         }
     }
+
     private static void addAssets() {
 
         Gson gson = new Gson();
@@ -83,12 +92,12 @@ public class App {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             JsonArray books = jsonObject.get("books").getAsJsonArray();
             for (JsonElement book : books) {
-                Asset book1 = gson.fromJson(book , Book.class);
+                Asset book1 = gson.fromJson(book, Book.class);
                 assetRepository.addAsset(book1);
             }
             JsonArray laptops = jsonObject.get("laptops").getAsJsonArray();
             for (JsonElement laptop : laptops) {
-                Asset laptop1 = gson.fromJson(laptop , Laptop.class);
+                Asset laptop1 = gson.fromJson(laptop, Laptop.class);
                 assetRepository.addAsset(laptop1);
             }
         } catch (FileNotFoundException e) {
