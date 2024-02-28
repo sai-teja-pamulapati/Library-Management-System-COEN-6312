@@ -70,8 +70,8 @@ public class UserLogin {
                         "4: View Notifications\n" +
                         "5: Pay Fines\n" +
                         "6: Logout\n");
-                String Librariancommands = scanner.nextLine();
-                switch (Librariancommands) {
+                String paidUserCommands= scanner.nextLine();
+                switch (paidUserCommands) {
                     case "1":
                         assetManagement.browse();
                     case "2":
@@ -108,8 +108,8 @@ public class UserLogin {
                         "8: View Library Activities\n" +
                         "9: Update NewsLetter\n" +
                         "10: Logout\n");
-                String Librariancommands = scanner.nextLine();
-                switch (Librariancommands) {
+                String librarianCommands = scanner.nextLine();
+                switch (librarianCommands) {
                     case "1":
                         // Left
                     case "2":
