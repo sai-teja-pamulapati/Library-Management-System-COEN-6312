@@ -9,6 +9,7 @@ public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
     private static AssetManagement assetManagement = AssetManagement.getInstance();
+    private static DiscussionRoomManagement roomManagement = new DiscussionRoomManagement();
 
     public static void login() {
         Console console = System.console();
@@ -200,7 +201,7 @@ public class UserLogin {
                         //Todo
                         break;
                     case "5":
-                        // TODO
+                        roomManagement.bookOrCancelRoom();
                         break;
                     case "6":
                         // Todo
