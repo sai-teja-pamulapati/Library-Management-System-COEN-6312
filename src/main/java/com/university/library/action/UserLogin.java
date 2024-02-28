@@ -63,19 +63,19 @@ public class UserLogin {
                         "1: Browse Catalouge\n" +
                         "2: See browsing history\n" +
                         "3: View Newsletter\n" +
-                        "4: buy membership\n" +                       
+                        "4: buy membership\n" +
                         "5: Logout\n");
-                String paidUserCommands= scanner.nextLine();
-                switch (paidUserCommands) {
+                String freeUserCommands = scanner.nextLine();
+                switch (freeUserCommands) {
                     case "1":
                         assetManagement.browse();
                     case "2":
-                    assetManagement.getBorrowingHistory(); //
+                        assetManagement.getBorrowingHistory(); //
 
                     case "3":
-                         ViewNews.viewNewsletters();
+                        ViewNews.viewNewsletters();
                     case "4":
-                        //    buy membership coming soon    
+                        // buy membership coming soon
                     case "5":
                         return;
 
@@ -86,7 +86,6 @@ public class UserLogin {
                 System.out.println(e.getLocalizedMessage());
             }
         }
-
 
     }
 
