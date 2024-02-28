@@ -72,7 +72,7 @@ public class UserLogin {
                     case "2":
                         assetManagement.getBorrowingHistory();
                     case "3":
-                        // views newsletter
+                         ViewNews.viewNewsletters();
                     case "4":
                         // View Notifications                   
                     case "5":
@@ -105,7 +105,7 @@ public class UserLogin {
                     case "2":
                         assetManagement.getBorrowingHistory();
                     case "3":
-                        // views newsletter
+                        ViewNews.viewNewsletters();
                     case "4":
                         // View Notifications
                     case "5":

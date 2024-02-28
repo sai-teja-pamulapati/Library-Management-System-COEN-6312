@@ -2,13 +2,21 @@ package com.university.library;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.util.TimeZone;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.university.library.action.UserLogin;
 import com.university.library.action.UserRegistration;
 import com.university.library.model.assets.Asset;
+import com.university.library.model.assets.digital.NewsLetter;
 import com.university.library.model.assets.physical.Book;
 import com.university.library.model.assets.physical.Laptop;
 import com.university.library.model.users.User;
@@ -86,25 +94,60 @@ public class App {
     }
 
     private static void addAssets() {
+    // List of date formats you expect in the JSON file
+    final List<SimpleDateFormat> dateFormats = Arrays.asList(
+        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"), // ISO 8601 format
+        new SimpleDateFormat("MMM yyyy") // Custom format like "Jan 2024"
+    );
+    dateFormats.get(0).setTimeZone(TimeZone.getTimeZone("UTC")); // Set timezone for ISO 8601 format
 
-        Gson gson = new Gson();
-        try {
-            JsonReader reader = new JsonReader(new FileReader("books.json"));
-            JsonElement jsonElement = JsonParser.parseReader(reader);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            JsonArray books = jsonObject.get("books").getAsJsonArray();
-            for (JsonElement book : books) {
-                Asset book1 = gson.fromJson(book, Book.class);
-                assetRepository.addAsset(book1);
+    // Create a GsonBuilder and configure it with a custom date deserializer that tries multiple formats
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+        @Override
+        public Date deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            ParseException lastException = null;
+            for (SimpleDateFormat format : dateFormats) {
+                try {
+                    return format.parse(jsonElement.getAsString());
+                } catch (ParseException e) {
+                    lastException = e;
+                }
             }
-            JsonArray laptops = jsonObject.get("laptops").getAsJsonArray();
-            for (JsonElement laptop : laptops) {
-                Asset laptop1 = gson.fromJson(laptop, Laptop.class);
-                assetRepository.addAsset(laptop1);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new JsonParseException("Failed to parse Date: " + jsonElement.getAsString(), lastException);
         }
+    });
+
+    // Build the Gson instance from the GsonBuilder
+    Gson gson = gsonBuilder.create();
+
+    // Use this Gson instance for JSON parsing
+    try {
+        JsonReader reader = new JsonReader(new FileReader("assets.json"));
+        JsonElement jsonElement = JsonParser.parseReader(reader);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+        JsonArray books = jsonObject.getAsJsonArray("books");
+        for (JsonElement book : books) {
+            Asset book1 = gson.fromJson(book, Book.class);
+            assetRepository.addAsset(book1);
+        }
+
+        JsonArray laptops = jsonObject.getAsJsonArray("laptops");
+        for (JsonElement laptop : laptops) {
+            Asset laptop1 = gson.fromJson(laptop, Laptop.class);
+            assetRepository.addAsset(laptop1);
+        }
+
+        JsonArray newsletters = jsonObject.getAsJsonArray("newsletters");
+        for (JsonElement newsletter : newsletters) {
+            Asset newsletter1 = gson.fromJson(newsletter, NewsLetter.class);
+            assetRepository.addAsset(newsletter1);
+        }
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
     }
+}
+
 
 }
