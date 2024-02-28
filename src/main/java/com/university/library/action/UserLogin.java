@@ -61,17 +61,24 @@ public class UserLogin {
             try {
                 System.out.println("Choose from the following options\n" +
                         "1: Browse Catalouge\n" +
-                        "2: Buy membership\n" +
-                        "6: Logout\n");
-                String paidUserCommands = scanner.nextLine();
+                        "2: See browsing history\n" +
+                        "3: View Newsletter\n" +
+                        "4: buy membership\n" +                       
+                        "5: Logout\n");
+                String paidUserCommands= scanner.nextLine();
                 switch (paidUserCommands) {
                     case "1":
                         assetManagement.browse();
                     case "2":
-                        // buy membership coming soon
+                    assetManagement.getBorrowingHistory(); //
 
                     case "3":
-                        return; // logout
+                         ViewNews.viewNewsletters();
+                    case "4":
+                        //    buy membership coming soon    
+                    case "5":
+                        return;
+
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
@@ -79,6 +86,7 @@ public class UserLogin {
                 System.out.println(e.getLocalizedMessage());
             }
         }
+
 
     }
 
@@ -99,7 +107,7 @@ public class UserLogin {
                     case "2":
                         assetManagement.getBorrowingHistory();
                     case "3":
-                        // views newsletter
+                        ViewNews.viewNewsletters();
                     case "4":
                         // View Notifications
                     case "5":
