@@ -309,6 +309,7 @@
       "logo": null,
       "availability": true,
       "date": "Jan 2024",
+      "publication": "Concordia University",
       "accessLink": "https://www.concordia.ca/cunews/artsci/migs/newsletters/2024/January24.html"
     },
     {
@@ -318,6 +319,7 @@
       "logo": null,
       "availability": true,
       "date": "Dec 2023",
+      "publication": "Concordia University",
       "accessLink": "https://www.concordia.ca/cunews/artsci/migs/newsletters/2023/Dec23.html"
     },
 
@@ -328,6 +330,7 @@
       "logo": null,
       "availability": true,
       "date": "Nov 2023",
+      "publication": "Concordia University",
       "accessLink": "https://www.concordia.ca/cunews/artsci/migs/newsletters/2023/Nov23.html"
     }
   ]

@@ -1,4 +1,3 @@
-
 package com.university.library.action;
 
 import com.university.library.model.assets.Asset;
@@ -21,10 +20,10 @@ public class ViewNews {
                 .filter(asset -> asset instanceof NewsLetter) // Filter out newsletters
                 .map(asset -> (NewsLetter) asset) 
                 .forEach(newsletter -> {
-                    
                     String date = dateFormat.format(newsletter.getDate());
                     String title = newsletter.getTitle() == null || newsletter.getTitle().isEmpty() ? "Newsletter" : newsletter.getTitle();
-                    System.out.println("Date: " + date + ", Title: " + title + ", Access Link: " + newsletter.getAccessLink());
+                    String publication = newsletter.getPublication() == null || newsletter.getPublication().isEmpty() ? "Unknown Publication" : newsletter.getPublication();
+                    System.out.println("Date: " + date + ", Title: " + title + ", Publication: " + publication + ", Access Link: " + newsletter.getAccessLink());
                 });
 
         if (allAssets.stream().noneMatch(asset -> asset instanceof NewsLetter)) {

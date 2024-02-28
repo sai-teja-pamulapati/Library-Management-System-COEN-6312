@@ -5,20 +5,17 @@ import java.util.Date;
 public class NewsLetter extends DigitalAsset {
   
     private Date date;
-    
+    private String publication;
 
-  
     public NewsLetter() {
-       
     }
 
-    public NewsLetter(String accessLink, Date date) {
-        super(accessLink); // Call the constructor of the parent class (DigitalAsset)
+    public NewsLetter(String accessLink, Date date, String publication) {
+        super(accessLink);
         this.date = date;
-        
+        this.publication = publication;
     }
 
-    
     public Date getDate() {
         return date;
     }
@@ -27,5 +24,11 @@ public class NewsLetter extends DigitalAsset {
         this.date = date;
     }
 
-   
+    public String getPublication() {
+        return publication;
+    }
+
+    public void setPublication(String publication) {
+        this.publication = publication;
+    }
 }
