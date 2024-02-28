@@ -101,7 +101,7 @@ public class App {
     );
     dateFormats.get(0).setTimeZone(TimeZone.getTimeZone("UTC")); // Set timezone for ISO 8601 format
 
-    // Create a GsonBuilder and configure it with a custom date deserializer that tries multiple formats
+    
     GsonBuilder gsonBuilder = new GsonBuilder();
     gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
         @Override
