@@ -57,6 +57,28 @@ public class UserLogin {
     }
 
     private static void processFreeUser() {
+        while (true) {
+            try {
+                System.out.println("Choose from the following options\n" +
+                        "1: Browse Catalouge\n" +
+                        "2: Buy membership\n" +
+                        "6: Logout\n");
+                String paidUserCommands = scanner.nextLine();
+                switch (paidUserCommands) {
+                    case "1":
+                        assetManagement.browse();
+                    case "2":
+                        // buy membership coming soon
+
+                    case "3":
+                        return; // logout
+                    default:
+                        throw new IllegalArgumentException("Invalid Option!");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
 
     }
 
@@ -70,7 +92,7 @@ public class UserLogin {
                         "4: View Notifications\n" +
                         "5: Pay Fines\n" +
                         "6: Logout\n");
-                String paidUserCommands= scanner.nextLine();
+                String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
                     case "1":
                         assetManagement.browse();
@@ -83,7 +105,11 @@ public class UserLogin {
                     case "5":
                         // View Notifications
                     case "6":
-                        return;
+                        // cancel membership coming soon
+                    case "7":
+                        // renew membership coming soon
+                    case "8":
+                        return;// logout
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
