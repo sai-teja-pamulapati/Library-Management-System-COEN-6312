@@ -28,9 +28,15 @@ public class AssetRepository {
     }
 
     public boolean addAsset(Asset asset) {
-        asset.setAssetId(String.valueOf(assetIdGenerator.getAndIncrement()));
-        assets.put(asset.getAssetId(), asset);
-        return true;
+        String newAssetId = String.valueOf(assetIdGenerator.getAndIncrement());
+        // asset.setAssetId(String.valueOf(assetIdGenerator.getAndIncrement()));
+        if (exists(newAssetId)) {
+            return false;
+        } else {
+            asset.setAssetId(newAssetId);
+            assets.put(asset.getAssetId(), asset);
+            return true;
+        }
     }
 
     public Asset getAsset(String assetId) {
