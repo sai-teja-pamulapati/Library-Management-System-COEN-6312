@@ -57,6 +57,34 @@ public class UserLogin {
     }
 
     private static void processFreeUser() {
+        while (true) {
+            try {
+                System.out.println("Choose from the following options\n" +
+                        "1: Browse Catalouge\n" +
+                        "2: See browsing history\n" +
+                        "3: View Newsletter\n" +
+                        "4: View Notifications\n" +                       
+                        "5: Logout\n");
+                String paidUserCommands= scanner.nextLine();
+                switch (paidUserCommands) {
+                    case "1":
+                        assetManagement.browse();
+                    case "2":
+                        assetManagement.getBorrowingHistory();
+                    case "3":
+                        // views newsletter
+                    case "4":
+                        // View Notifications                   
+                    case "5":
+                        return;
+                    default:
+                        throw new IllegalArgumentException("Invalid Option!");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
+
 
     }
 
