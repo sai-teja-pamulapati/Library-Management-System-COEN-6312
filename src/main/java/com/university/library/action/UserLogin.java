@@ -63,20 +63,22 @@ public class UserLogin {
                         "1: Browse Catalouge\n" +
                         "2: See browsing history\n" +
                         "3: View Newsletter\n" +
-                        "4: View Notifications\n" +                       
+                        "4: buy membership\n" +
                         "5: Logout\n");
-                String paidUserCommands= scanner.nextLine();
-                switch (paidUserCommands) {
+                String freeUserCommands = scanner.nextLine();
+                switch (freeUserCommands) {
                     case "1":
                         assetManagement.browse();
                     case "2":
-                        assetManagement.getBorrowingHistory();
+                        assetManagement.getBorrowingHistory(); //
+
                     case "3":
-                         ViewNews.viewNewsletters();
+                        ViewNews.viewNewsletters();
                     case "4":
-                        // View Notifications                   
+                        // buy membership coming soon
                     case "5":
                         return;
+
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
@@ -84,7 +86,6 @@ public class UserLogin {
                 System.out.println(e.getLocalizedMessage());
             }
         }
-
 
     }
 
@@ -98,7 +99,7 @@ public class UserLogin {
                         "4: View Notifications\n" +
                         "5: Pay Fines\n" +
                         "6: Logout\n");
-                String paidUserCommands= scanner.nextLine();
+                String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
                     case "1":
                         assetManagement.browse();
@@ -111,7 +112,11 @@ public class UserLogin {
                     case "5":
                         // View Notifications
                     case "6":
-                        return;
+                        // cancel membership coming soon
+                    case "7":
+                        // renew membership coming soon
+                    case "8":
+                        return;// logout
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
