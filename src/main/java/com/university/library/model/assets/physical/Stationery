@@ -9,27 +9,27 @@ public class Stationery extends PhysicalAsset {
     private String category;
     private String SKU;
 
-    public String getbrand(){
+    public String getBrand(){
         return brand;
     }
 
-    public void String setbrand(String brand){
+    public void String setBrand(String brand){
         this.brand = brand;
     }
 
-    public String getdimensions(){
+    public String getDimensions(){
         return dimensions;
     }
 
-    public void String setdimensions(String dimensions){
+    public void String setDimensions(String dimensions){
         this.dimensions = dimensions;
     }
 
-    public String getcolor(){
+    public String getColor(){
         return color;
     }
 
-    public void String setcolor(String color){
+    public void String setColor(String color){
         this.color = color;
     }
 

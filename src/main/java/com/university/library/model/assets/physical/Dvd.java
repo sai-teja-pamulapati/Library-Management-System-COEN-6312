@@ -25,6 +25,10 @@ public class Dvd extends PhysicalAsset {
         return manufacturer;
     }
 
+    public void setmanufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
     @Override
     public String toString() {
         return "DVD [storage " + storage +
