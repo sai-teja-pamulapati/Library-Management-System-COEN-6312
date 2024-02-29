@@ -32,3 +32,4 @@ replay_pid*
 
 #VScode Files
 .vscode/settings.json
+/target/
