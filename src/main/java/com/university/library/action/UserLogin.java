@@ -234,9 +234,10 @@ public class UserLogin {
                         "2. Remove User\n" +
                         "3. Block User\n" +
                         "4. Unblock User\n" +
-                        "5. Update Newsletter\n" +
-                        "6. View User Activities\n" +
-                        "7. Logout\n");
+                        "5. View Newsletter\n" +
+                        "6. Update Newsletter\n" +
+                        "7. View User Activities\n" +
+                        "8. Logout\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
@@ -252,12 +253,15 @@ public class UserLogin {
                         UserBlocking.unblockUser();
                         break;
                     case "5":
-                        // TODO
+                        ViewNews.viewNewsletters();
                         break;
                     case "6":
-                        // TODO
+                        UpdateNews.updateNewsletterProcess();
                         break;
                     case "7":
+                        // TODO
+                        break;
+                    case "8":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid option!");
