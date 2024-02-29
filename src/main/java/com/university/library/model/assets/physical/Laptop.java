@@ -5,12 +5,76 @@ public class Laptop extends PhysicalAsset {
     private String model;
     private String processor;
     private String ram;
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getProcessor() {
+        return processor;
+    }
+
+    public void setProcessor(String processor) {
+        this.processor = processor;
+    }
+
+    public String getRam() {
+        return ram;
+    }
+
+    public void setRam(String ram) {
+        this.ram = ram;
+    }
+
+    public String getStorage() {
+        return storage;
+    }
+
+    public void setStorage(String storage) {
+        this.storage = storage;
+    }
+
+    public String getDisplaySize() {
+        return displaySize;
+    }
+
+    public void setDisplaySize(String displaySize) {
+        this.displaySize = displaySize;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
     private String storage;
     private String displaySize;
     private String weight;
 
-    public Laptop() {
-        super(assetID, title, URLpreview, URLlogo, floor, row, section, shelf);
+    public Laptop(String assetID , String title , String URLpreview , String URLlogo , Boolean availability , String floor , String row , String section , String shelf , String brand , String model , String processor , String ram , String storage , String displaySize , String weight) {
+        super(assetID , title , URLpreview , URLlogo , availability , floor , row , section , shelf);
+        this.brand = brand;
+        this.model = model;
+        this.processor = processor;
+        this.ram = ram;
+        this.storage = storage;
+        this.displaySize = displaySize;
+        this.weight = weight;
     }
 
     @Override

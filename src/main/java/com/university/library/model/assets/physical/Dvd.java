@@ -5,6 +5,10 @@ public class Dvd extends PhysicalAsset {
     private String condition;
     private String manufacturer;
 
+    public Dvd(String assetID , String title , String URLpreview , String URLlogo , Boolean availability , String floor , String row , String section , String shelf) {
+        super(assetID , title , URLpreview , URLlogo , availability , floor , row , section , shelf);
+    }
+
     public String getstorage() {
         return storage;
     }

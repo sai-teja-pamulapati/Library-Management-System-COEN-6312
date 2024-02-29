@@ -9,52 +9,8 @@ public class Stationery extends PhysicalAsset {
     private String category;
     private String SKU;
 
-    public String getBrand(){
-        return brand;
-    }
-
-    public void String setBrand(String brand){
-        this.brand = brand;
-    }
-
-    public String getDimensions(){
-        return dimensions;
-    }
-
-    public void String setDimensions(String dimensions){
-        this.dimensions = dimensions;
-    }
-
-    public String getColor(){
-        return color;
-    }
-
-    public void String setColor(String color){
-        this.color = color;
-    }
-
-    public String getSKU(){
-        return color;
-    }
-
-    public void String setSKU(String SKU){
-        this.SKU = SKU;
-    }
-    
-    public List<contents> getContents(){
-        return contents;
-    }
-
-    public void List<contents> setContents(List<String> Contents){
-        this.contents=contents;
-    }
-
-    public String getCategory(){
-        return category;
-    }
-    
-    public void setCategory(String category){
-        this.category = category;
+    public Stationery(java.lang.String assetID , java.lang.String title , java.lang.String URLpreview , java.lang.String URLlogo , Boolean availability , java.lang.String floor , java.lang.String row , java.lang.String section , java.lang.String shelf) {
+        super(assetID , title , URLpreview , URLlogo , availability , floor , row , section , shelf);
     }
 
     @Override
@@ -67,4 +23,51 @@ public class Stationery extends PhysicalAsset {
          " contents = " + contents + "]";
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(String dimensions) {
+        this.dimensions = dimensions;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public List<String> getContents() {
+        return contents;
+    }
+
+    public void setContents(List<String> contents) {
+        this.contents = contents;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getSKU() {
+        return SKU;
+    }
+
+    public void setSKU(String SKU) {
+        this.SKU = SKU;
+    }
 }
