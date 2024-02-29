@@ -4,26 +4,26 @@ public class VideoFiles extends DigitalAsset {
     private String language;
     private int duration;
 
-    public String getLanguage(){
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language){
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public int getDuration(){
+    public int getDuration() {
         return duration;
     }
 
-    public void int getDuration(int duration){
+    public void getDuration(int duration) {
         this.duration = duration;
     }
 
     @Override
-    public String toString(){
-        return "VideoFile [duration " + duration + 
-        ", language = " + language +  "]";
+    public String toString() {
+        return "VideoFile [duration " + duration +
+                ", language = " + language + "]";
     }
-    
+
 }
