@@ -10,17 +10,13 @@ public abstract class PhysicalAsset extends Asset {
     private String shelf;
 
     // Constructors
-    public PhysicalAsset() {
-        // Default constructor
-    }
-
-    public PhysicalAsset(String floor, String row, String section, String shelf) {
+    public PhysicalAsset(String assetID, String title, String URLpreview, String URLlogo, Boolean availability, String floor, String row, String section, String shelf) {
+        super(assetID, title, URLpreview, URLlogo, availability);
         this.floor = floor;
         this.row = row;
         this.section = section;
         this.shelf = shelf;
     }
-
     // Getters and setters
     public String getFloor() {
         return floor;

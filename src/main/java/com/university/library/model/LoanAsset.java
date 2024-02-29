@@ -11,21 +11,32 @@ public class LoanAsset {
     private Date loanDate;
     private Date returnDate;
     private Double fineAmount = 0.0;
-    private Date renewDate;
 
-    public LoanAsset(String loanAssetId , String assetId , String userId , Date loanDate , Date returnDate , Double fineAmount , Date renewDate) {
+    public LoanAsset(String loanAssetId , String assetId , String userId , Date loanDate , Date returnDate , Double fineAmount , boolean isFinePaid , Date renewDate) {
         this.loanAssetId = loanAssetId;
         this.assetId = assetId;
         this.userId = userId;
         this.loanDate = loanDate;
         this.returnDate = returnDate;
         this.fineAmount = fineAmount;
+        this.isFinePaid = isFinePaid;
         this.renewDate = renewDate;
     }
+
+    private boolean isFinePaid = false;
+    private Date renewDate;
 
     public LoanAsset() {
     }
 
+    public boolean isFinePaid() {
+        return isFinePaid;
+    }
+
+    public void setFinePaid(boolean finePaid) {
+        isFinePaid = finePaid;
+    }
+    
     public String getLoanAssetId() {
         return loanAssetId;
     }
