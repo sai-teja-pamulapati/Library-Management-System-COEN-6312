@@ -142,23 +142,30 @@ public class UserLogin {
                 String librarianCommands = scanner.nextLine();
                 switch (librarianCommands) {
                     case "1":
-                        // Left
+                        assetManagement.browse();
+                        break;
                     case "2":
-                        // left
+                        assetManagement.getBorrowingHistory();
+                        break;
                     case "3":
-                        // left
+                        //left
+                        break;
                     case "4":
-                        // left
+                        //left
+                        break;
                     case "5":
-                        // left
+                        assetManagement.addBook();
+                        break;
                     case "6":
-                        // left
+                        //assetManagement.removeAsset();
+                        break;
                     case "7":
-                        // left
+                        //assetManagement.updateBookDetails();
+                        break;
                     case "8":
-                        // left
+                        //assetManagement.viewLibraryActivities();
                     case "9":
-                        // left
+                        //assetManagement.updateNewsLetter();
                     case "10":
                         return;
                     default:

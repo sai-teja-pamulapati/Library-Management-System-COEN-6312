@@ -9,6 +9,10 @@ public class Laptop extends PhysicalAsset {
     private String displaySize;
     private String weight;
 
+    public Laptop() {
+        super(assetID, title, URLpreview, URLlogo, floor, row, section, shelf);
+    }
+
     @Override
     public String toString() {
         return "Laptop Details: \n" +
