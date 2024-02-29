@@ -3,7 +3,7 @@ package com.university.library.model.assets.digital;
 import java.util.Date;
 
 public class NewsLetter extends DigitalAsset {
-  
+
     private Date date;
     private String publication;
 
