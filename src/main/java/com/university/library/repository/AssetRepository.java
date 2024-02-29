@@ -1,6 +1,8 @@
 package com.university.library.repository;
 
 import com.university.library.model.assets.Asset;
+import com.university.library.model.assets.digital.NewsLetter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,6 +45,15 @@ public class AssetRepository {
 
     public List<Asset> getAllAssets() {
         return assets.values().stream().toList();
+    }
+
+    public NewsLetter getNewsLetterByAssetId(String assetId) {
+        Asset asset = assets.get(assetId);
+        if (asset instanceof NewsLetter) {
+            return (NewsLetter) asset;
+        } else {
+            return null;
+        }
     }
 
     public Asset removeAsset(String assetId) {
