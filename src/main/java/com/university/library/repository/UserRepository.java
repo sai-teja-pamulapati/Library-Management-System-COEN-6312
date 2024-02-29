@@ -2,9 +2,7 @@ package com.university.library.repository;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
 
 public class UserRepository {
 

@@ -2,7 +2,6 @@ package com.university.library.action;
 
 import java.io.Console;
 import java.util.Scanner;
-
 import com.university.library.App;
 import com.university.library.model.users.User;
 
@@ -10,6 +9,7 @@ public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
     private static AssetManagement assetManagement = AssetManagement.getInstance();
+    private static DiscussionRoomManagement roomManagement = new DiscussionRoomManagement();
 
     public static void login() {
         Console console = System.console();
@@ -22,8 +22,7 @@ public class UserLogin {
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
-        // String password = scanner.nextLine();
-
+      
         User user = User.login(emailId, password);
         if (user == null) {
             return;
@@ -124,7 +123,6 @@ public class UserLogin {
                 System.out.println(e.getLocalizedMessage());
             }
         }
-
     }
 
     private static void processLibrarianUser() {
@@ -162,7 +160,7 @@ public class UserLogin {
                     case "9":
                         // left
                     case "10":
-                        // left
+                        return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
@@ -204,7 +202,7 @@ public class UserLogin {
                         // Todo
                         break;
                     case "5":
-                        // TODO
+                        roomManagement.manageRoomBooking();
                         break;
                     case "6":
                         // Todo
@@ -235,8 +233,7 @@ public class UserLogin {
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                        User newUser = new User();
-                        UserRegistration.register(false);
+                    UserRegistration.register(false);
                         break;
                     case "2":
                         UserRemoval.removeUser();
