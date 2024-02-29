@@ -2,7 +2,7 @@ package com.university.library.model.users.non_academic;
 
 public class PaidUser {
     // Attributes
-    private String membershipStartDate;
+    private String membershipIssueDate;
     private String membershipEndDate;
     private String membershipPeriod;
 
@@ -11,19 +11,19 @@ public class PaidUser {
         // Default constructor
     }
 
-    public PaidUser(String membershipStartDate, String membershipEndDate, String membershipPeriod) {
-        this.membershipStartDate = membershipStartDate;
+    public PaidUser(String membershipIssueDate, String membershipEndDate, String membershipPeriod) {
+        this.membershipIssueDate = membershipIssueDate;
         this.membershipEndDate = membershipEndDate;
         this.membershipPeriod = membershipPeriod;
     }
 
     // Getters and setters
-    public String getMembershipStartDate() {
-        return membershipStartDate;
+    public String getMembershipIssueDate() {
+        return membershipIssueDate;
     }
 
-    public void setMembershipStartDate(String membershipStartDate) {
-        this.membershipStartDate = membershipStartDate;
+    public void setMembershipIssueDate(String membershipIssueDate) {
+        this.membershipIssueDate = membershipIssueDate;
     }
 
     public String getMembershipEndDate() {

@@ -2,7 +2,6 @@ package com.university.library.action;
 
 import java.io.Console;
 import java.util.Scanner;
-
 import com.university.library.App;
 import com.university.library.model.users.User;
 
@@ -10,6 +9,7 @@ public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
     private static AssetManagement assetManagement = AssetManagement.getInstance();
+    private static DiscussionRoomManagement roomManagement = new DiscussionRoomManagement();
 
     public static void login() {
         Console console = System.console();
@@ -22,8 +22,7 @@ public class UserLogin {
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
-        // String password = scanner.nextLine();
-
+      
         User user = User.login(emailId, password);
         if (user == null) {
             return;
@@ -63,20 +62,22 @@ public class UserLogin {
                         "1: Browse Catalouge\n" +
                         "2: See browsing history\n" +
                         "3: View Newsletter\n" +
-                        "4: View Notifications\n" +                       
+                        "4: buy membership\n" +
                         "5: Logout\n");
-                String paidUserCommands= scanner.nextLine();
-                switch (paidUserCommands) {
+                String freeUserCommands = scanner.nextLine();
+                switch (freeUserCommands) {
                     case "1":
                         assetManagement.browse();
                     case "2":
-                        assetManagement.getBorrowingHistory();
+                        assetManagement.getBorrowingHistory(); //
+
                     case "3":
-                         ViewNews.viewNewsletters();
+                        ViewNews.viewNewsletters();
                     case "4":
-                        // View Notifications                   
+                        // buy membership coming soon
                     case "5":
                         return;
+
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
@@ -84,7 +85,6 @@ public class UserLogin {
                 System.out.println(e.getLocalizedMessage());
             }
         }
-
 
     }
 
@@ -98,7 +98,7 @@ public class UserLogin {
                         "4: View Notifications\n" +
                         "5: Pay Fines\n" +
                         "6: Logout\n");
-                String paidUserCommands= scanner.nextLine();
+                String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
                     case "1":
                         assetManagement.browse();
@@ -111,7 +111,11 @@ public class UserLogin {
                     case "5":
                         // View Notifications
                     case "6":
-                        return;
+                        // cancel membership coming soon
+                    case "7":
+                        // renew membership coming soon
+                    case "8":
+                        return;// logout
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
@@ -119,7 +123,6 @@ public class UserLogin {
                 System.out.println(e.getLocalizedMessage());
             }
         }
-
     }
 
     private static void processLibrarianUser() {
@@ -157,7 +160,7 @@ public class UserLogin {
                     case "9":
                         // left
                     case "10":
-                        // left
+                        return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
@@ -199,7 +202,7 @@ public class UserLogin {
                         // Todo
                         break;
                     case "5":
-                        // Todo
+                        roomManagement.manageRoomBooking();
                         break;
                     case "6":
                         // Todo
@@ -230,8 +233,7 @@ public class UserLogin {
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                        User newUser = new User();
-                        UserRegistration.register(false);
+                    UserRegistration.register(false);
                         break;
                     case "2":
                         UserRemoval.removeUser();
