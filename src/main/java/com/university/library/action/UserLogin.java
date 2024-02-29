@@ -57,29 +57,34 @@ public class UserLogin {
 
     private static void processFreeUser() {
         while (true) {
-			try {
-                System.out.print("Choose from the following options\n" +
-                        "1. View Newsletter\n" +
-                        "2. View Notifications\n" +
-                        "3. Logout\n");
+            try {
+                System.out.println("Choose from the following options\n" +
+                        "1: Browse Catalouge\n" +
+                        "2: See browsing history\n" +
+                        "3: View Newsletter\n" +
+                        "4: buy membership\n" +
+                        "5: Logout\n");
                 String freeUserCommands = scanner.nextLine();
                 switch (freeUserCommands) {
                     case "1":
-                        // TODO
-                        break;
+                        assetManagement.browse();
                     case "2":
-                        // Todo
-                        break;
-                    case "3":
-                        return;
-                    default:
-                        throw new IllegalArgumentException("Invalid option!");
-                }
-			} catch (Exception e) {
-				System.out.println(e.getLocalizedMessage());
-			}
-		}
+                        assetManagement.getBorrowingHistory(); //
 
+                    case "3":
+                        ViewNews.viewNewsletters();
+                    case "4":
+                        // buy membership coming soon
+                    case "5":
+                        return;
+
+                    default:
+                        throw new IllegalArgumentException("Invalid Option!");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
 
     }
 
@@ -93,20 +98,24 @@ public class UserLogin {
                         "4: View Notifications\n" +
                         "5: Pay Fines\n" +
                         "6: Logout\n");
-                String paidUserCommands= scanner.nextLine();
+                String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
                     case "1":
                         assetManagement.browse();
                     case "2":
                         assetManagement.getBorrowingHistory();
                     case "3":
-                        // views newsletter
+                        ViewNews.viewNewsletters();
                     case "4":
                         // View Notifications
                     case "5":
                         // View Notifications
                     case "6":
-                        return;
+                        // cancel membership coming soon
+                    case "7":
+                        // renew membership coming soon
+                    case "8":
+                        return;// logout
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
