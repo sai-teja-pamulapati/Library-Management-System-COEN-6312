@@ -11,7 +11,7 @@ public class DiscussionRoom {
         this.emailId = emailId;
     }
 
-    // Getters & Setters
+   
     public int getRoomId() {
         return roomId;
     }

@@ -1,14 +1,14 @@
 package com.university.library.model.users.non_academic;
 
 public class PaidUser {
-    // Attributes
+    
     private String membershipIssueDate;
     private String membershipEndDate;
     private String membershipPeriod;
 
-    // Constructors
+   
     public PaidUser() {
-        // Default constructor
+       
     }
 
     public PaidUser(String membershipIssueDate, String membershipEndDate, String membershipPeriod) {
@@ -17,7 +17,7 @@ public class PaidUser {
         this.membershipPeriod = membershipPeriod;
     }
 
-    // Getters and setters
+   
     public String getMembershipIssueDate() {
         return membershipIssueDate;
     }
