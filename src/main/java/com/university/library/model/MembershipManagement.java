@@ -28,6 +28,7 @@ public class MembershipManagement {
     }
 
     public void setuserId(String userId) {
+        System.out.println("userid" + userId);
         this.userId = userId;
     }
 

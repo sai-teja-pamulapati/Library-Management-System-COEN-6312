@@ -43,11 +43,37 @@ public class MembershipManager {
         membership.setStartDate(startDate);
         membership.setEndDate(endDate);
         membership.setMembershipStatus(true);
+        System.out.println("membership details");
+        System.out.println("Start date : " + formatDate(membership.getStartDate()));
+        System.out.println("Start date : " + formatDate(membership.getEndDate()));
+        System.out.println("amount paid : " + membership.getMembershipAmountPaid());
+        System.out.println("status : " + membership.isMembershipStatus());
+        System.out.println("get userid :  " + membership.getuserId());
 
         membershipRepository.addMembership(membership);
 
-        System.out.println("membership purchased");
+        System.out.println("membership successfully purchased");
+
+        displayMembership(App.getLoggedInUser().getUserId());
         App.getLoggedInUser().setUserRole(UserRole.PAID_USER);
+    }
+
+    public static void displayMembership(String userId) {
+        MembershipManagement membership = membershipRepository.getMembership(userId);
+        if (membership != null) {
+            System.out.println("membership details retrieved");
+            System.out.println("Start date :" + formatDate(membership.getStartDate()));
+            System.out.println("Start date :" + formatDate(membership.getEndDate()));
+            System.out.println("Start date :" + membership.getMembershipAmountPaid());
+            System.out.println("Start date :" + membership.isMembershipStatus());
+        } else {
+            System.out.println("no membership found \n" + userId);
+        }
+    }
+
+    private static String formatDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
     }
 
     public static Date parseDate(String dateString) {
