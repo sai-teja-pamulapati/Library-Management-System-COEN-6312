@@ -75,7 +75,7 @@ public class UserLogin {
                     case "3":
                         ViewNews.viewNewsletters();
                     case "4":
-                        NonAcademic.buyMemberhsip();// in-progress
+                        MembershipManager.buyMembership();// in-progress
                     case "5":
                         return;
 

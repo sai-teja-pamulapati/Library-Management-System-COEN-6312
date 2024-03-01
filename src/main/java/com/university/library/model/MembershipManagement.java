@@ -1,6 +1,7 @@
 package com.university.library.model;
 
 import com.university.library.*;
+
 import java.util.Date;
 
 public class MembershipManagement {
@@ -9,6 +10,18 @@ public class MembershipManagement {
     private Date startDate;
     private String userId;
     private Date endDate;
+
+    public MembershipManagement(boolean membershipStatus, double membershipAmountPaid, Date startDate, String userId,
+            Date endDate) {
+        this.membershipStatus = membershipStatus;
+        this.membershipAmountPaid = membershipAmountPaid;
+        this.startDate = startDate;
+        this.userId = userId;
+        this.endDate = endDate;
+    }
+
+    public MembershipManagement() {
+    }
 
     public String getuserId() {
         return userId;
