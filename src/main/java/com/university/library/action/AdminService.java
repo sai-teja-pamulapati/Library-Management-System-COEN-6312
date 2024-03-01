@@ -16,7 +16,7 @@ public class AdminService {
             System.out.println("No users found.");
         } else {
             for (User user : users) {
-                System.out.println("UserID: " + user.getUserId() +
+                System.out.println("\nUserID: " + user.getUserId() +
                                     ", Name: " + user.getName() +
                                     ", Email: " + user.getEmailId() +
                                     ", Mobile: " + user.getMobileNumber() +
