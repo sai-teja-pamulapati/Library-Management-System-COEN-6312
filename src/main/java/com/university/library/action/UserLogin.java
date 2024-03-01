@@ -98,7 +98,9 @@ public class UserLogin {
                         "3: View Newsletter\n" +
                         "4: View Notifications\n" +
                         "5: Pay Fines\n" +
-                        "6: Logout\n");
+                        "6: display membership\n" +
+                        "7: cancel membership\n" +
+                        "8: Logout\n");
                 String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
                     case "1":
@@ -110,12 +112,14 @@ public class UserLogin {
                     case "4":
                         // View Notifications
                     case "5":
-                        // View Notifications
+                        // pay fine
                     case "6":
-                        // cancel membership coming soon
+                        MembershipManager.displayMembership(App.getLoggedInUser().getUserId());
                     case "7":
-                        // renew membership coming soon
+                        // cancel membership coming soon
                     case "8":
+                        // renew
+                    case "9":
                         return;// logout
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
