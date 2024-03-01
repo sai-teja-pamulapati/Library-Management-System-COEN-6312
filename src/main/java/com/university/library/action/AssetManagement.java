@@ -152,6 +152,10 @@ public class AssetManagement {
 
     public void getBorrowingHistory() {
         User user = App.getLoggedInUser();
+        printAndGetBorrowingHistory(user);
+    }
+
+    public List<LoanAsset> printAndGetBorrowingHistory(User user) {
         List<LoanAsset> loanedItemsForUser = loanAssetRepository.getLoanedItemsForUser(user.getUserId());
         System.out.println();
         System.out.println("                                 Borrowing History");
@@ -164,6 +168,7 @@ public class AssetManagement {
         }
         System.out.println("******************************************************************************************");
         System.out.println();
+        return loanedItemsForUser;
     }
 
     // Asset: book functinalities}
