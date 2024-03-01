@@ -1,5 +1,6 @@
 package com.university.library.action;
 
+import com.university.library.model.users.nonacademic.NonAcademic;
 import java.io.Console;
 import java.util.Scanner;
 import com.university.library.App;
@@ -59,8 +60,8 @@ public class UserLogin {
         while (true) {
             try {
                 System.out.println("Choose from the following options\n" +
-                        "1: Browse Catalouge\n" +
-                        "2: See browsing history\n" +
+                        "1. Browse Catalogue\n" +
+                        "2. View borrowing history\n" +
                         "3: View Newsletter\n" +
                         "4: buy membership\n" +
                         "5: Logout\n"+
@@ -75,7 +76,7 @@ public class UserLogin {
                     case "3":
                         ViewNews.viewNewsletters();
                     case "4":
-                        // buy membership coming soon
+                        MembershipManager.buyMembership();// in-progress
                     case "5":
                         return;
 
@@ -93,13 +94,15 @@ public class UserLogin {
         while (true) {
             try {
                 System.out.println("Choose from the following options\n" +
-                        "1: Browse Catalouge\n" +
-                        "2: See browsing history\n" +
+                        "1. Browse Catalogue\n" +
+                        "2. View borrowing history\n" +
                         "3: View Newsletter\n" +
                         "4: View Notifications\n" +
                         "5: Pay Fines\n" +
-                        "6: Logout\n"+
-                        "******************************************************************************************\n");
+                        "6: display membership\n" +
+                        "7: cancel membership\n" +
+                        "8: Logout\n");
+              
                 String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
                     case "1":
@@ -111,12 +114,14 @@ public class UserLogin {
                     case "4":
                         // View Notifications
                     case "5":
-                        // View Notifications
+                        // pay fine
                     case "6":
-                        // cancel membership coming soon
+                        MembershipManager.displayMembership(App.getLoggedInUser().getUserId());
                     case "7":
-                        // renew membership coming soon
+                        // cancel membership coming soon
                     case "8":
+                        // renew
+                    case "9":
                         return;// logout
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
@@ -131,8 +136,8 @@ public class UserLogin {
         while (true) {
             try {
                 System.out.println("Choose from the following options\n" +
-                        "1: Browse Catalouge\n" +
-                        "2: See browsing history\n" +
+                        "1. Browse Catalogue\n" +
+                        "2. View borrowing history\n" +
                         "3: View Newsletter\n" +
                         "4: View Notifications\n" +
                         "5: Add Book\n" +
@@ -151,24 +156,24 @@ public class UserLogin {
                         assetManagement.getBorrowingHistory();
                         break;
                     case "3":
-                        //left
+                        // left
                         break;
                     case "4":
-                        //left
+                        // left
                         break;
                     case "5":
                         assetManagement.addBook();
                         break;
                     case "6":
-                        //assetManagement.removeAsset();
+                        // assetManagement.removeAsset();
                         break;
                     case "7":
-                        //assetManagement.updateBookDetails();
+                        // assetManagement.updateBookDetails();
                         break;
                     case "8":
-                        //assetManagement.viewLibraryActivities();
+                        // assetManagement.viewLibraryActivities();
                     case "9":
-                        //assetManagement.updateNewsLetter();
+                        // assetManagement.updateNewsLetter();
                     case "10":
                         return;
                     default:
@@ -246,7 +251,7 @@ public class UserLogin {
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                    UserRegistration.register(false);
+                        UserRegistration.register(false);
                         break;
                     case "2":
                         UserRemoval.removeUser();

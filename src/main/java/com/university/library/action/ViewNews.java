@@ -17,8 +17,9 @@ public class ViewNews {
 
         System.out.println("Available Newsletters: \n");
         allAssets.stream()
-                .filter(asset -> asset instanceof NewsLetter) // Filter out newsletters
-                .map(asset -> (NewsLetter) asset)
+
+                .filter(asset -> asset instanceof NewsLetter) 
+                .map(asset -> (NewsLetter) asset)               
                 .forEach(newsletter -> {
                     String assetId = newsletter.getAssetId();
                     String date = dateFormat.format(newsletter.getDate());

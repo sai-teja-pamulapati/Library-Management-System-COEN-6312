@@ -10,7 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import java.util.Date;
 
 public abstract class Asset {
-    // Attributes
+    
     private String assetId;
     private String title;
     private String preview;
@@ -19,9 +19,9 @@ public abstract class Asset {
     private static AssetRepository assetRepository = AssetRepository.getInstance();
     private static LoanAssetRepository loanAssetRepository = LoanAssetRepository.getInstance();
 
-    // Constructors
+    
     public Asset() {
-        // Default constructor
+        
     }
 
     public Asset(String assetId, String title, String preview, String logo, boolean availability) {
@@ -32,7 +32,7 @@ public abstract class Asset {
         this.availability = availability;
     }
 
-    // Getters and setters
+    
     public String getAssetId() {
         return assetId;
     }
