@@ -24,11 +24,7 @@ public class ViewNews {
                     String date = dateFormat.format(newsletter.getDate());
                     String title = newsletter.getTitle() == null || newsletter.getTitle().isEmpty() ? "Newsletter" : newsletter.getTitle();
                     String publication = newsletter.getPublication() == null || newsletter.getPublication().isEmpty() ? "Unknown Publication" : newsletter.getPublication();
-                    System.out.println("Asset ID: " + assetId + ",\n" +
-                                        "Date: " + date + ",\n" +
-                                        "Title: " + title + ",\n" +
-                                        "Publication: " + publication + ",\n" +
-                                        "Access Link: " + newsletter.getAccessLink());
+                    System.out.println(newsletter.toString());
                     System.out.println("******************************************************************************************");
                 });
 
