@@ -101,7 +101,10 @@ public class UserLogin {
                         "5: Pay Fines\n" +
                         "6: display membership\n" +
                         "7: cancel membership\n" +
-                        "8: Logout\n");
+
+                        "8 : renew membership\n" +
+                        "9: Logout\n")
+                        ;
               
                 String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
@@ -118,9 +121,9 @@ public class UserLogin {
                     case "6":
                         MembershipManager.displayMembership(App.getLoggedInUser().getUserId());
                     case "7":
-                        // cancel membership coming soon
+                        MembershipManager.cancelMembership(App.getLoggedInUser().getUserId());
                     case "8":
-                        // renew
+                        MembershipManager.renewMembership(App.getLoggedInUser().getUserId());
                     case "9":
                         return;// logout
                     default:
