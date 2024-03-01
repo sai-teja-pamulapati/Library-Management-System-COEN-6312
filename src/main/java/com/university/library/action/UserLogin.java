@@ -1,5 +1,6 @@
 package com.university.library.action;
 
+import com.university.library.model.users.nonacademic.NonAcademic;
 import java.io.Console;
 import java.util.Scanner;
 import com.university.library.App;
@@ -22,7 +23,7 @@ public class UserLogin {
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
-      
+
         User user = User.login(emailId, password);
         if (user == null) {
             return;
@@ -74,7 +75,7 @@ public class UserLogin {
                     case "3":
                         ViewNews.viewNewsletters();
                     case "4":
-                        // buy membership coming soon
+                        NonAcademic.buyMemberhsip();// in-progress
                     case "5":
                         return;
 
@@ -148,24 +149,24 @@ public class UserLogin {
                         assetManagement.getBorrowingHistory();
                         break;
                     case "3":
-                        //left
+                        // left
                         break;
                     case "4":
-                        //left
+                        // left
                         break;
                     case "5":
                         assetManagement.addBook();
                         break;
                     case "6":
-                        //assetManagement.removeAsset();
+                        // assetManagement.removeAsset();
                         break;
                     case "7":
-                        //assetManagement.updateBookDetails();
+                        // assetManagement.updateBookDetails();
                         break;
                     case "8":
-                        //assetManagement.viewLibraryActivities();
+                        // assetManagement.viewLibraryActivities();
                     case "9":
-                        //assetManagement.updateNewsLetter();
+                        // assetManagement.updateNewsLetter();
                     case "10":
                         return;
                     default:
@@ -241,7 +242,7 @@ public class UserLogin {
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                    UserRegistration.register(false);
+                        UserRegistration.register(false);
                         break;
                     case "2":
                         UserRemoval.removeUser();
