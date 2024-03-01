@@ -24,12 +24,12 @@ public class MembershipAssetRepository {
                 MembershipManagement membership = membershipByUserId.get(key);
                 // System.out.println("membership object values " + membership);
 
-                System.out.println("membership details from repo");
-                System.out.println("get userid :  " + membership.getuserId());
-                System.out.println("Start date :" + membership.getStartDate());
-                System.out.println("Start date :" + membership.getEndDate());
-                System.out.println("AmountPaid :" + membership.getMembershipAmountPaid());
-                System.out.println("Status :" + membership.isMembershipStatus());
+                // System.out.println("membership details from repo");
+                // System.out.println("get userid : " + membership.getuserId());
+                // System.out.println("Start date :" + membership.getStartDate());
+                // System.out.println("Start date :" + membership.getEndDate());
+                // System.out.println("AmountPaid :" + membership.getMembershipAmountPaid());
+                // System.out.println("Status :" + membership.isMembershipStatus());
                 // System.out.println("get userid " + membership.getuserId());
                 return membership;
             }
@@ -48,15 +48,41 @@ public class MembershipAssetRepository {
 
         // System.out.println(userIdDate);
 
-        System.out.println("Start date :" + membership.getStartDate());
-        System.out.println("Start date :" + membership.getEndDate());
-        System.out.println("Amount :" + membership.getMembershipAmountPaid());
-        System.out.println("Status :" + membership.isMembershipStatus());
-        System.out.println("get userid :  " + membership.getuserId());
+        // System.out.println("Start date :" + membership.getStartDate());
+        // System.out.println("Start date :" + membership.getEndDate());
+        // System.out.println("Amount :" + membership.getMembershipAmountPaid());
+        // System.out.println("Status :" + membership.isMembershipStatus());
+        // System.out.println("get userid : " + membership.getuserId());
 
         // System.out.println("before adding membership " + membershipByUserId);
         membershipByUserId.put(userIdDate, membership);
         // System.out.println("after adding membership " + membershipByUserId);
         return true;
     }
+
+    public boolean removeMembership(String userId) {
+        MembershipManagement membership = getMembership(userId);
+        // System.out.println(userIdDate);
+        // System.out.println("membership details stored before repo from
+        // addmemebership");
+
+        // System.out.println(userIdDate);
+
+        // System.out.println("Start date :" + membership.getStartDate());
+        // System.out.println("Start date :" + membership.getEndDate());
+        // System.out.println("Amount :" + membership.getMembershipAmountPaid());
+        // System.out.println("Status :" + membership.isMembershipStatus());
+        // System.out.println("get userid : " + membership.getuserId());
+
+        // System.out.println("before adding membership " + membershipByUserId);
+        if (membership != null) {
+            String userIdDate = createKey(membership.getUserId(), membership.getStartDate(), membership.getEndDate());
+            membershipByUserId.remove(userIdDate);
+            return true;
+        }
+        return false;
+        // System.out.println("after adding membership " + membershipByUserId);
+
+    }
+
 }
