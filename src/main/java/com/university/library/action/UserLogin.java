@@ -64,7 +64,8 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3: View Newsletter\n" +
                         "4: buy membership\n" +
-                        "5: Logout\n");
+                        "5: Logout\n"+
+                        "******************************************************************************************\n");
                 String freeUserCommands = scanner.nextLine();
                 switch (freeUserCommands) {
                     case "1":
@@ -100,8 +101,11 @@ public class UserLogin {
                         "5: Pay Fines\n" +
                         "6: display membership\n" +
                         "7: cancel membership\n" +
+
                         "8 : renew membership\n" +
-                        "9: Logout\n");
+                        "9: Logout\n")
+                        ;
+              
                 String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
                     case "1":
@@ -144,7 +148,8 @@ public class UserLogin {
                         "7: Update Book Details\n" +
                         "8: View Library Activities\n" +
                         "9: Update NewsLetter\n" +
-                        "10: Logout\n");
+                        "10: Logout\n"+
+                        "******************************************************************************************\n");
                 String librarianCommands = scanner.nextLine();
                 switch (librarianCommands) {
                     case "1":
@@ -198,7 +203,8 @@ public class UserLogin {
                         "4. View Notifications\n" +
                         "5. Book/Cancel Discussion Room\n" +
                         "6. Pay Fines\n" +
-                        "7. Logout\n");
+                        "7. Logout\n"+
+                        "******************************************************************************************\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
 
@@ -242,8 +248,9 @@ public class UserLogin {
                         "4. Unblock User\n" +
                         "5. View Newsletter\n" +
                         "6. Update Newsletter\n" +
-                        "7. View User Activities\n" +
-                        "8. Logout\n");
+                        "7. View All Users\n" +
+                        "8. Logout\n"+
+                        "******************************************************************************************\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
@@ -265,7 +272,7 @@ public class UserLogin {
                         UpdateNews.updateNewsletterProcess();
                         break;
                     case "7":
-                        // TODO
+                        AdminService.viewAllUsers();
                         break;
                     case "8":
                         return;
