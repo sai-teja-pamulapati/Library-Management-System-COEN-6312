@@ -89,7 +89,7 @@ public abstract class Asset {
         assetRepository.update(this);
     }
 
-    public void loanAsset() {
+    public LoanAsset loanAsset() {
         LoanAsset loanAsset = new LoanAsset();
         Date today = new Date();
         User user = App.getLoggedInUser();
@@ -101,5 +101,6 @@ public abstract class Asset {
         this.updateAsset();
         loanAssetRepository.saveLoanAsset(loanAsset);
         System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
+        return loanAsset;
     }
 }
