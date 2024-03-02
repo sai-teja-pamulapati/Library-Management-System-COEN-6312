@@ -34,12 +34,18 @@ public class MembershipAssetRepository {
                 return membership;
             }
         }
-        System.out.println("no membership found from getmembership function " + userId);
+        // System.out.println("no membership found from getmembership function " +
+        // userId);
 
         return null;
     }
 
     public boolean addMembership(MembershipManagement membership) {
+        // String userId = membership.getUserId();
+        // if (getMembership(userId) != null) {
+        // System.out.println("A membership already exitss for this userid" + userId);
+        // return false;
+        // }
         String userIdDate = createKey(membership.getuserId(), membership.getStartDate(),
                 membership.getEndDate());
         // System.out.println(userIdDate);
