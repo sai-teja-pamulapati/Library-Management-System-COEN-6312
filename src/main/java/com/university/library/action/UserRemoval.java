@@ -1,9 +1,6 @@
 package com.university.library.action;
 
 import java.util.Scanner;
-
-import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
 import com.university.library.repository.UserRepository;
 
 public class UserRemoval {

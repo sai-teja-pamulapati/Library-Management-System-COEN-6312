@@ -3,13 +3,13 @@ package com.university.library.model.assets.physical;
 import com.university.library.model.assets.Asset;
 
 public abstract class PhysicalAsset extends Asset {
-    // Attributes
+   
     private String floor;
     private String row;
     private String section;
     private String shelf;
 
-    // Constructors
+    
     public PhysicalAsset(String assetID, String title, String URLpreview, String URLlogo, Boolean availability, String floor, String row, String section, String shelf) {
         super(assetID, title, URLpreview, URLlogo, availability);
         this.floor = floor;
@@ -17,7 +17,7 @@ public abstract class PhysicalAsset extends Asset {
         this.section = section;
         this.shelf = shelf;
     }
-    // Getters and setters
+   
     public String getFloor() {
         return floor;
     }

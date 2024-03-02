@@ -1,19 +1,20 @@
 package com.university.library.repository;
-
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import com.university.library.model.users.User;
+
 
 public class UserRepository {
 
     private static final AtomicInteger assetIdGenerator = new AtomicInteger(0);
-
     private static UserRepository instance;
     private static HashMap<String, User> users = new HashMap<>();
 
-    private UserRepository() {}
+    public UserRepository() {}
 
 
     public static synchronized UserRepository getInstance() {
@@ -42,6 +43,15 @@ public class UserRepository {
             return true;
         }
         return false;
+    }
+
+    public void clearUsers() {
+        users.clear();
+        assetIdGenerator.set(0);
+    }
+
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
     }
 
 

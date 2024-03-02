@@ -1,6 +1,7 @@
 package com.university.library.repository;
 
 import com.university.library.model.assets.Asset;
+import com.university.library.model.assets.digital.NewsLetter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +30,14 @@ public class AssetRepository {
     }
 
     public boolean addAsset(Asset asset) {
-        asset.setAssetId(String.valueOf(assetIdGenerator.getAndIncrement()));
-        assets.put(asset.getAssetId(), asset);
-        return true;
+        String newAssetId = String.valueOf(assetIdGenerator.getAndIncrement());
+        if (exists(newAssetId)) {
+            return false;
+        } else {
+            asset.setAssetId(newAssetId);
+            assets.put(asset.getAssetId(), asset);
+            return true;
+        }
     }
 
     public void displayAsstes(){
@@ -48,6 +54,15 @@ public class AssetRepository {
 
     public List<Asset> getAllAssets() {
         return assets.values().stream().toList();
+    }
+
+    public NewsLetter getNewsLetterByAssetId(String assetId) {
+        Asset asset = assets.get(assetId);
+        if (asset instanceof NewsLetter) {
+            return (NewsLetter) asset;
+        } else {
+            return null;
+        }
     }
 
     public Asset removeAsset(String assetId) {
