@@ -168,7 +168,7 @@ public class AssetManagement {
 
     // Asset: book functinalities}
 
-    public void addBook(){
+    public void addBook() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Book's title");
         String title = scanner.nextLine();
@@ -205,13 +205,80 @@ public class AssetManagement {
         String section = scanner.nextLine();
         System.out.println("Enter the Shelf for Book");
         String shelf = scanner.nextLine();
-        Book book = new Book(null,title, URLpreview, URLlogo, availibility, floor, section, row, shelf, ISBN, publisher, date, author, subject, description);
+        Book book = new Book(null, title, URLpreview, URLlogo, availibility, floor, section, row, shelf, ISBN, publisher, date, author, subject, description);
         boolean checkAdd = assetRepository.addAsset(book);
-        if (checkAdd ==  true){
+        if (checkAdd == true) {
             System.out.println("Book Added Successfully");
-        }else{
+        } else {
             System.out.println("Book addition failed");
         }
 
+    }
+
+    public void removeBook() {
+        assetRepository.displayAsstes();
+        System.out.println("Enter the Book ID to Remove the Book");
+        String ID = scanner.nextLine();
+        assetRepository.removeAsset(ID);
+        System.out.println("Book removed Successfully");
+    }
+
+    public void updateBook() {
+        assetRepository.displayAsstes();
+        System.out.println("Select/Enter Book ID to update it's content");
+        String id = scanner.nextLine();
+        while (true) {
+            try {
+                System.out.println("Please Select from the following options"
+                        + "Enter 1 to update Title"
+                        + "Enter 2 to update preview"
+                        + "Enter 3 to update Logo "
+                        + "Enter 4 to update ISBM"
+                        + "Enter 5 to update Publisher"
+                        + "Enter 6 to update Published Date"
+                        + "Enter 7 to update Book's Author"
+                        + "Enter 8 to update Book's Subject"
+                        + "Enter 9 to update Book's Description"
+                        + "Enter 10 to update Floor of the book"
+                        + "Enter 11 to update Row of the book"
+                        + "Enter 12 to update Section of the book"
+                        + "Enter 13 to update shelf of the book");
+                int select = scanner.nextInt();
+                switch (select) {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    case 9:
+                        break;
+                    case 10:
+                        break;
+                    case 11:
+                        break;
+                    case 12:
+                        break;
+                    case 13:
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid Option!");
+
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
     }
 }
