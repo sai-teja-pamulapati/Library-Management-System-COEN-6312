@@ -70,13 +70,16 @@ public class UserLogin {
                 switch (freeUserCommands) {
                     case "1":
                         assetManagement.browse();
+                        break;
                     case "2":
                         assetManagement.getBorrowingHistory(); //
-
+                        break;
                     case "3":
                         ViewNews.viewNewsletters();
+                        break;
                     case "4":
-                        MembershipManager.buyMembership();// in-progress
+                        MembershipManager.buyMembership();
+                        break;
                     case "5":
                         return;
 
@@ -108,20 +111,26 @@ public class UserLogin {
                 switch (paidUserCommands) {
                     case "1":
                         assetManagement.browse();
+                        break;
                     case "2":
                         assetManagement.getBorrowingHistory();
+                        break;
                     case "3":
                         ViewNews.viewNewsletters();
+
                     case "4":
                         // View Notifications
                     case "5":
                         // pay fine
                     case "6":
                         MembershipManager.displayMembership(App.getLoggedInUser().getUserId());
+                        break;
                     case "7":
                         MembershipManager.cancelMembership(App.getLoggedInUser().getUserId());
+                        break;
                     case "8":
                         MembershipManager.renewMembership(App.getLoggedInUser().getUserId());
+                        break;
                     case "9":
                         return;// logout
                     default:

@@ -68,8 +68,10 @@ public class MembershipManager {
                 System.out.println("AmountPaid  :" + membership.getMembershipAmountPaid());
                 System.out.println("statusOFMembership  :" + membership.isMembershipStatus());
             } else {
-                System.out.println("no membership found \n" + userId);
+                System.out.println("Membership is cancelled \n");
             }
+        } else {
+            System.out.println("Membership not found  \n");
         }
     }
 
