@@ -2,6 +2,7 @@ package com.university.library.action;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import com.university.library.App;
 import com.university.library.model.LoanAsset;
 import com.university.library.model.assets.Asset;
 import com.university.library.model.assets.physical.Book;
@@ -230,6 +231,12 @@ public class AssetManagementTest {
         assertEquals(processor, laptopResult.getProcessor());
     }
 
+    @Test
     public void testProcessCheckout() {
+        String assetId = "1";
+        App.setLoggedInUser(testUser);
+        LoanAsset loanAsset = assetManagement.processCheckout(allAssets , assetId);
+        assertEquals(assetId , loanAsset.getAssetId());
+        assertEquals(testUser.getUserId(), loanAsset.getUserId());
     }
 }
