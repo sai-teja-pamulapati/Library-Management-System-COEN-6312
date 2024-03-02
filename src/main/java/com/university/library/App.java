@@ -61,7 +61,7 @@ public class App {
                 .addUser(false);
         new User("ram", "ram@gmail.com", "ram@123", "9632574125", "852 marc St", "0125-12-12", "Other",
                 UserRole.PAID_USER).addUser(false);
-        new User("gy", "2", "2", "789456233", "753 mathie St", "8963-12-12", "Male",
+        new User("gy", "3", "3", "789456233", "753 mathie St", "8963-12-12", "Male",
                 UserRole.FREE_USER).addUser(false);
 
         // Hardcoded Assets

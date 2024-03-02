@@ -43,11 +43,87 @@ public class MembershipManager {
         membership.setStartDate(startDate);
         membership.setEndDate(endDate);
         membership.setMembershipStatus(true);
+        System.out.println("membership details");
+        System.out.println("Start date : " + formatDate(membership.getStartDate()));
+        System.out.println("End date : " + formatDate(membership.getEndDate()));
+        System.out.println("amount paid : " + membership.getMembershipAmountPaid());
+        System.out.println("statusOFMembership : " + membership.isMembershipStatus());
+        System.out.println("get userid :  " + membership.getuserId());
 
         membershipRepository.addMembership(membership);
 
-        System.out.println("membership purchased");
+        System.out.println("membership successfully purchased");
+
+        // displayMembership(App.getLoggedInUser().getUserId());
         App.getLoggedInUser().setUserRole(UserRole.PAID_USER);
+    }
+
+    public static void displayMembership(String userId) {
+        MembershipManagement membership = membershipRepository.getMembership(userId);
+        if (membership != null) {
+            if (membership.isMembershipStatus()) {
+                System.out.println("membership details retrieved");
+                System.out.println("Start date :" + formatDate(membership.getStartDate()));
+                System.out.println("End date :" + formatDate(membership.getEndDate()));
+                System.out.println("AmountPaid  :" + membership.getMembershipAmountPaid());
+                System.out.println("statusOFMembership  :" + membership.isMembershipStatus());
+            } else {
+                System.out.println("no membership found \n" + userId);
+            }
+        }
+    }
+
+    public static void renewMembership(String userId) {
+        MembershipManagement membership = membershipRepository.getMembership(userId);
+        // .out.println(" membership looking for id " + membership);
+        if (membership != null) {
+            System.out.println("are you sure you want to renew ur membership ? (yes/no)");
+            String response = scanner.nextLine();
+            if (response.equals("yes")) {
+
+                Date endDate = membership.getEndDate();
+
+                membership.setStartDate(endDate);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(endDate);
+                calendar.add(Calendar.MONTH, 3);
+                Date newEndDate = calendar.getTime();
+
+                membership.setStartDate(membership.getEndDate());
+                membership.setEndDate(newEndDate);
+                membershipRepository.addMembership(membership);
+
+                System.out.println("renewal successful");
+                // displayMembership(userId);
+            } else {
+                System.out.println("renewal aborted");
+            }
+        } else {
+            System.out.println("no membership was found to renew");
+        }
+
+    }
+
+    public static void cancelMembership(String userId) {
+        System.out.println("are you sure you want to cancel ur membership ? (yes/no)");
+        String response = scanner.nextLine();
+
+        if (response.equals("yes")) {
+
+            if (membershipRepository.removeMembership(userId)) {
+                System.out.println("cancellation successful, sorry to see you go.");
+            } else {
+                System.out.println("no active cancellation Thank god");
+            }
+        } else {
+            System.out.println("cancellation aborted");
+        }
+    }
+
+    private static String formatDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
     }
 
     public static Date parseDate(String dateString) {

@@ -145,4 +145,15 @@ public class User {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    @Override
+public String toString() {
+    return "UserID: " + getUserId() +
+            ", Name: " + getName() +
+            ", Email: " + getEmailId() +
+            ", Mobile: " + getMobileNumber() +
+            ", Role: " + getUserRole() +
+            ", Blocked: " + (isBlocked() ? "Yes" : "No");
+}
+
 }

@@ -1,7 +1,9 @@
 package com.university.library.repository;
 import com.university.library.model.users.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.university.library.model.users.User;
 
@@ -47,6 +49,11 @@ public class UserRepository {
         users.clear();
         assetIdGenerator.set(0);
     }
+
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
+    }
+
 
     public User getUser(String emailId) {
         return users.get(emailId);
