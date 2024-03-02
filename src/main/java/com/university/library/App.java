@@ -23,7 +23,6 @@ import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
 import com.university.library.repository.AssetRepository;
 
-
 public class App {
 
     private static Scanner scanner = new Scanner(System.in);
@@ -62,7 +61,7 @@ public class App {
                 .addUser(false);
         new User("ram", "ram@gmail.com", "ram@123", "9632574125", "852 marc St", "0125-12-12", "Other",
                 UserRole.PAID_USER).addUser(false);
-        new User("zaik", "zaik@gmail.com", "zaik@123", "789456233", "753 mathie St", "8963-12-12", "Male",
+        new User("gy", "3", "3", "789456233", "753 mathie St", "8963-12-12", "Male",
                 UserRole.FREE_USER).addUser(false);
 
         // Hardcoded Assets
@@ -92,60 +91,59 @@ public class App {
     }
 
     private static void addAssets() {
-    // List of date formats you expect in the JSON file
-    final List<SimpleDateFormat> dateFormats = Arrays.asList(
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"), // ISO 8601 format
-        new SimpleDateFormat("MMM yyyy") // Custom format like "Jan 2024"
-    );
-    dateFormats.get(0).setTimeZone(TimeZone.getTimeZone("UTC")); // Set timezone for ISO 8601 format
+        // List of date formats you expect in the JSON file
+        final List<SimpleDateFormat> dateFormats = Arrays.asList(
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"), // ISO 8601 format
+                new SimpleDateFormat("MMM yyyy") // Custom format like "Jan 2024"
+        );
+        dateFormats.get(0).setTimeZone(TimeZone.getTimeZone("UTC")); // Set timezone for ISO 8601 format
 
-    
-    GsonBuilder gsonBuilder = new GsonBuilder();
-    gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-        @Override
-        public Date deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            ParseException lastException = null;
-            for (SimpleDateFormat format : dateFormats) {
-                try {
-                    return format.parse(jsonElement.getAsString());
-                } catch (ParseException e) {
-                    lastException = e;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+            @Override
+            public Date deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context)
+                    throws JsonParseException {
+                ParseException lastException = null;
+                for (SimpleDateFormat format : dateFormats) {
+                    try {
+                        return format.parse(jsonElement.getAsString());
+                    } catch (ParseException e) {
+                        lastException = e;
+                    }
                 }
+                throw new JsonParseException("Failed to parse Date: " + jsonElement.getAsString(), lastException);
             }
-            throw new JsonParseException("Failed to parse Date: " + jsonElement.getAsString(), lastException);
+        });
+
+        // Build the Gson instance from the GsonBuilder
+        Gson gson = gsonBuilder.create();
+
+        // Use this Gson instance for JSON parsing
+        try {
+            JsonReader reader = new JsonReader(new FileReader("assets.json"));
+            JsonElement jsonElement = JsonParser.parseReader(reader);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+            JsonArray books = jsonObject.getAsJsonArray("books");
+            for (JsonElement book : books) {
+                Asset book1 = gson.fromJson(book, Book.class);
+                assetRepository.addAsset(book1);
+            }
+
+            JsonArray laptops = jsonObject.getAsJsonArray("laptops");
+            for (JsonElement laptop : laptops) {
+                Asset laptop1 = gson.fromJson(laptop, Laptop.class);
+                assetRepository.addAsset(laptop1);
+            }
+
+            JsonArray newsletters = jsonObject.getAsJsonArray("newsletters");
+            for (JsonElement newsletter : newsletters) {
+                Asset newsletter1 = gson.fromJson(newsletter, NewsLetter.class);
+                assetRepository.addAsset(newsletter1);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-    });
-
-    // Build the Gson instance from the GsonBuilder
-    Gson gson = gsonBuilder.create();
-
-    // Use this Gson instance for JSON parsing
-    try {
-        JsonReader reader = new JsonReader(new FileReader("assets.json"));
-        JsonElement jsonElement = JsonParser.parseReader(reader);
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-        JsonArray books = jsonObject.getAsJsonArray("books");
-        for (JsonElement book : books) {
-            Asset book1 = gson.fromJson(book, Book.class);
-            assetRepository.addAsset(book1);
-        }
-
-        JsonArray laptops = jsonObject.getAsJsonArray("laptops");
-        for (JsonElement laptop : laptops) {
-            Asset laptop1 = gson.fromJson(laptop, Laptop.class);
-            assetRepository.addAsset(laptop1);
-        }
-
-        JsonArray newsletters = jsonObject.getAsJsonArray("newsletters");
-        for (JsonElement newsletter : newsletters) {
-            Asset newsletter1 = gson.fromJson(newsletter, NewsLetter.class);
-            assetRepository.addAsset(newsletter1);
-        }
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
     }
-}
-
 
 }

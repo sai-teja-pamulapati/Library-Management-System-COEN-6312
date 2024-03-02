@@ -1,5 +1,6 @@
 package com.university.library.model.assets.digital;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NewsLetter extends DigitalAsset {
@@ -30,5 +31,16 @@ public class NewsLetter extends DigitalAsset {
 
     public void setPublication(String publication) {
         this.publication = publication;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
+        return "NewsLetter Details: \n" +
+                "Asset ID: " + getAssetId() + "\n" +
+                "Publication Date: " + dateFormat.format(date) + "\n" +
+                "Publication: " + publication + "\n" +
+                "Title: " + getTitle() + "\n" +
+                "Access Link: " + getAccessLink() + "\n" ;
     }
 }

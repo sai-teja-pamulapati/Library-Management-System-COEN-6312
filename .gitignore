@@ -31,4 +31,4 @@ replay_pid*
 .idea/*
 
 #VScode Files
-.vscode/settings.json
+.vscode/*
