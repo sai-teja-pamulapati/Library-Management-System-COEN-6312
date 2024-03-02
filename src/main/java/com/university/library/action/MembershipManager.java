@@ -28,9 +28,9 @@ public class MembershipManager {
             return;
         }
 
-        System.out.println("enter the membership start date(yyyy-MM-dd)");
-        String startDateString = scanner.next();
-        Date startDate = parseDate(startDateString);
+        // System.out.println("enter the membership start date(yyyy-MM-dd)");
+        // String startDateString = scanner.next();
+        Date startDate = new Date(); // parseDate(startDateString);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDate);
@@ -81,6 +81,7 @@ public class MembershipManager {
         if (membership != null) {
             System.out.println("are you sure you want to renew ur membership ? (yes/no)");
             String response = scanner.nextLine();
+            System.out.println(response);
             if (response.equals("yes")) {
 
                 Date endDate = membership.getEndDate();
