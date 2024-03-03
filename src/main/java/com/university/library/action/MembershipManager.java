@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.Date;
 
 import com.university.library.App;
-import com.university.library.model.MembershipManagement;
+import com.university.library.model.Membership;
 import com.university.library.repository.MembershipAssetRepository;
 import com.university.library.model.users.UserRole;
 
@@ -28,16 +28,16 @@ public class MembershipManager {
             return;
         }
 
-        System.out.println("enter the membership start date(yyyy-MM-dd)");
-        String startDateString = scanner.next();
-        Date startDate = parseDate(startDateString);
+        // System.out.println("enter the membership start date(yyyy-MM-dd)");
+        // String startDateString = scanner.next();
+        Date startDate = new Date(); // parseDate(startDateString);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDate);
         calendar.add(Calendar.MONTH, 3);
         Date endDate = calendar.getTime();
 
-        MembershipManagement membership = new MembershipManagement();
+        Membership membership = new Membership();
         membership.setUserId(App.getLoggedInUser().getUserId());
         membership.setMembershipAmountPaid(58.0);
         membership.setStartDate(startDate);
@@ -59,7 +59,7 @@ public class MembershipManager {
     }
 
     public static void displayMembership(String userId) {
-        MembershipManagement membership = membershipRepository.getMembership(userId);
+        Membership membership = membershipRepository.getMembership(userId);
         if (membership != null) {
             if (membership.isMembershipStatus()) {
                 System.out.println("membership details retrieved");
@@ -68,17 +68,20 @@ public class MembershipManager {
                 System.out.println("AmountPaid  :" + membership.getMembershipAmountPaid());
                 System.out.println("statusOFMembership  :" + membership.isMembershipStatus());
             } else {
-                System.out.println("no membership found \n" + userId);
+                System.out.println("Membership is cancelled \n");
             }
+        } else {
+            System.out.println("Membership not found  \n");
         }
     }
 
     public static void renewMembership(String userId) {
-        MembershipManagement membership = membershipRepository.getMembership(userId);
+        Membership membership = membershipRepository.getMembership(userId);
         // .out.println(" membership looking for id " + membership);
         if (membership != null) {
             System.out.println("are you sure you want to renew ur membership ? (yes/no)");
             String response = scanner.nextLine();
+            System.out.println(response);
             if (response.equals("yes")) {
 
                 Date endDate = membership.getEndDate();

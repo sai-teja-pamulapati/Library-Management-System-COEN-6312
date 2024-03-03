@@ -4,14 +4,14 @@ import com.university.library.*;
 
 import java.util.Date;
 
-public class MembershipManagement {
+public class Membership {
     private boolean membershipStatus;
     private double membershipAmountPaid;
     private Date startDate;
     private String userId;
     private Date endDate;
 
-    public MembershipManagement(boolean membershipStatus, double membershipAmountPaid, Date startDate, String userId,
+    public Membership(boolean membershipStatus, double membershipAmountPaid, Date startDate, String userId,
             Date endDate) {
         this.membershipStatus = membershipStatus;
         this.membershipAmountPaid = membershipAmountPaid;
@@ -20,7 +20,7 @@ public class MembershipManagement {
         this.endDate = endDate;
     }
 
-    public MembershipManagement() {
+    public Membership() {
     }
 
     public String getuserId() {

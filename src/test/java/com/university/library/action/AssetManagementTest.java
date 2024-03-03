@@ -19,14 +19,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 public class AssetManagementTest {
@@ -112,7 +118,69 @@ public class AssetManagementTest {
 
     @Test
     public void testAddBook() {
+        // input for book details
+        String simulatedInput = String.join("\n",
+                "ABCD", // Title
+                "http://www.abcdpreview.com", // URL preview
+                "http://www.abcdlogo.com", // URL logo
+                "0123456789", // ISBN
+                "ABCD Private", // Publisher
+                "01/01/2020", // Published Date
+                "XYZ", // Author
+                "Alphabet", // Subject
+                "Description", // Description
+                "2", // Floor
+                "3", // Row
+                "Literature", // Section
+                "4" // Shelf
+        );
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+        when(assetRepository.addAsset(any(Book.class))).thenReturn(true);
+
+        assetManagement.addBook();
+
+        verify(assetRepository).addAsset(argThat(book -> book instanceof Book &&
+                "ABCD".equals(book.getTitle()) &&
+                "0123456789".equals(((Book) book).getIsbn())));
+
+        assertTrue(outContent.toString().contains("Book Added Successfully"), "Expected success message not found in console output.");
     }
+
+    @Test
+    public void testAddBookFailure() {
+        // input for book details
+        String simulatedInput = String.join("\n",
+                "ABCD", // Title
+                "http://www.abcdpreview.com", // URL preview
+                "http://www.abcdlogo.com", // URL logo
+                "0123456789", // ISBN
+                "ABCD Private", // Publisher
+                "01/01/2020", // Published Date
+                "XYZ", // Author
+                "Alphabet", // Subject
+                "Description", // Description
+                "2", // Floor
+                "3", // Row
+                "Literature", // Section
+                "4"  // Shelf
+        );
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+        when(assetRepository.addAsset(any(Book.class))).thenReturn(false);
+
+        assetManagement.addBook();
+
+
+        assertTrue(outContent.toString().contains("Book addition failed"), "Expected failure message not found in console output.");
+    }
+
+
+
 
     @Test
     void testPrintAndGetBorrowingHistory() {
