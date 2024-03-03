@@ -4,6 +4,7 @@ import com.university.library.App;
 import com.university.library.model.LoanAsset;
 import com.university.library.model.assets.Asset;
 import com.university.library.model.assets.physical.Book;
+import com.university.library.model.assets.physical.PhysicalAsset;
 import com.university.library.model.users.User;
 import com.university.library.repository.AssetRepository;
 import com.university.library.repository.LoanAssetRepository;
@@ -215,20 +216,20 @@ public class AssetManagement {
         System.out.println("Enter Book's title");
         String title = scanner.nextLine();
         System.out.println("Enter URL for Book preview");
-        String URLpreview = scanner.nextLine();
+        String urlPreview = scanner.nextLine();
         System.out.println("Enter URL for Book's logo");
-        String URLlogo = scanner.nextLine();
-        Boolean availibility = true;
+        String urlLogo = scanner.nextLine();
+        Boolean availability = true;
         System.out.println("Enter Book's ISBN");
         String ISBN = scanner.nextLine();
         System.out.println("Enter Book's Publisher");
         String publisher = scanner.nextLine();
         System.out.println("Enter Published Date in format dd/MM/yyyy");
-        String datestr = scanner.nextLine();
+        String dateStr = scanner.nextLine();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
         try {
-            date = sdf.parse(datestr);
+            date = sdf.parse(dateStr);
         } catch (ParseException e) {
             System.out.println("Invalid Format");
             return;
@@ -247,35 +248,56 @@ public class AssetManagement {
         String section = scanner.nextLine();
         System.out.println("Enter the Shelf for Book");
         String shelf = scanner.nextLine();
-        Book book = new Book(null, title, URLpreview, URLlogo, availibility, floor, section, row, shelf, ISBN, publisher, date, author, subject, description);
+        addBookToRepository(title, urlPreview, urlLogo, availability, floor, section, row, shelf, ISBN, publisher, date, author, subject, description);
+
+    }
+
+    public Asset addBookToRepository( String title, String urlPreview, String urlLogo, Boolean availability, String floor, String section, String row, String shelf, String ISBN, String publisher, Date date, String author, String subject, String description) {
+        Book book = new Book( null,title, urlPreview, urlLogo, availability, floor, section, row, shelf, ISBN, publisher, date, author, subject, description);
         boolean checkAdd = assetRepository.addAsset(book);
-        if (checkAdd == true) {
-            System.out.println("Book Added Successfully");
+        if (checkAdd) {
+            System.out.println("Book Added Successfully with ID: " + book.getAssetId());
+            return book;
         } else {
             System.out.println("Book addition failed");
+            return null;
         }
+    }
 
+    public void displayAsstes(){
+        List<Asset> allAssets = assetRepository.getAllAssets();
+        System.out.println("Following is the list of assets");
+        System.out.println("******************************************************************************************");
+        for (int i = 0; i < allAssets.size(); i++){
+            System.out.println(allAssets.get(i));
+        }
+        System.out.println("******************************************************************************************");
     }
 
     public void removeBook() {
-        assetRepository.displayAsstes();
+        displayAsstes();
         System.out.println("Enter the Book ID to Remove the Book");
         String ID = scanner.nextLine();
-        assetRepository.removeAsset(ID);
+        removeBookFromRepository(ID);
         System.out.println("Book removed Successfully");
     }
 
+    public Asset removeBookFromRepository(String ID){
+        return assetRepository.removeAsset(ID);
+    }
+
     public void updateBook() {
-        assetRepository.displayAsstes();
+        displayAsstes();
         System.out.println("Select/Enter Book ID to update it's content");
         String id = scanner.nextLine();
+        List<Asset> resultsForSearch = getResultsForSearch(id);
         while (true) {
             try {
                 System.out.println("Please Select from the following options"
                         + "Enter 1 to update Title"
                         + "Enter 2 to update preview"
                         + "Enter 3 to update Logo "
-                        + "Enter 4 to update ISBM"
+                        + "Enter 4 to update ISBN"
                         + "Enter 5 to update Publisher"
                         + "Enter 6 to update Published Date"
                         + "Enter 7 to update Book's Author"
@@ -288,6 +310,7 @@ public class AssetManagement {
                 int select = scanner.nextInt();
                 switch (select) {
                     case 1:
+                        //assetRepository.update();
                         break;
                     case 2:
                         break;
