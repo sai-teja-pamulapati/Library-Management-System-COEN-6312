@@ -1,6 +1,5 @@
 package com.university.library.action;
 
-import com.university.library.model.users.nonacademic.NonAcademic;
 import java.io.Console;
 import java.util.Scanner;
 import com.university.library.App;

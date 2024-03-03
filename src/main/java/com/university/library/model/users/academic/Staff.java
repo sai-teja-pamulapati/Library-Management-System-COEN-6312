@@ -2,7 +2,7 @@ package com.university.library.model.users.academic;
 
 import com.university.library.model.users.UserRole;
 
-public class Staff extends Academic {
+public class Staff extends AcademicUser {
 
     private String department;
 

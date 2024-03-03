@@ -295,7 +295,7 @@ public class AssetManagementTest {
         Laptop laptopResult= (Laptop) resultAsset;
         assertEquals(title, laptopResult.getTitle());
         assertEquals(brand, laptopResult.getBrand());
-        assertEquals(model, laptopResult.getModel());
+        assertEquals(model, laptopResult.getModelNumber());
         assertEquals(processor, laptopResult.getProcessor());
     }
 

@@ -1,10 +1,28 @@
 package com.university.library.model.assets.physical;
 
 public class Laptop extends PhysicalAsset {
+    private String serialNumber;
     private String brand;
-    private String model;
+    private String modelNumber;
+    private String make;
     private String processor;
     private String ram;
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getMake() {
+        return make;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
 
     public String getBrand() {
         return brand;
@@ -14,12 +32,12 @@ public class Laptop extends PhysicalAsset {
         this.brand = brand;
     }
 
-    public String getModel() {
-        return model;
+    public String getModelNumber() {
+        return modelNumber;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setModelNumber(String modelNumber) {
+        this.modelNumber = modelNumber;
     }
 
     public String getProcessor() {
@@ -69,7 +87,7 @@ public class Laptop extends PhysicalAsset {
     public Laptop(String assetID , String title , String URLpreview , String URLlogo , Boolean availability , String floor , String row , String section , String shelf , String brand , String model , String processor , String ram , String storage , String displaySize , String weight) {
         super(assetID , title , URLpreview , URLlogo , availability , floor , row , section , shelf);
         this.brand = brand;
-        this.model = model;
+        this.modelNumber = model;
         this.processor = processor;
         this.ram = ram;
         this.storage = storage;
@@ -82,7 +100,7 @@ public class Laptop extends PhysicalAsset {
         return "Laptop Details: \n" +
                 "assetId : " + getAssetId() + '\n' +
                 "brand : " + brand + '\n' +
-                "model : " + model + '\n' +
+                "model : " + modelNumber + '\n' +
                 "processor : " + processor + '\n' +
                 "ram : " + ram + '\n' +
                 "storage : " + storage + '\n' +
