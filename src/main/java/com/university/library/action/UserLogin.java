@@ -63,7 +63,7 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3: View Newsletter\n" +
                         "4: buy membership\n" +
-                        "5: Logout\n" +
+                        "5: Logout\n"+
                         "******************************************************************************************\n");
                 String freeUserCommands = scanner.nextLine();
                 switch (freeUserCommands) {
@@ -104,7 +104,8 @@ public class UserLogin {
                         "6: display membership\n" +
                         "7: cancel membership\n" +
                         "8 : renew membership\n" +
-                        "9: Logout\n");
+                        "9: Logout\n"+
+                        "******************************************************************************************\n");
 
                 String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
