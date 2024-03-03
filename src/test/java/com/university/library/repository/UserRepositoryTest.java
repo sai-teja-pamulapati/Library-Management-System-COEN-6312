@@ -2,8 +2,8 @@ package com.university.library.repository;
 
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.Before;
 import static org.junit.Assert.*;
 
 public class UserRepositoryTest {

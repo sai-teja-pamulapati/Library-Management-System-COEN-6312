@@ -1,68 +1,36 @@
 package com.university.library.action;
 
+import com.university.library.model.users.User;
+import com.university.library.model.users.UserRole;
+import com.university.library.repository.UserRepository;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class UserRegistrationTest {
 
-    private final PrintStream originalOut = System.out;
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private ByteArrayInputStream testInput;
-    private final PrintStream originalIn = System.out;
+    private UserRepository userRepository;
 
-    @BeforeEach
-    public void setUpStreams() {
-        // Setup done in each test to allow different inputs
-    }
-
-    private void setInput(String data) {
-        testInput = new ByteArrayInputStream(data.getBytes());
-        System.setOut(new PrintStream(outContent));
-        System.setIn(testInput);
-    }
-
-    @AfterEach
-    public void restoreStreams() {
-        System.setOut(originalOut);
-        System.setIn(System.in);
+    @Before
+    public void setUp() {
+        userRepository = UserRepository.getInstance(); 
     }
 
     @Test
-    public void testRegistrationWithMissingInput() {
-        setInput("John Doe\njohn.doe@example.com\n\n1234567890\n123 Main St\n2000-01-01\n1\n2");
-        // UserRegistration.register(true);
-        assertTrue(outContent.toString().contains("Invalid input") || outContent.toString().contains("failed"));
+    public void testAddUser1() {
+        User user1 = new User("Mike Smith", "mike.smith@example.com", "password123", "1122334455", "789 Pine St", "03-03-1990", "Male", UserRole.ADMIN);
+        assertTrue(userRepository.addUser(user1));
+
+        // User with same email ID.
+        User user2 = new User("Smith Mike", "mike.smith@example.com", "PPSSPP123123", "1234567890", "123 Yes St", "07-09-2000", "Male", UserRole.STUDENT);
+        assertFalse(userRepository.addUser(user2));
     }
 
     @Test
-    public void testRegistrationWithInvalidEmail() {
-        setInput("John Doe\nnotanemail\npassword\n1234567890\n123 Main St\n2000-01-01\n1\n2");
-        // UserRegistration.register(true);
-        assertTrue(outContent.toString().contains("Invalid input") || outContent.toString().contains("failed"));
+    public void testAddUser2() {
+        User user = new User("Pradheep", "pradheep.shankar@example.com", "PPSSPP123123", "1234567890", "123 Yes St", "07-09-2000", "Male", UserRole.STUDENT);
+        assertTrue(userRepository.addUser(user));
     }
 
-    @Test
-    public void testRegistrationWithInvalidGenderSelection() {
-        setInput("John Doe\njohn.doe@example.com\npassword\n1234567890\n123 Main St\n2000-01-01\n4\n2");
-        // UserRegistration.register(true);
-        assertTrue(outContent.toString().contains("Invalid option"));
-    }
-
-    @Test
-    public void testRegistrationWithInvalidRoleSelection() {
-        setInput("John Doe\njohn.doe@example.com\npassword\n1234567890\n123 Main St\n2000-01-01\n1\n99");
-        // UserRegistration.register(true);
-        assertTrue(outContent.toString().contains("Invalid selection"));
-    }
-
-    // Note: Uncomment UserRegistration.register(true); in each test to run the registration process
-    // after adapting UserRegistration for testability or choosing an integration testing approach.
 }
