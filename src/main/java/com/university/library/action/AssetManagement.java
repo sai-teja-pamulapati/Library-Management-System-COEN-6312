@@ -105,6 +105,7 @@ public class AssetManagement {
         Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
         if (requestedAssetOptional.isEmpty()) {
             System.out.println("Requested Object does not exist");
+            return null;
         }
         Asset requestedAsset = requestedAssetOptional.get();
         return requestedAsset.loanAsset();
