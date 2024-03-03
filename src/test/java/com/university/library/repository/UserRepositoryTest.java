@@ -1,8 +1,7 @@
-package com.university.library;
+package com.university.library.repository;
 
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
-import com.university.library.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

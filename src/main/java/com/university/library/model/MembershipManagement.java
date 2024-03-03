@@ -1,7 +1,5 @@
 package com.university.library.model;
 
-import com.university.library.*;
-
 import java.util.Date;
 
 public class MembershipManagement {

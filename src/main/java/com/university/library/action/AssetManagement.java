@@ -211,7 +211,6 @@ public class AssetManagement {
     // Asset: book functinalities}
 
     public void addBook(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Book's title");
         String title = scanner.nextLine();
         System.out.println("Enter URL for Book preview");

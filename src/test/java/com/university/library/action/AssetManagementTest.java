@@ -48,6 +48,7 @@ public class AssetManagementTest {
     private Asset asset;
     private List<Asset> allAssets;
 
+    @SuppressWarnings("deprecation")
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);

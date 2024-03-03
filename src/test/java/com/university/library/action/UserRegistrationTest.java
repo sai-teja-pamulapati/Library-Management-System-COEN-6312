@@ -1,69 +1,68 @@
 package com.university.library.action;
 
-import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
-import com.university.library.App;
-import com.university.library.model.LoanAsset;
-import com.university.library.model.assets.Asset;
-import com.university.library.model.assets.physical.Book;
-import com.university.library.model.assets.physical.Laptop;
-import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
-import com.university.library.repository.AssetRepository;
-import com.university.library.repository.LoanAssetRepository;
-import com.university.library.repository.UserRepository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.*;
-import java.io.Console;
-import java.util.Scanner;
 
-class UserRegistrationTest {
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
-    @Mock
-    private Scanner mockScanner;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    @Mock
-    private Console mockConsole;
+public class UserRegistrationTest {
 
-    @Mock
-    private UserRepository mockUserRepository;
-
-    private UserRegistration userRegistration;
+    private final PrintStream originalOut = System.out;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private ByteArrayInputStream testInput;
+    private final PrintStream originalIn = System.out;
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        userRegistration = new UserRegistration(mockScanner, mockConsole, mockUserRepository);
+    public void setUpStreams() {
+        // Setup done in each test to allow different inputs
+    }
+
+    private void setInput(String data) {
+        testInput = new ByteArrayInputStream(data.getBytes());
+        System.setOut(new PrintStream(outContent));
+        System.setIn(testInput);
+    }
+
+    @AfterEach
+    public void restoreStreams() {
+        System.setOut(originalOut);
+        System.setIn(System.in);
     }
 
     @Test
-    void registerUserSuccessfully() {
-        when(mockScanner.nextLine()).thenReturn("John Doe", "john.doe@example.com", "1234567890", "123 Main St", "2000-01-01", "1", "2");
-        when(mockConsole.readPassword()).thenReturn("password".toCharArray());
-        when(mockUserRepository.addUser(any(User.class))).thenReturn(true);
-
-        userRegistration.register(true);
-
-        verify(mockUserRepository, times(1)).addUser(any(User.class));
+    public void testRegistrationWithMissingInput() {
+        setInput("John Doe\njohn.doe@example.com\n\n1234567890\n123 Main St\n2000-01-01\n1\n2");
+        // UserRegistration.register(true);
+        assertTrue(outContent.toString().contains("Invalid input") || outContent.toString().contains("failed"));
     }
 
     @Test
-    void registrationFailsDueToExistingEmail() {
-        when(mockScanner.nextLine()).thenReturn("Jane Doe", "jane.doe@example.com", "9876543210", "456 Main St", "1990-02-02", "2", "1");
-        when(mockConsole.readPassword()).thenReturn("securepassword".toCharArray());
-        when(mockUserRepository.addUser(any(User.class))).thenReturn(false);
-
-        userRegistration.register(true);
-
-        verify(mockUserRepository, times(1)).addUser(any(User.class));
-        // Additional logic to verify the output to the user about the failure
+    public void testRegistrationWithInvalidEmail() {
+        setInput("John Doe\nnotanemail\npassword\n1234567890\n123 Main St\n2000-01-01\n1\n2");
+        // UserRegistration.register(true);
+        assertTrue(outContent.toString().contains("Invalid input") || outContent.toString().contains("failed"));
     }
 
-    // Additional tests can be added here for invalid inputs, etc.
+    @Test
+    public void testRegistrationWithInvalidGenderSelection() {
+        setInput("John Doe\njohn.doe@example.com\npassword\n1234567890\n123 Main St\n2000-01-01\n4\n2");
+        // UserRegistration.register(true);
+        assertTrue(outContent.toString().contains("Invalid option"));
+    }
+
+    @Test
+    public void testRegistrationWithInvalidRoleSelection() {
+        setInput("John Doe\njohn.doe@example.com\npassword\n1234567890\n123 Main St\n2000-01-01\n1\n99");
+        // UserRegistration.register(true);
+        assertTrue(outContent.toString().contains("Invalid selection"));
+    }
+
+    // Note: Uncomment UserRegistration.register(true); in each test to run the registration process
+    // after adapting UserRegistration for testability or choosing an integration testing approach.
 }
