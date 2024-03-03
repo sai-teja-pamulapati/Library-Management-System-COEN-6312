@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.Date;
 
 import com.university.library.App;
-import com.university.library.model.MembershipManagement;
+import com.university.library.model.Membership;
 import com.university.library.repository.MembershipAssetRepository;
 import com.university.library.model.users.UserRole;
 
@@ -37,7 +37,7 @@ public class MembershipManager {
         calendar.add(Calendar.MONTH, 3);
         Date endDate = calendar.getTime();
 
-        MembershipManagement membership = new MembershipManagement();
+        Membership membership = new Membership();
         membership.setUserId(App.getLoggedInUser().getUserId());
         membership.setMembershipAmountPaid(58.0);
         membership.setStartDate(startDate);
@@ -59,7 +59,7 @@ public class MembershipManager {
     }
 
     public static void displayMembership(String userId) {
-        MembershipManagement membership = membershipRepository.getMembership(userId);
+        Membership membership = membershipRepository.getMembership(userId);
         if (membership != null) {
             if (membership.isMembershipStatus()) {
                 System.out.println("membership details retrieved");
@@ -76,7 +76,7 @@ public class MembershipManager {
     }
 
     public static void renewMembership(String userId) {
-        MembershipManagement membership = membershipRepository.getMembership(userId);
+        Membership membership = membershipRepository.getMembership(userId);
         // .out.println(" membership looking for id " + membership);
         if (membership != null) {
             System.out.println("are you sure you want to renew ur membership ? (yes/no)");
