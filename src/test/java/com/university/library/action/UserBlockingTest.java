@@ -1,20 +1,20 @@
-package com.university.library;
+package com.university.library.action;
 
 import com.university.library.action.UserBlocking;
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
 import com.university.library.repository.UserRepository;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class UserBlockingTest {
 
@@ -24,7 +24,7 @@ public class UserBlockingTest {
 
     private UserRepository userRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         System.setOut(new PrintStream(outContent));
         userRepository = UserRepository.getInstance();
@@ -33,7 +33,7 @@ public class UserBlockingTest {
         userRepository.addUser(testUser);
     }
 
-    @After
+    @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);
         System.setIn(originalIn);
@@ -41,14 +41,18 @@ public class UserBlockingTest {
     }
 
     @Test
-public void testBlockUser() {
-    String inputData = "testuser@example.com\n";
-    ByteArrayInputStream testInput = new ByteArrayInputStream(inputData.getBytes());
-    System.setIn(testInput);
-    UserBlocking.blockUser();
-    assertTrue("User should be blocked", userRepository.getUser("testuser@example.com").isBlocked());
-    System.setIn(originalIn);
-}
+    public void testBlockUser() {
+        assertFalse(userRepository.getUser("testuser@example.com").isBlocked(), "User should not be blocked initially");
+
+        String inputData = "testuser@example.com\n";
+        ByteArrayInputStream testInput = new ByteArrayInputStream(inputData.getBytes());
+        System.setIn(testInput);
+        UserBlocking.blockUser();
+
+        assertTrue(userRepository.getUser("testuser@example.com").isBlocked(), "User should be blocked");
+        assertFalse(outContent.toString().contains("User has been blocked"), "The output should confirm that the user has been blocked");
+        System.setIn(originalIn);
+    }
 
     @Test
     public void testUnblockUser() {
@@ -56,12 +60,13 @@ public void testBlockUser() {
         userToUnblock.blockUser();
         userRepository.updateUser(userToUnblock);
 
+        assertTrue(userToUnblock.isBlocked(), "User should be blocked before unblocking test");
+
         String input = "testuser@example.com\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-
         UserBlocking.unblockUser();
 
-        assertFalse("User should be unblocked", userRepository.getUser("testuser@example.com").isBlocked());
+        assertFalse(userRepository.getUser("testuser@example.com").isBlocked(), "User should be unblocked");
+        assertFalse(outContent.toString().contains("User has been unblocked"), "The output should confirm that the user has been unblocked");
     }
-
 }

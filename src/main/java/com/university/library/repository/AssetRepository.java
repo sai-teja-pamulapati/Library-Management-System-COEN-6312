@@ -25,6 +25,11 @@ public class AssetRepository {
         return instance;
     }
 
+    public static void setInstance(AssetRepository mockInstance) {
+        instance = mockInstance;
+    }
+
+
     private boolean exists(String assetId) {
         return assets.containsKey(assetId);
     }
