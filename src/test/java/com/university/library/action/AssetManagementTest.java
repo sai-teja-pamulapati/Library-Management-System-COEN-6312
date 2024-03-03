@@ -38,7 +38,7 @@ public class AssetManagementTest {
     @InjectMocks
     AssetRepository assetRepository;
 
-    @InjectMocks
+    @Mock
     AssetManagement assetManagement;
 
     @Mock
@@ -120,9 +120,9 @@ public class AssetManagementTest {
         String title = "ABCD" ;
         String urlPreview = "WWW.ABCDPreview.com";
         String urlLogo = "WWW.ABCDLogo.com";
-        String ISBN = "0123456789";
-        String Publisher = "ABCD Private";
-        String Description = "Description";
+        String isbn = "0123456789";
+        String publisher = "ABCD Private";
+        String description = "description";
         Date date = new Date();
         String author = "XYZ";
         String subject = "Alphabet";
@@ -130,11 +130,15 @@ public class AssetManagementTest {
         String row = "3";
         String section = "Literature";
         String shelf = "4";
-        when(assetManagement.addBookToRepository(title, urlPreview, urlLogo, true, floor, section, row, shelf, ISBN, Publisher, date, author, subject, Description)).thenReturn(asset);
-        Asset resultAsset = assetManagement.addBookToRepository(title, urlPreview, urlLogo, true, floor, section, row, shelf, ISBN, Publisher, date, author, subject, Description);
+        Book expectedBook = new Book(null, title, urlPreview, urlLogo, true, floor, section, row, shelf, isbn, publisher, date, author, subject, description);
+
+//        when(assetRepository.addAsset(expectedBook)).thenCallRealMethod();
+        when(assetRepository.addAsset(eq(expectedBook))).thenReturn(true);
+
+        Asset resultAsset = assetManagement.addBookToRepository(title, urlPreview, urlLogo, true, floor, section, row, shelf, isbn, publisher, date, author, subject, description);
         assertTrue(resultAsset instanceof Book);
         Book resultBook = (Book) resultAsset;
-        assertEquals(ISBN , resultBook.getIsbn());
+        assertEquals(isbn , resultBook.getIsbn());
         assertEquals(title,resultBook.getTitle());
         assertEquals(author,resultBook.getAuthor());
         verify(assetRepository, times(1)).addAsset(book);
