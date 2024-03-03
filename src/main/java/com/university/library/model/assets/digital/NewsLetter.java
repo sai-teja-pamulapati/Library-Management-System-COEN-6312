@@ -40,7 +40,6 @@ public class NewsLetter extends DigitalAsset {
                 "Asset ID: " + getAssetId() + "\n" +
                 "Publication Date: " + dateFormat.format(date) + "\n" +
                 "Publication: " + publication + "\n" +
-                "Title: " + getTitle() + "\n" +
                 "Access Link: " + getAccessLink() + "\n" ;
     }
 }
