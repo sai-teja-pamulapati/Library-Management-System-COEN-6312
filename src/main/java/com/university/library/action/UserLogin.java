@@ -10,7 +10,7 @@ public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
     private static AssetManagement assetManagement = AssetManagement.getInstance();
-    private static DiscussionRoomManagement roomManagement = new DiscussionRoomManagement();
+    private static PresentationRoomManagement roomManagement = new PresentationRoomManagement();
 
     public static void login() {
         Console console = System.console();
