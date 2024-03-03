@@ -267,11 +267,11 @@ public class AssetManagement {
     public void displayAsstes(){
         List<Asset> allAssets = assetRepository.getAllAssets();
         System.out.println("Following is the list of assets");
-        System.out.println("");
+        System.out.println("******************************************************************************************");
         for (int i = 0; i < allAssets.size(); i++){
             System.out.println(allAssets.get(i));
         }
-        System.out.println("");
+        System.out.println("******************************************************************************************");
     }
 
     public void removeBook() {

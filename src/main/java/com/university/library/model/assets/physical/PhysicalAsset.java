@@ -11,7 +11,7 @@ public abstract class PhysicalAsset extends Asset {
 
     
     public PhysicalAsset(String assetID, String title, String URLpreview, String URLlogo, Boolean availability, String floor, String row, String section, String shelf) {
-        super(assetID, title, URLpreview, URLlogo, availability);
+        super(null, title, URLpreview, URLlogo, availability);
         this.floor = floor;
         this.row = row;
         this.section = section;
