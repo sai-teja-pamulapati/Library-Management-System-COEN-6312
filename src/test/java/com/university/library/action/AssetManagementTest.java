@@ -12,6 +12,7 @@ import com.university.library.model.users.UserRole;
 import com.university.library.repository.AssetRepository;
 import com.university.library.repository.LoanAssetRepository;
 import com.university.library.repository.UserRepository;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ public class AssetManagementTest {
     @Mock
     LoanAssetRepository loanAssetRepository;
 
-    @Mock
+    @InjectMocks
     AssetRepository assetRepository;
 
     @InjectMocks
@@ -42,6 +43,10 @@ public class AssetManagementTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    Book book;
+
 
     private User testUser;
     private List<LoanAsset> testLoanAssetList;
@@ -55,8 +60,7 @@ public class AssetManagementTest {
 
         testUser = new User("Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male", UserRole.STUDENT);
         testUser.setUserId("1");
-        asset = new Book("12" ,"title", "URLpreview", "URLlogo", true, "floor", "section", "row", "shelf", "ISBN", "publisher", new Date(), "author", "subject", "description");
-
+        asset = new Book(null, "title", "preview", "logo", true, "floor", "row", "section","shelf", "ISBN", "publisher", new Date(), "author", "subject", "description");
         testLoanAssetList = getLoanAssetList(testUser, asset);
 
     }
@@ -112,6 +116,40 @@ public class AssetManagementTest {
 
     @Test
     public void testAddBook() {
+
+        String title = "ABCD" ;
+        String urlPreview = "WWW.ABCDPreview.com";
+        String urlLogo = "WWW.ABCDLogo.com";
+        String ISBN = "0123456789";
+        String Publisher = "ABCD Private";
+        String Description = "Description";
+        Date date = new Date();
+        String author = "XYZ";
+        String subject = "Alphabet";
+        String floor = "2";
+        String row = "3";
+        String section = "Literature";
+        String shelf = "4";
+        when(assetManagement.addBookToRepository(title, urlPreview, urlLogo, true, floor, section, row, shelf, ISBN, Publisher, date, author, subject, Description)).thenReturn(asset);
+        Asset resultAsset = assetManagement.addBookToRepository(title, urlPreview, urlLogo, true, floor, section, row, shelf, ISBN, Publisher, date, author, subject, Description);
+        assertTrue(resultAsset instanceof Book);
+        Book resultBook = (Book) resultAsset;
+        assertEquals(ISBN , resultBook.getIsbn());
+        assertEquals(title,resultBook.getTitle());
+        assertEquals(author,resultBook.getAuthor());
+        verify(assetRepository, times(1)).addAsset(book);
+
+
+    }
+    @Test
+    void testRemoveBook(){
+        String assetID = "0";
+        String title = null;
+        when(assetManagement.removeBookFromRepository(assetID)).thenReturn(asset);
+        Asset resultasset = assetManagement.removeBookFromRepository(assetID);
+        assertEquals(title, resultasset.getTitle());
+        verify(assetRepository, times(1)).removeAsset(assetID);
+
     }
 
     @Test
@@ -239,4 +277,5 @@ public class AssetManagementTest {
         assertEquals(assetId , loanAsset.getAssetId());
         assertEquals(testUser.getUserId(), loanAsset.getUserId());
     }
+
 }

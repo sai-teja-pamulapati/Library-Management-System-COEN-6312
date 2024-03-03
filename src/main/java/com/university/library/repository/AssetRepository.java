@@ -5,6 +5,7 @@ import com.university.library.model.assets.digital.NewsLetter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AssetRepository {
@@ -39,6 +40,14 @@ public class AssetRepository {
         }
     }
 
+    public void displayAsstes(){
+        System.out.println("Following is the list of assets");
+        System.out.println("******************************************************************************************");
+        for (Map.Entry<String, Asset> entry : assets.entrySet()){
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+;        }
+        System.out.println("******************************************************************************************");
+    }
     public Asset getAsset(String assetId) {
         return assets.get(assetId);
     }
