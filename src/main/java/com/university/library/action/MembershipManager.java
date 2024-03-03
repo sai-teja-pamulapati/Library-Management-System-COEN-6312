@@ -17,7 +17,7 @@ public class MembershipManager {
     private static Scanner scanner = new Scanner(System.in);
     private static MembershipAssetRepository membershipRepository = new MembershipAssetRepository();
 
-    public static void buyMembership() {
+    public static Membership buyMembership() {
 
         System.out.println("The membership period is 3 months for 58CAD");
         System.out.println("To continue to purchase click 'b'");
@@ -25,7 +25,7 @@ public class MembershipManager {
         String keyword = scanner.nextLine();
         if (!keyword.equals("b")) {
             System.out.println("invalid keyword, purchase stopped");
-            return;
+            return null;
         }
 
         // System.out.println("enter the membership start date(yyyy-MM-dd)");
@@ -56,7 +56,10 @@ public class MembershipManager {
 
         // displayMembership(App.getLoggedInUser().getUserId());
         App.getLoggedInUser().setUserRole(UserRole.PAID_USER);
+        return membership;
     }
+
+    
 
     public static void displayMembership(String userId) {
         Membership membership = membershipRepository.getMembership(userId);
