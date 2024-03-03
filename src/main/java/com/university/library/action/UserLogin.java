@@ -175,10 +175,10 @@ public class UserLogin {
                         assetManagement.addBook();
                         break;
                     case "6":
-                        // assetManagement.removeAsset();
+                        assetManagement.removeBook();
                         break;
                     case "7":
-                        // assetManagement.updateBookDetails();
+                         assetManagement.updateBook();
                         break;
                     case "8":
                         // assetManagement.viewLibraryActivities();

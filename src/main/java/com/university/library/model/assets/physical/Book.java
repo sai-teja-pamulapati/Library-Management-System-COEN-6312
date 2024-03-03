@@ -10,8 +10,8 @@ public class Book extends PhysicalAsset {
     private String subject;
     private String description;
 
-    public Book(String assetID, String title, String URLpreview, String URLlogo,Boolean availability, String floor, String row, String section, String shelf, String isbn, String publisher, Date published, String author, String subject, String description) {
-        super(assetID, title, URLpreview, URLlogo, availability, floor, row, section, shelf);
+    public Book( String assetID, String title, String urlPreview, String urlLogo, Boolean availability, String floor, String row, String section, String shelf, String isbn, String publisher, Date published, String author, String subject, String description) {
+        super(assetID, title, urlPreview, urlLogo, availability, floor, row, section, shelf);
         this.isbn = isbn;
         this.publisher = publisher;
         this.published = published;
