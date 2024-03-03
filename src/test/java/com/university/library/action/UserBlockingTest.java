@@ -1,4 +1,4 @@
-package com.university.library;
+package com.university.library.action;
 
 import com.university.library.action.UserBlocking;
 import com.university.library.model.users.User;
