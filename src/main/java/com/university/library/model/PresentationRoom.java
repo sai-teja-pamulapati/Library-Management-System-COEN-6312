@@ -1,49 +1,29 @@
 package com.university.library.model;
 
+import java.util.List;
+
 public class PresentationRoom {
     private int roomId;
-    private String userId;
-    private String startDate;
-    private String endDate;
+    private List<String> features;
 
-    public PresentationRoom(int roomId, String userId, String startDate, String endDate) {
+    public PresentationRoom(int roomId, List<String> features) {
         this.roomId = roomId;
-        this.userId = userId;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.features = features;
     }
 
-   
     public int getRoomId() {
         return roomId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
     }
 
     public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public List<String> getFeatures() {
+        return features;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setFeatures(List<String> features) {
+        this.features = features;
     }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
 }

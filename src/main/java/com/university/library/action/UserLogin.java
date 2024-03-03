@@ -23,6 +23,8 @@ public class UserLogin {
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
 
+        roomManagement.setUserId(emailId);
+
         User user = User.login(emailId, password);
         if (user == null) {
             return;
