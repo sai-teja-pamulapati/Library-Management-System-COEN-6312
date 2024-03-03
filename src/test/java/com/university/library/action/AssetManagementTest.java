@@ -12,7 +12,6 @@ import com.university.library.model.users.UserRole;
 import com.university.library.repository.AssetRepository;
 import com.university.library.repository.LoanAssetRepository;
 import com.university.library.repository.UserRepository;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,14 +19,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 public class AssetManagementTest {
@@ -35,7 +40,7 @@ public class AssetManagementTest {
     @Mock
     LoanAssetRepository loanAssetRepository;
 
-    @InjectMocks
+    @Mock
     AssetRepository assetRepository;
 
     @InjectMocks
@@ -43,10 +48,6 @@ public class AssetManagementTest {
 
     @Mock
     UserRepository userRepository;
-
-    @Mock
-    Book book;
-
 
     private User testUser;
     private List<LoanAsset> testLoanAssetList;
@@ -61,7 +62,8 @@ public class AssetManagementTest {
 
         testUser = new User("Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male", UserRole.STUDENT);
         testUser.setUserId("1");
-        asset = new Book(null, "title", "preview", "logo", true, "floor", "row", "section","shelf", "ISBN", "publisher", new Date(), "author", "subject", "description");
+        asset = new Book("12" ,"title", "URLpreview", "URLlogo", true, "floor", "section", "row", "shelf", "ISBN", "publisher", new Date(), "author", "subject", "description");
+
         testLoanAssetList = getLoanAssetList(testUser, asset);
 
     }
@@ -117,41 +119,77 @@ public class AssetManagementTest {
 
     @Test
     public void testAddBook() {
+        // input for book details
+        String simulatedInput = String.join("\n",
+                "ABCD", // Title
+                "http://www.abcdpreview.com", // URL preview
+                "http://www.abcdlogo.com", // URL logo
+                "0123456789", // ISBN
+                "ABCD Private", // Publisher
+                "01/01/2020", // Published Date
+                "XYZ", // Author
+                "Alphabet", // Subject
+                "Description", // Description
+                "2", // Floor
+                "3", // Row
+                "Literature", // Section
+                "4" // Shelf
+        );
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
 
-        String title = "ABCD" ;
-        String urlPreview = "WWW.ABCDPreview.com";
-        String urlLogo = "WWW.ABCDLogo.com";
-        String ISBN = "0123456789";
-        String Publisher = "ABCD Private";
-        String Description = "Description";
-        Date date = new Date();
-        String author = "XYZ";
-        String subject = "Alphabet";
-        String floor = "2";
-        String row = "3";
-        String section = "Literature";
-        String shelf = "4";
-        when(assetManagement.addBookToRepository(title, urlPreview, urlLogo, true, floor, section, row, shelf, ISBN, Publisher, date, author, subject, Description)).thenReturn(asset);
-        Asset resultAsset = assetManagement.addBookToRepository(title, urlPreview, urlLogo, true, floor, section, row, shelf, ISBN, Publisher, date, author, subject, Description);
-        assertTrue(resultAsset instanceof Book);
-        Book resultBook = (Book) resultAsset;
-        assertEquals(ISBN , resultBook.getIsbn());
-        assertEquals(title,resultBook.getTitle());
-        assertEquals(author,resultBook.getAuthor());
-        verify(assetRepository, times(1)).addAsset(book);
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+        when(assetRepository.addAsset(any(Book.class))).thenReturn(true);
 
+        assetManagement.addBook();
 
+        verify(assetRepository).addAsset(argThat(book -> book instanceof Book &&
+                "ABCD".equals(book.getTitle()) &&
+                "0123456789".equals(((Book) book).getIsbn())));
+
+        assertTrue(outContent.toString().contains("Book Added Successfully"), "Expected success message not found in console output.");
     }
+
     @Test
-    void testRemoveBook(){
-        String assetID = "0";
-        String title = null;
-        when(assetManagement.removeBookFromRepository(assetID)).thenReturn(asset);
-        Asset resultasset = assetManagement.removeBookFromRepository(assetID);
-        assertEquals(title, resultasset.getTitle());
-        verify(assetRepository, times(1)).removeAsset(assetID);
+    public void testAddBookFailure() {
+        // input for book details
+        String simulatedInput = String.join("\n",
+                "ABCD", // Title
+                "http://www.abcdpreview.com", // URL preview
+                "http://www.abcdlogo.com", // URL logo
+                "0123456789", // ISBN
+                "ABCD Private", // Publisher
+                "01/01/2020", // Published Date
+                "XYZ", // Author
+                "Alphabet", // Subject
+                "Description", // Description
+                "2", // Floor
+                "3", // Row
+                "Literature", // Section
+                "4"  // Shelf
+        );
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
 
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+        when(assetRepository.addAsset(any(Book.class))).thenReturn(false);
+
+        assetManagement.addBook();
+
+
+        assertTrue(outContent.toString().contains("Book addition failed"), "Expected failure message not found in console output.");
     }
+
+    @Test
+    public void testremoveBook(){
+        String assetID = "1";
+        when(assetRepository.removeAsset(String.valueOf(1))).thenReturn(asset);
+        assetManagement.removeBookFromRepository(assetID);
+        verify(assetRepository, times(1)).removeAsset(assetID);
+    }
+
+
+
 
     @Test
     void testPrintAndGetBorrowingHistory() {
@@ -266,7 +304,7 @@ public class AssetManagementTest {
         Laptop laptopResult= (Laptop) resultAsset;
         assertEquals(title, laptopResult.getTitle());
         assertEquals(brand, laptopResult.getBrand());
-        assertEquals(model, laptopResult.getModel());
+        assertEquals(model, laptopResult.getModelNumber());
         assertEquals(processor, laptopResult.getProcessor());
     }
 
@@ -278,5 +316,4 @@ public class AssetManagementTest {
         assertEquals(assetId , loanAsset.getAssetId());
         assertEquals(testUser.getUserId(), loanAsset.getUserId());
     }
-
 }

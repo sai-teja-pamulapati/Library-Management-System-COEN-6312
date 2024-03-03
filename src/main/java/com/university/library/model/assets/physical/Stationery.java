@@ -10,7 +10,7 @@ public class Stationery extends PhysicalAsset {
     private String SKU;
 
     public Stationery(java.lang.String assetID , java.lang.String title , java.lang.String URLpreview , java.lang.String URLlogo , Boolean availability , java.lang.String floor , java.lang.String row , java.lang.String section , java.lang.String shelf) {
-        super(assetID , title , URLpreview , URLlogo , availability , floor , row , section , shelf);
+        super(assetID, title , URLpreview , URLlogo , availability , floor , row , section , shelf);
     }
 
     @Override

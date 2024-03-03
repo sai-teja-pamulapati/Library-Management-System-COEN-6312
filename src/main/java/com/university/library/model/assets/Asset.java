@@ -19,7 +19,6 @@ public abstract class Asset {
     private static AssetRepository assetRepository = AssetRepository.getInstance();
     private static LoanAssetRepository loanAssetRepository = LoanAssetRepository.getInstance();
 
-    
     public Asset() {
         
     }
@@ -84,6 +83,13 @@ public abstract class Asset {
                 '}';
     }
 
+    public void addAsset() {
+        assetRepository.addAsset(this);
+    }
+
+    public void removeAsset() {
+        assetRepository.removeAsset(this.getAssetId());
+    }
 
     public void updateAsset() {
         assetRepository.update(this);

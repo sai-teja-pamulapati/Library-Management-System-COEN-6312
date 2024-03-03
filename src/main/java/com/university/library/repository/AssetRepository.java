@@ -40,14 +40,7 @@ public class AssetRepository {
         }
     }
 
-    public void displayAsstes(){
-        System.out.println("Following is the list of assets");
-        System.out.println("******************************************************************************************");
-        for (Map.Entry<String, Asset> entry : assets.entrySet()){
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-;        }
-        System.out.println("******************************************************************************************");
-    }
+
     public Asset getAsset(String assetId) {
         return assets.get(assetId);
     }
