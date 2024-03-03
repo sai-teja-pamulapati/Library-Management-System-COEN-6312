@@ -179,6 +179,14 @@ public class AssetManagementTest {
         assertTrue(outContent.toString().contains("Book addition failed"), "Expected failure message not found in console output.");
     }
 
+    @Test
+    public void testremoveBook(){
+        String assetID = "1";
+        when(assetRepository.removeAsset(String.valueOf(1))).thenReturn(asset);
+        assetManagement.removeBookFromRepository(assetID);
+        verify(assetRepository, times(1)).removeAsset(assetID);
+    }
+
 
 
 
