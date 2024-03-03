@@ -23,6 +23,14 @@ public class NonAcademic extends User {
         MembershipManager.buyMembership();
     }
 
+    public void renewMemberhsip(String userId) {
+        MembershipManager.renewMembership(userId);
+    }
+
+    public void cancelMemberhsip(String userId) {
+        MembershipManager.cancelMembership(userId);
+    }
+
     public String getOrganisation() {
         return organisation;
     }
