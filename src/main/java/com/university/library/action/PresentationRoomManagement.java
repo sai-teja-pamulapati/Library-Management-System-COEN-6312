@@ -89,8 +89,7 @@ public class PresentationRoomManagement {
         int index = 1;
         for (Integer roomId : roomIds) {
             PresentationRoom room = rooms.get(roomId);
-            String roomDetails = toString(room, index++);
-            System.out.println(roomDetails);
+            System.out.println(index++ + ". " + room);
         }
         
         System.out.println("Select a room by entering its number:");
@@ -127,21 +126,14 @@ public class PresentationRoomManagement {
 
     private void getRoomsByUserId() {
         System.out.println("Booking history for user: " + this.userId);
-        List<RoomBooking> bookings = repository.getRoomsByStudentEmail(this.userId);
+        List<RoomBooking> bookings = repository.getRoomsByUserId(this.userId);
         if (bookings.isEmpty()) {
             System.out.println("No booking history found.");
         } else {
             for (RoomBooking booking : bookings) {
-                System.out.println(toString(booking));
+                System.out.println(booking);
             }
         }
     }
-
-    private String toString(PresentationRoom room, int index) {
-        return index + ". Room ID: " + room.getRoomId() + ", Features: " + String.join(", ", room.getFeatures());
-    }
     
-    private String toString(RoomBooking booking) {
-        return "Room ID: " + booking.getRoomId() + ", Start Date: " + booking.getStartDate() + ", End Date: " + booking.getEndDate();
-    }
 }
