@@ -2,6 +2,8 @@ package com.university.library.repository;
 
 import com.university.library.model.PresentationRoom;
 import com.university.library.model.RoomBooking;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +75,7 @@ public class PresentationRoomRepository {
         return true;
     }
 
-    public boolean removeRoom(int roomId, String startDate) {
+    public boolean removeRoom(int roomId, LocalDate startDate) {
         String key = createKey(roomId, startDate);
         if (!bookingsByDateAndRoom.containsKey(key)) {
             return false;
@@ -89,7 +91,7 @@ public class PresentationRoomRepository {
         return bookingsByStudent.getOrDefault(userId, new ArrayList<>());
     }
 
-    private String createKey(int roomId, String date) {
-        return roomId + "-" + date;
+    private String createKey(int roomId, LocalDate localDate) {
+        return roomId + "-" + localDate;
     }
 }
