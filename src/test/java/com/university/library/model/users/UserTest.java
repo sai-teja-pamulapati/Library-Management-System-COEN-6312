@@ -21,7 +21,7 @@ public class UserTest {
     }
 
     @Test
-public void testUserRegistrationSuccess() {
+    public void testUserRegistrationSuccess() {
     User registeredUser = User.register(testUser);
     assertNotNull(registeredUser, "User should be registered successfully");
 
@@ -33,7 +33,7 @@ public void testUserRegistrationSuccess() {
     User retrievedUser = userRepository.getUser("testuser@example.com");
     assertNotNull(retrievedUser, "Registered user should be retrievable from the repository");
     assertEquals("Test User", retrievedUser.getName(), "Retrieved user's name should match");
-}
+    }
 
 
     @Test
@@ -71,7 +71,7 @@ public void testUserRegistrationSuccess() {
     }
 
     @Test
-public void testUserUpdate() {
+    public void testUserUpdate() {
     userRepository.addUser(testUser);
     testUser.setAddress("Updated Address");
     testUser.setMobileNumber("9876543210");
@@ -82,6 +82,6 @@ public void testUserUpdate() {
     assertEquals("9876543210", updatedUser.getMobileNumber(), "Mobile number should be updated");
     assertEquals("Test User", updatedUser.getName(), "Name should remain unchanged");
 
-}
+    }
 
 }
