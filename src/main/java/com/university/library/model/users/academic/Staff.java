@@ -6,17 +6,11 @@ public class Staff extends AcademicUser {
 
     private String department;
 
-    public Staff(String userId, String name, String password, String emailId, String mobileNumber,
-                 String address, String dateOfBirth, String gender, UserRole userRole,
-                 String university_id, String idIssueDate, String department) {
-        
-        super(userId, name, password, emailId, mobileNumber, address, dateOfBirth, gender, userRole, university_id, idIssueDate);
-        
-        
+    public Staff(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , UserRole userRole , String universityId , String issueDate , String department) {
+        super(name , emailId , password , mobileNumber , address , dateOfBirth , gender , userRole , universityId , issueDate);
         this.department = department;
     }
 
-   
     public String getDepartment() {
         return department;
     }

@@ -1,4 +1,4 @@
-package com.university.library;
+package com.university.library.action;
 
 import com.university.library.model.assets.Asset;
 import com.university.library.model.assets.digital.NewsLetter;
@@ -55,8 +55,19 @@ public class ViewNewsTest {
 
             String actualOutput = outContent.toString().trim();
             String expectedOutput = ("Available Newsletters:\n" +
-                    "Date: Jan 2024, Title: Newsletter, Publication: Concordia University, Access Link: https://www.concordia.ca/cunews/artsci/migs/newsletters/2024/January24.html\n" +
-                    "Date: Dec 2023, Title: Newsletter, Publication: Concordia University, Access Link: https://www.concordia.ca/cunews/artsci/migs/newsletters/2023/Dec23.html").trim();
+                    "\n" +
+                    "NewsLetter Details: \n" +
+                    "Asset ID: null\n" +
+                    "Publication Date: Jan 2024\n" +
+                    "Publication: Concordia University\n" +
+                    "Access Link: https://www.concordia.ca/cunews/artsci/migs/newsletters/2024/January24.html\n" +
+                    "******************************************************************************************\n" +
+                    "NewsLetter Details: \n" +
+                    "Asset ID: null\n" +
+                    "Publication Date: Dec 2023\n" +
+                    "Publication: Concordia University\n" +
+                    "Access Link: https://www.concordia.ca/cunews/artsci/migs/newsletters/2023/Dec23.html\n" +
+                    "******************************************************************************************").trim();
 
             assertThat(actualOutput).isEqualToIgnoringWhitespace(expectedOutput);
         }

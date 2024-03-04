@@ -19,17 +19,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -54,7 +49,8 @@ public class AssetManagementTest {
     private Asset asset;
     private List<Asset> allAssets;
 
-    @SuppressWarnings("deprecation")
+    private ByteArrayOutputStream outContent;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -65,8 +61,10 @@ public class AssetManagementTest {
         asset = new Book("12" ,"title", "URLpreview", "URLlogo", true, "floor", "section", "row", "shelf", "ISBN", "publisher", new Date(), "author", "subject", "description");
 
         testLoanAssetList = getLoanAssetList(testUser, asset);
-
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
     }
+
 
     private List<Asset> getAllAssets() {
         Gson gson = new Gson();
@@ -108,10 +106,13 @@ public class AssetManagementTest {
         return Arrays.asList(loanAsset);
     }
 
+    PrintStream originalOut = System.out;
+
     @AfterEach
     public void tearDown() {
+        System.setOut(originalOut);
+        System.setIn(System.in);
     }
-
 
     @Test
     public void testBrowse() {
@@ -143,11 +144,10 @@ public class AssetManagementTest {
 
         assetManagement.addBook();
 
-        verify(assetRepository).addAsset(argThat(book -> book instanceof Book &&
-                "ABCD".equals(book.getTitle()) &&
-                "0123456789".equals(((Book) book).getIsbn())));
-
+        verify(assetRepository).addAsset(argThat(book -> book instanceof Book && "ABCD".equals(book.getTitle()) && "0123456789".equals(((Book) book).getIsbn())));
         assertTrue(outContent.toString().contains("Book Added Successfully"), "Expected success message not found in console output.");
+
+
     }
 
     @Test
@@ -176,20 +176,16 @@ public class AssetManagementTest {
 
         assetManagement.addBook();
 
-
         assertTrue(outContent.toString().contains("Book addition failed"), "Expected failure message not found in console output.");
     }
 
     @Test
-    public void testremoveBook(){
+    public void testRemoveBook(){
         String assetID = "1";
         when(assetRepository.removeAsset(String.valueOf(1))).thenReturn(asset);
         assetManagement.removeBookFromRepository(assetID);
         verify(assetRepository, times(1)).removeAsset(assetID);
     }
-
-
-
 
     @Test
     void testPrintAndGetBorrowingHistory() {
