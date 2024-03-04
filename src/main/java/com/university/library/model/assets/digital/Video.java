@@ -1,8 +1,17 @@
 package com.university.library.model.assets.digital;
 
-public class VideoFiles extends DigitalAsset {
+public class Video extends DigitalAsset {
     private String language;
     private int duration;
+    private int resolution;
+    
+    public int getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(int resolution) {
+        this.resolution = resolution;
+    }
 
     public String getLanguage() {
         return language;

@@ -5,6 +5,7 @@ import com.university.library.model.assets.digital.NewsLetter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AssetRepository {
@@ -24,6 +25,11 @@ public class AssetRepository {
         return instance;
     }
 
+    public static void setInstance(AssetRepository mockInstance) {
+        instance = mockInstance;
+    }
+
+
     private boolean exists(String assetId) {
         return assets.containsKey(assetId);
     }
@@ -38,6 +44,7 @@ public class AssetRepository {
             return true;
         }
     }
+
 
     public Asset getAsset(String assetId) {
         return assets.get(assetId);

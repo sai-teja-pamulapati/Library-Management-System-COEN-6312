@@ -19,7 +19,6 @@ public abstract class Asset {
     private static AssetRepository assetRepository = AssetRepository.getInstance();
     private static LoanAssetRepository loanAssetRepository = LoanAssetRepository.getInstance();
 
-    
     public Asset() {
         
     }
@@ -84,12 +83,19 @@ public abstract class Asset {
                 '}';
     }
 
+    public void addAsset() {
+        assetRepository.addAsset(this);
+    }
+
+    public void removeAsset() {
+        assetRepository.removeAsset(this.getAssetId());
+    }
 
     public void updateAsset() {
         assetRepository.update(this);
     }
 
-    public void loanAsset() {
+    public LoanAsset loanAsset() {
         LoanAsset loanAsset = new LoanAsset();
         Date today = new Date();
         User user = App.getLoggedInUser();
@@ -101,5 +107,6 @@ public abstract class Asset {
         this.updateAsset();
         loanAssetRepository.saveLoanAsset(loanAsset);
         System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
+        return loanAsset;
     }
 }

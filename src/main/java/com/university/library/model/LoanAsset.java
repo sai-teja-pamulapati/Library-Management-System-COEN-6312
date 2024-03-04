@@ -10,21 +10,20 @@ public class LoanAsset {
     private String userId;
     private Date loanDate;
     private Date returnDate;
-    private Double fineAmount = 0.0;
+    private Date renewDate;
+    private Double fine = 0.0;
+    private boolean isFinePaid = false;
 
-    public LoanAsset(String loanAssetId , String assetId , String userId , Date loanDate , Date returnDate , Double fineAmount , boolean isFinePaid , Date renewDate) {
+    public LoanAsset(String loanAssetId , String assetId , String userId , Date loanDate , Date returnDate , Double fine , boolean isFinePaid , Date renewDate) {
         this.loanAssetId = loanAssetId;
         this.assetId = assetId;
         this.userId = userId;
         this.loanDate = loanDate;
         this.returnDate = returnDate;
-        this.fineAmount = fineAmount;
+        this.fine = fine;
         this.isFinePaid = isFinePaid;
         this.renewDate = renewDate;
     }
-
-    private boolean isFinePaid = false;
-    private Date renewDate;
 
     public LoanAsset() {
     }
@@ -77,12 +76,12 @@ public class LoanAsset {
         this.returnDate = returnDate;
     }
 
-    public Double getFineAmount() {
-        return fineAmount;
+    public Double getFine() {
+        return fine;
     }
 
-    public void setFineAmount(Double fineAmount) {
-        this.fineAmount = fineAmount;
+    public void setFine(Double fine) {
+        this.fine = fine;
     }
 
     public Date getRenewDate() {
@@ -97,7 +96,7 @@ public class LoanAsset {
     public String toString() {
         return "loanDate : " + loanDate + '\n' +
                 "returnDate : " + returnDate + '\n' +
-                "fineAmount : " + fineAmount + '\n' +
+                "fineAmount : " + fine + '\n' +
                 "renewDate : " + renewDate;
     }
 }

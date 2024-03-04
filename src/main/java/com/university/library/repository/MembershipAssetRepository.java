@@ -6,22 +6,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.university.library.model.MembershipManagement;
+import com.university.library.model.Membership;
 
 public class MembershipAssetRepository {
-    private Map<String, MembershipManagement> membershipByUserId = new HashMap<>();
+    private Map<String, Membership> membershipByUserId = new HashMap<>();
 
     private String createKey(String userId, Date startDate, Date endDate) {
         return userId + "-" + startDate + "-" + endDate;
     }
 
-    public MembershipManagement getMembership(String userId) {
+    public Membership getMembership(String userId) {
         // System.out.println(" membership looking for id " + userId);
         for (String key : membershipByUserId.keySet()) {
             if (key.startsWith(userId + '-')) {
                 // System.out.println(membershipByUserId.get(key));
 
-                MembershipManagement membership = membershipByUserId.get(key);
+                Membership membership = membershipByUserId.get(key);
                 // System.out.println("membership object values " + membership);
 
                 // System.out.println("membership details from repo");
@@ -34,12 +34,18 @@ public class MembershipAssetRepository {
                 return membership;
             }
         }
-        System.out.println("no membership found from getmembership function " + userId);
+        // System.out.println("no membership found from getmembership function " +
+        // userId);
 
         return null;
     }
 
-    public boolean addMembership(MembershipManagement membership) {
+    public boolean addMembership(Membership membership) {
+        // String userId = membership.getUserId();
+        // if (getMembership(userId) != null) {
+        // System.out.println("A membership already exitss for this userid" + userId);
+        // return false;
+        // }
         String userIdDate = createKey(membership.getuserId(), membership.getStartDate(),
                 membership.getEndDate());
         // System.out.println(userIdDate);
@@ -61,7 +67,7 @@ public class MembershipAssetRepository {
     }
 
     public boolean removeMembership(String userId) {
-        MembershipManagement membership = getMembership(userId);
+        Membership membership = getMembership(userId);
         // System.out.println(userIdDate);
         // System.out.println("membership details stored before repo from
         // addmemebership");

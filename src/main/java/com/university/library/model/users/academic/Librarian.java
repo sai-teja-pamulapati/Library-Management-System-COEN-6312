@@ -2,26 +2,37 @@ package com.university.library.model.users.academic;
 
 import com.university.library.model.users.UserRole;
 
-public class Librarian extends Academic {
-    
-    private String supervisor;
+public class Librarian extends AcademicUser {
+    private String officeLocation;
 
-    public Librarian(String userId, String name, String password, String emailId, String mobileNumber,
-                     String address, String dateOfBirth, String gender, UserRole userRole,
-                     String university_id, String idIssueDate, String supervisor) {
-        
-        super(userId, name, password, emailId, mobileNumber, address, dateOfBirth, gender, userRole, university_id, idIssueDate);
-        
-        
-        this.supervisor = supervisor;
+    public String getOfficeLocation() {
+        return officeLocation;
     }
 
-    
-    public String getSupervisor() {
-        return supervisor;
+    public void setOfficeLocation(String officeLocation) {
+        this.officeLocation = officeLocation;
     }
 
-    public void setSupervisor(String supervisor) {
-        this.supervisor = supervisor;
+    public String getOfficeHours() {
+        return officeHours;
+    }
+
+    public void setOfficeHours(String officeHours) {
+        this.officeHours = officeHours;
+    }
+
+    public String getContractType() {
+        return contractType;
+    }
+
+    public void setContractType(String contractType) {
+        this.contractType = contractType;
+    }
+
+    private String officeHours;
+    private String contractType;
+
+    public Librarian(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , UserRole userRole , String universityId , String issueDate) {
+        super(name , emailId , password , mobileNumber , address , dateOfBirth , gender , userRole , universityId , issueDate);
     }
 }
