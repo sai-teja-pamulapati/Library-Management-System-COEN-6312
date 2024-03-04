@@ -87,7 +87,7 @@ public class PresentationRoomRepository {
         return true;
     }
 
-    public List<RoomBooking> getRoomsByStudentEmail(String userId) {
+    public List<RoomBooking> getRoomsByUserId (String userId) {
         return bookingsByStudent.getOrDefault(userId, new ArrayList<>());
     }
 
