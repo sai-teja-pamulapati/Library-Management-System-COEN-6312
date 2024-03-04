@@ -1,4 +1,4 @@
-package com.university.library.model.assets.digital;
+package com.university.library.action;
 
 import com.university.library.model.assets.Asset;
 import com.university.library.model.assets.digital.NewsLetter;
