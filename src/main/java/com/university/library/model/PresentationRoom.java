@@ -26,4 +26,11 @@ public class PresentationRoom {
     public void setFeatures(List<String> features) {
         this.features = features;
     }
+
+    @Override
+    public String toString() {
+        return "Room ID: " + roomId + 
+               ", Features: " + 
+               String.join(", ", features);
+    }
 }
