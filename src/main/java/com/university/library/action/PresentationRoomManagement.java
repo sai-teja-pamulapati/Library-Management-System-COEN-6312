@@ -89,7 +89,8 @@ public class PresentationRoomManagement {
         int index = 1;
         for (Integer roomId : roomIds) {
             PresentationRoom room = rooms.get(roomId);
-            System.out.println(index++ + ". Room ID: " + room.getRoomId() + ", Features: " + String.join(", ", room.getFeatures()));
+            String roomDetails = toString(room, index++);
+            System.out.println(roomDetails);
         }
         
         System.out.println("Select a room by entering its number:");
@@ -131,9 +132,16 @@ public class PresentationRoomManagement {
             System.out.println("No booking history found.");
         } else {
             for (RoomBooking booking : bookings) {
-                System.out.println("Room ID: " + booking.getRoomId() + ", Start Date: " + booking.getStartDate() + ", End Date: " + booking.getEndDate());
+                System.out.println(toString(booking));
             }
         }
     }
+
+    private String toString(PresentationRoom room, int index) {
+        return index + ". Room ID: " + room.getRoomId() + ", Features: " + String.join(", ", room.getFeatures());
+    }
     
+    private String toString(RoomBooking booking) {
+        return "Room ID: " + booking.getRoomId() + ", Start Date: " + booking.getStartDate() + ", End Date: " + booking.getEndDate();
+    }
 }
