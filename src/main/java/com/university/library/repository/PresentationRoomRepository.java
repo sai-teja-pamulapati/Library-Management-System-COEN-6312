@@ -65,7 +65,7 @@ public class PresentationRoomRepository {
     }
 
     public boolean addRoom(RoomBooking room) {
-        String key = createKey(room.getRoomId(), room.getStartDate());
+        String key = createKey(room.getUserId(), room.getRoomId(), room.getStartDate());
         if (bookingsByDateAndRoom.containsKey(key)) {
             return false;
         }
@@ -75,14 +75,13 @@ public class PresentationRoomRepository {
         return true;
     }
 
-    public boolean removeRoom(int roomId, LocalDate startDate) {
-        String key = createKey(roomId, startDate);
+    public boolean removeRoom(String userId , int roomId , LocalDate startDate) {
+        String key = createKey(userId, roomId, startDate);
         if (!bookingsByDateAndRoom.containsKey(key)) {
             return false;
         }
-
-        RoomBooking removedRoom = bookingsByDateAndRoom.remove(key);
-        List<RoomBooking> userBookings = bookingsByStudent.get(removedRoom.getUserId());
+        bookingsByDateAndRoom.remove(key);
+        List<RoomBooking> userBookings = bookingsByStudent.get(userId);
         userBookings.removeIf(room -> room.getRoomId() == roomId && room.getStartDate().equals(startDate));
         return true;
     }
@@ -91,7 +90,7 @@ public class PresentationRoomRepository {
         return bookingsByStudent.getOrDefault(userId, new ArrayList<>());
     }
 
-    private String createKey(int roomId, LocalDate localDate) {
-        return roomId + "-" + localDate;
+    private String createKey(String userId , int roomId , LocalDate localDate) {
+        return userId + "-" + roomId + "-" + localDate;
     }
 }

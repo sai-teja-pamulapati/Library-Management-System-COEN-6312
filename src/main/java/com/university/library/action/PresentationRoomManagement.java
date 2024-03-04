@@ -7,19 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import com.university.library.App;
 import com.university.library.model.PresentationRoom;
 import com.university.library.model.RoomBooking;
+import com.university.library.model.users.User;
 import com.university.library.repository.PresentationRoomRepository;
 
 public class PresentationRoomManagement {
 
     private PresentationRoomRepository repository = new PresentationRoomRepository();
     private static Scanner scanner = new Scanner(System.in);
-    private String userId;
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public void manageRoomBooking() {
         boolean exit = false;
@@ -29,17 +27,18 @@ public class PresentationRoomManagement {
                 "2. Cancel Booking\n" +
                 "3. Booking History\n" +
                 "4. Go back");
+            User currentLoggedInUser = App.getLoggedInUser();
 
             String option = scanner.nextLine();
             switch (option) {
                 case "1":
-                    bookRoomProcess();
+                    bookRoomProcess(currentLoggedInUser);
                     break;
                 case "2":
-                    cancelBookingProcess();
+                    cancelBookingProcess(currentLoggedInUser);
                     break;
                 case "3":
-                    getRoomsByUserId();
+                    displayBookingHistory(currentLoggedInUser);
                     break;
                 case "4":
                     exit = true;
@@ -50,7 +49,7 @@ public class PresentationRoomManagement {
         }
     }
 
-    private void bookRoomProcess() {
+    private void bookRoomProcess(User currentLoggedInUser) {
         int roomId = displayAndSelectAvailableRooms();
         if (roomId == -1) {
             System.out.println("Invalid selection. Going back to main menu.");
@@ -60,7 +59,7 @@ public class PresentationRoomManagement {
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
         LocalDate endDate = readDate("Booking End Date (YYYY-MM-DD):");
         
-        if (bookRoom(roomId, startDate, endDate)) {
+        if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, endDate)) {
             System.out.println("Room booked successfully.");
         } else {
             System.out.println("Failed to book the room.");
@@ -104,35 +103,35 @@ public class PresentationRoomManagement {
         }
     }
 
-    private boolean bookRoom(int roomId, LocalDate startDate, LocalDate endDate) {
-        RoomBooking room = new RoomBooking(roomId, this.userId, startDate, endDate);
+    private boolean bookRoom(String userId , int roomId , LocalDate startDate , LocalDate endDate) {
+        RoomBooking room = new RoomBooking(roomId, userId, startDate, endDate);
         return repository.addRoom(room);
     }
 
-    private void cancelBookingProcess() {
+    private void cancelBookingProcess(User currentLoggedInUser) {
         System.out.println("Enter Room ID:");
         int roomId = Integer.parseInt(scanner.nextLine());
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
-        if (cancelBooking(roomId, startDate)) {
+        if (cancelBooking(currentLoggedInUser.getUserId(), roomId, startDate)) {
             System.out.println("Booking cancelled successfully.");
         } else {
             System.out.println("Failed to cancel the booking.");
         }
     }
 
-    private boolean cancelBooking(int roomId, LocalDate startDate) {
-        return repository.removeRoom(roomId, startDate);
+    private boolean cancelBooking(String userId , int roomId , LocalDate startDate) {
+        return repository.removeRoom(userId, roomId, startDate);
     }
 
-    private void getRoomsByUserId() {
-        System.out.println("Booking history for user: " + this.userId);
-        List<RoomBooking> bookings = repository.getRoomsByUserId(this.userId);
+    private void displayBookingHistory(User currentLoggedInUser) {
+        System.out.println("Booking history for user: " + currentLoggedInUser.getName());
+        List<RoomBooking> bookings = repository.getRoomsByUserId(currentLoggedInUser.getUserId());
         if (bookings.isEmpty()) {
             System.out.println("No booking history found.");
-        } else {
-            for (RoomBooking booking : bookings) {
-                System.out.println(booking);
-            }
+            return;
+        }
+        for (RoomBooking booking : bookings) {
+            System.out.println(booking);
         }
     }
     
