@@ -1,5 +1,8 @@
 package com.university.library.action;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,16 +56,30 @@ public class PresentationRoomManagement {
             System.out.println("Invalid selection. Going back to main menu.");
             return;
         }
-        System.out.println("Booking Start Date (YYYY-MM-DD):");
-        String startDate = scanner.nextLine();
-        System.out.println("Booking End Date (YYYY-MM-DD):");
-        String endDate = scanner.nextLine();
+
+        LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
+        LocalDate endDate = readDate("Booking End Date (YYYY-MM-DD):");
         
         if (bookRoom(roomId, startDate, endDate)) {
             System.out.println("Room booked successfully.");
         } else {
             System.out.println("Failed to book the room.");
         }
+    }
+
+    private LocalDate readDate(String message) {
+        LocalDate date = null;
+        while (date == null) {
+            System.out.println(message);
+            String input = scanner.nextLine();
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                date = LocalDate.parse(input, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please use YYYY-MM-DD. Try again.");
+            }
+        }
+        return date;
     }
 
     private int displayAndSelectAvailableRooms() {
@@ -79,15 +96,15 @@ public class PresentationRoomManagement {
         try {
             int selection = Integer.parseInt(scanner.nextLine());
             if (selection < 1 || selection > roomIds.size()) {
-                return -1; // Invalid selection
+                return -1;
             }
-            return roomIds.get(selection - 1); // Return the selected room ID
+            return roomIds.get(selection - 1);
         } catch (NumberFormatException e) {
-            return -1; // Handle non-integer input
+            return -1;
         }
     }
 
-    private boolean bookRoom(int roomId, String startDate, String endDate) {
+    private boolean bookRoom(int roomId, LocalDate startDate, LocalDate endDate) {
         RoomBooking room = new RoomBooking(roomId, this.userId, startDate, endDate);
         return repository.addRoom(room);
     }
@@ -95,9 +112,7 @@ public class PresentationRoomManagement {
     private void cancelBookingProcess() {
         System.out.println("Enter Room ID:");
         int roomId = Integer.parseInt(scanner.nextLine());
-        System.out.println("Booking Start Date (YYYY-MM-DD):");
-        String startDate = scanner.nextLine();
-        
+        LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
         if (cancelBooking(roomId, startDate)) {
             System.out.println("Booking cancelled successfully.");
         } else {
@@ -105,7 +120,7 @@ public class PresentationRoomManagement {
         }
     }
 
-    private boolean cancelBooking(int roomId, String startDate) {
+    private boolean cancelBooking(int roomId, LocalDate startDate) {
         return repository.removeRoom(roomId, startDate);
     }
 
@@ -119,5 +134,6 @@ public class PresentationRoomManagement {
                 System.out.println("Room ID: " + booking.getRoomId() + ", Start Date: " + booking.getStartDate() + ", End Date: " + booking.getEndDate());
             }
         }
-    }    
+    }
+    
 }
