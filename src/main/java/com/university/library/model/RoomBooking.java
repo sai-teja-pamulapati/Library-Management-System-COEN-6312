@@ -1,12 +1,14 @@
 package com.university.library.model;
 
+import java.time.LocalDate;
+
 public class RoomBooking {
     private int roomId;
     private String userId;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    public RoomBooking(int roomId, String userId, String startDate, String endDate) {
+    public RoomBooking(int roomId, String userId, LocalDate startDate, LocalDate endDate) {
         this.roomId = roomId;
         this.userId = userId;
         this.startDate = startDate;
@@ -29,19 +31,19 @@ public class RoomBooking {
         this.userId = userId;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 }
