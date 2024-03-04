@@ -1,6 +1,7 @@
 package com.university.library.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class RoomBooking {
     private int roomId;
@@ -45,5 +46,13 @@ public class RoomBooking {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return "Room ID: " + roomId + 
+               ", Start Date: " + startDate.format(formatter) + 
+               ", End Date: " + endDate.format(formatter);
     }
 }
