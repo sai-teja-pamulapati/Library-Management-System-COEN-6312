@@ -36,7 +36,7 @@ public class PresentationRoomManagement {
                     cancelBookingProcess();
                     break;
                 case "3":
-                    displayBookingHistory();
+                    getRoomsByUserId();
                     break;
                 case "4":
                     exit = true;
@@ -109,7 +109,7 @@ public class PresentationRoomManagement {
         return repository.removeRoom(roomId, startDate);
     }
 
-    private void displayBookingHistory() {
+    private void getRoomsByUserId() {
         System.out.println("Booking history for user: " + this.userId);
         List<RoomBooking> bookings = repository.getRoomsByStudentEmail(this.userId);
         if (bookings.isEmpty()) {
