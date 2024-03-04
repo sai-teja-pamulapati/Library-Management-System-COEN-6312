@@ -1,11 +1,10 @@
 package com.university.library.repository;
-import com.university.library.model.users.User;
 
+import com.university.library.model.users.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import com.university.library.model.users.User;
 
 
 public class UserRepository {

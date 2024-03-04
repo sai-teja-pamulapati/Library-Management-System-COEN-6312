@@ -9,7 +9,7 @@ public class UserLogin {
 
     private static Scanner scanner = new Scanner(System.in);
     private static AssetManagement assetManagement = AssetManagement.getInstance();
-    private static DiscussionRoomManagement roomManagement = new DiscussionRoomManagement();
+    private static PresentationRoomManagement roomManagement = new PresentationRoomManagement();
 
     public static void login() {
         Console console = System.console();
@@ -22,6 +22,8 @@ public class UserLogin {
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
+
+        roomManagement.setUserId(emailId);
 
         User user = User.login(emailId, password);
         if (user == null) {
@@ -63,7 +65,7 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3: View Newsletter\n" +
                         "4: buy membership\n" +
-                        "5: Logout\n" +
+                        "5: Logout\n"+
                         "******************************************************************************************\n");
                 String freeUserCommands = scanner.nextLine();
                 switch (freeUserCommands) {
@@ -104,7 +106,8 @@ public class UserLogin {
                         "6: display membership\n" +
                         "7: cancel membership\n" +
                         "8 : renew membership\n" +
-                        "9: Logout\n");
+                        "9: Logout\n"+
+                        "******************************************************************************************\n");
 
                 String paidUserCommands = scanner.nextLine();
                 switch (paidUserCommands) {
