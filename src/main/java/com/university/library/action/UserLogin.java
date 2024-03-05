@@ -1,9 +1,10 @@
 package com.university.library.action;
 
-import java.io.Console;
-import java.util.Scanner;
 import com.university.library.App;
 import com.university.library.model.users.User;
+
+import java.io.Console;
+import java.util.Scanner;
 
 public class UserLogin {
 
@@ -71,7 +72,7 @@ public class UserLogin {
                         assetManagement.browse();
                         break;
                     case "2":
-                        assetManagement.getBorrowingHistory(); //
+                        assetManagement.getBorrowingHistory();
                         break;
                     case "3":
                         ViewNews.viewNewsletters();
@@ -117,11 +118,13 @@ public class UserLogin {
                         break;
                     case "3":
                         ViewNews.viewNewsletters();
-
+                        break;
                     case "4":
-                        // View Notifications
+                        showNotifications();
+                        break;
                     case "5":
-                        // pay fine
+                        payFines();
+                        break;
                     case "6":
                         MembershipManager.displayMembership(App.getLoggedInUser().getUserId());
                         break;
@@ -132,7 +135,7 @@ public class UserLogin {
                         MembershipManager.renewMembership(App.getLoggedInUser().getUserId());
                         break;
                     case "9":
-                        return;// logout
+                        return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
                 }
@@ -155,7 +158,8 @@ public class UserLogin {
                         "7: Update Book Details\n" +
                         "8: View Library Activities\n" +
                         "9: Update NewsLetter\n" +
-                        "10: Logout\n" +
+                        "10. Book/Cancel Discussion Room\n" +
+                        "11: Logout\n" +
                         "******************************************************************************************\n");
                 String librarianCommands = scanner.nextLine();
                 switch (librarianCommands) {
@@ -166,10 +170,10 @@ public class UserLogin {
                         assetManagement.getBorrowingHistory();
                         break;
                     case "3":
-                        // left
+                        ViewNews.viewNewsletters();
                         break;
                     case "4":
-                        // left
+                        showNotifications();
                         break;
                     case "5":
                         assetManagement.addBook();
@@ -181,10 +185,15 @@ public class UserLogin {
                          assetManagement.updateBook();
                         break;
                     case "8":
-                        // assetManagement.viewLibraryActivities();
+                        AdminService.viewAllUsers();
+                        break;
                     case "9":
-                        // assetManagement.updateNewsLetter();
+                        UpdateNews.updateNewsletterProcess();
+                        break;
                     case "10":
+                        roomManagement.manageRoomBooking();
+                        break;
+                    case "11":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
@@ -197,7 +206,46 @@ public class UserLogin {
     }
 
     private static void processStaffUser() {
-
+        while (true) {
+            try {
+                System.out.print("Choose from the following options\n" +
+                        "1. Browse Catalogue\n" +
+                        "2. View borrowing history\n" +
+                        "3. View Newsletter\n" +
+                        "4. View Notifications\n" +
+                        "5. Book/Cancel Discussion Room\n" +
+                        "6. Pay Fines\n" +
+                        "7. Logout\n" +
+                        "******************************************************************************************\n");
+                String staffCommands = scanner.nextLine();
+                switch (staffCommands) {
+                    case "1":
+                        assetManagement.browse();
+                        break;
+                    case "2":
+                        assetManagement.getBorrowingHistory();
+                        break;
+                    case "3":
+                        ViewNews.viewNewsletters();
+                        break;
+                    case "4":
+                        showNotifications();
+                        break;
+                    case "5":
+                        roomManagement.manageRoomBooking();
+                        break;
+                    case "6":
+                        payFines();
+                        break;
+                    case "7":
+                        return;
+                    default:
+                        throw new IllegalArgumentException("Invalid option!");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        }
     }
 
     private static void processStudentUser() {
@@ -214,7 +262,6 @@ public class UserLogin {
                         "******************************************************************************************\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
-
                     case "1":
                         assetManagement.browse();
                         break;
@@ -222,16 +269,16 @@ public class UserLogin {
                         assetManagement.getBorrowingHistory();
                         break;
                     case "3":
-                        // Todo
+                        ViewNews.viewNewsletters();
                         break;
                     case "4":
-                        // Todo
+                        showNotifications();
                         break;
                     case "5":
                         roomManagement.manageRoomBooking();
                         break;
                     case "6":
-                        // Todo
+                        payFines();
                         break;
                     case "7":
                         return;
@@ -245,43 +292,71 @@ public class UserLogin {
 
     }
 
+    private static void payFines() {
+        System.out.println("You have successfully paid the fines");
+    }
+
+    private static void showNotifications() {
+        System.out.println("Your notifications will appear here");
+    }
+
     private static void processAdminUser() {
         while (true) {
             try {
                 System.out.print("Choose from the following options\n" +
-                        "1. Add User\n" +
-                        "2. Remove User\n" +
-                        "3. Block User\n" +
-                        "4. Unblock User\n" +
-                        "5. View Newsletter\n" +
-                        "6. Update Newsletter\n" +
-                        "7. View All Users\n" +
-                        "8. Logout\n" +
+                        "1. Browse Catalogue\n" +
+                        "2. View borrowing history\n" +
+                        "3. View Notifications\n" +
+                        "4. View Newsletter\n" +
+                        "5. Update Newsletter\n" +
+                        "6. Book/Cancel Discussion Room\n" +
+                        "7. Add User\n" +
+                        "8. Remove User\n" +
+                        "9. Block User\n" +
+                        "10. Unblock User\n" +
+                        "11. View All Users\n" +
+                        "12. Pay Fines\n" +
+                        "13. Logout\n" +
                         "******************************************************************************************\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
                     case "1":
-                        UserRegistration.register(false);
+                        assetManagement.browse();
                         break;
                     case "2":
-                        UserRemoval.removeUser();
+                        assetManagement.getBorrowingHistory();
                         break;
                     case "3":
-                        UserBlocking.blockUser();
+                        showNotifications();
                         break;
                     case "4":
-                        UserBlocking.unblockUser();
-                        break;
-                    case "5":
                         ViewNews.viewNewsletters();
                         break;
-                    case "6":
+                    case "5":
                         UpdateNews.updateNewsletterProcess();
                         break;
+                    case "6":
+                        roomManagement.manageRoomBooking();
+                        break;
                     case "7":
-                        AdminService.viewAllUsers();
+                        UserRegistration.register(false);
                         break;
                     case "8":
+                        UserRemoval.removeUser();
+                        break;
+                    case "9":
+                        UserBlocking.blockUser();
+                        break;
+                    case "10":
+                        UserBlocking.unblockUser();
+                        break;
+                    case "11":
+                        AdminService.viewAllUsers();
+                        break;
+                    case "12":
+                        payFines();
+                        break;
+                    case "13":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid option!");
