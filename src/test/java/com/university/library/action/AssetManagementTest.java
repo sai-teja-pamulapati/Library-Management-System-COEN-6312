@@ -8,7 +8,6 @@ import com.university.library.model.assets.Asset;
 import com.university.library.model.assets.physical.Book;
 import com.university.library.model.assets.physical.Laptop;
 import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
 import com.university.library.repository.AssetRepository;
 import com.university.library.repository.LoanAssetRepository;
 import com.university.library.repository.UserRepository;
@@ -56,7 +55,7 @@ public class AssetManagementTest {
         MockitoAnnotations.initMocks(this);
         allAssets = getAllAssets();
 
-        testUser = new User("Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male", UserRole.STUDENT);
+        testUser = new User(null, "Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male");
         testUser.setUserId("1");
         asset = new Book("12" ,"title", "URLpreview", "URLlogo", true, "floor", "section", "row", "shelf", "ISBN", "publisher", new Date(), "author", "subject", "description");
 

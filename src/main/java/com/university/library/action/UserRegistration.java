@@ -1,11 +1,11 @@
 package com.university.library.action;
 
-import java.io.Console;
-import java.util.Scanner;
-
 import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
 import com.university.library.repository.UserRepository;
+
+import java.io.Console;
+import java.util.Scanner;
 
 public class UserRegistration {
 
@@ -86,7 +86,7 @@ public class UserRegistration {
             break;
         }
 
-        User newUser = new User(name, emailId, password, mobileNumber, address, dateOfBirth, gender, userRole);
+        User newUser = new User(null, name, emailId, password, mobileNumber, address, dateOfBirth, gender);
 
         boolean added = userRepository.addUser(newUser);
         if (added) {

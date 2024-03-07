@@ -2,6 +2,12 @@ package com.university.library.action;
 
 import com.university.library.App;
 import com.university.library.model.users.User;
+import com.university.library.model.users.academic.Admin;
+import com.university.library.model.users.academic.Librarian;
+import com.university.library.model.users.academic.Staff;
+import com.university.library.model.users.academic.Student;
+import com.university.library.model.users.nonacademic.FreeUser;
+import com.university.library.model.users.nonacademic.PaidUser;
 
 import java.io.Console;
 import java.util.Scanner;
@@ -30,28 +36,20 @@ public class UserLogin {
         }
 
         App.setLoggedInUser(user);
-        switch (user.getUserRole()) {
-            case ADMIN:
-                processAdminUser();
-                break;
-            case STUDENT:
-                processStudentUser();
-                break;
-            case STAFF:
-                processStaffUser();
-                break;
-            case LIBRARIAN:
-                processLibrarianUser();
-                break;
-            case FREE_USER:
-                processFreeUser();
-                break;
-            case PAID_USER:
-                processPaidUser();
-                break;
-            default:
-                System.out.println("Invalid user role.");
-                break;
+        if (user instanceof Admin) {
+            processAdminUser();
+        } else if (user instanceof Student) {
+            processStudentUser();
+        } else if (user instanceof Staff) {
+            processStaffUser();
+        } else if (user instanceof Librarian) {
+            processLibrarianUser();
+        } else if (user instanceof FreeUser) {
+            processFreeUser();
+        } else if (user instanceof PaidUser) {
+            processPaidUser();
+        } else {
+            System.out.println("Invalid user role.");
         }
         App.setLoggedInUser(null);
     }

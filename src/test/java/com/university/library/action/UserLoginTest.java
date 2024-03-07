@@ -1,11 +1,10 @@
 package com.university.library.action;
 
 import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
 import com.university.library.repository.UserRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -19,8 +18,8 @@ class UserLoginTest {
         userRepository.clearUsers();
 
         // Adding users for testing.
-        userRepository.addUser(new User("John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Male", UserRole.STAFF));
-        userRepository.addUser(new User("Admin User", "admin@gmail.com", "admin123", "1234567890", "123 Admin St", "1990-01-01", "Male", UserRole.ADMIN));
+        userRepository.addUser(new User(null, "John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Male"));
+        userRepository.addUser(new User(null, "Admin User", "admin@gmail.com", "admin123", "1234567890", "123 Admin St", "1990-01-01", "Male"));
     }
 
     @Test

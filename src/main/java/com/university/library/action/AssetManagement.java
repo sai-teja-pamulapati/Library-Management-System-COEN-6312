@@ -4,7 +4,6 @@ import com.university.library.App;
 import com.university.library.model.LoanAsset;
 import com.university.library.model.assets.Asset;
 import com.university.library.model.assets.physical.Book;
-import com.university.library.model.assets.physical.PhysicalAsset;
 import com.university.library.model.users.User;
 import com.university.library.repository.AssetRepository;
 import com.university.library.repository.LoanAssetRepository;
@@ -82,13 +81,13 @@ public class AssetManagement {
 
     private void printResults(List<Asset> searchedAssets) {
         for (int i = 0; i < searchedAssets.size(); i++) {
-            System.out.println("");
+            System.out.println("******************************************************************************************");
             Asset resultAsset = searchedAssets.get(i);
             if (resultAsset.isAvailable()) {
                 System.out.println(resultAsset);
             }
         }
-        System.out.println("");
+        System.out.println("******************************************************************************************");
         System.out.println("Please enter the asset id that you want to Borrow: ");
     }
 
@@ -198,14 +197,13 @@ public class AssetManagement {
         System.out.println();
         System.out.println("                                 Borrowing History");
         for (int i = 0; i < loanedItemsForUser.size(); i++) {
-            System.out.println("");
+            System.out.println("******************************************************************************************");
             LoanAsset loanAsset = loanedItemsForUser.get(i);
             Asset asset = assetRepository.getAsset(loanAsset.getAssetId());
             System.out.println(asset);
             System.out.println(loanAsset);
         }
-        System.out.println("");
-        System.out.println();
+        System.out.println("******************************************************************************************");
         return loanedItemsForUser;
     }
 

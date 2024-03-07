@@ -1,8 +1,6 @@
 package com.university.library.action;
 
-import com.university.library.action.UserBlocking;
 import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
 import com.university.library.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +11,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserBlockingTest {
 
@@ -29,7 +27,7 @@ public class UserBlockingTest {
         System.setOut(new PrintStream(outContent));
         userRepository = UserRepository.getInstance();
         userRepository.clearUsers();
-        User testUser = new User("Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male", UserRole.STUDENT);
+        User testUser = new User(null, "Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male");
         userRepository.addUser(testUser);
     }
 
