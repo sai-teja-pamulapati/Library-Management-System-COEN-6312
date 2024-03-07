@@ -361,15 +361,14 @@ public class AssetManagement {
         return;
     }
 
-    // Check if the newsletter for the given publication and month/year already exists
     if (newsletterExists(publication, date)) {
         System.out.println("This month's newsletter already exists for the publication.");
     } else {
-        // Proceed to add the newsletter
+        
         System.out.println("Enter Newsletter's Access Link");
         String accessLink = scanner.nextLine();
         NewsLetter newNewsLetter = new NewsLetter(accessLink, date, publication);
-        boolean added = assetRepository.addAsset(newNewsLetter); // Assuming addAsset method exists and handles different asset types
+        boolean added = assetRepository.addAsset(newNewsLetter); 
         if (added) {
             System.out.println("Newsletter added successfully.");
         } else {
