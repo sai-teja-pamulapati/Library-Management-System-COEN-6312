@@ -105,11 +105,26 @@ public class AssetManagement {
 
     public LoanAsset processCheckout(List<Asset> searchedAssets , String requestedAssetId) {
          User user = App.getLoggedInUser(); 
-        long activeLoansCount = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
-        if (activeLoansCount >= 2) {
-        System.out.println("You cannot borrow more items. You already have 10 items on loan.");
-        return null; // Do not proceed with the checkout process
+
+         int borrowingLimit;
+          switch (user.getUserRole()) {
+        case STUDENT:
+            borrowingLimit = 1;
+            break;
+        case LIBRARIAN:
+            borrowingLimit = 2; 
+            break;
+        default:
+            borrowingLimit = 1; 
     }
+
+    
+      long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
+      if (activeLoans >= borrowingLimit) {
+          System.out.println("You have reached your borrowing limit of " + borrowingLimit + " items. Please return an item to borrow a new one.");
+          return null;
+      }
+   
         Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
         if (requestedAssetOptional.isEmpty()) {
             System.out.println("Requested Object does not exist");
