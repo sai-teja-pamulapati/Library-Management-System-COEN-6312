@@ -1,6 +1,8 @@
 package com.university.library.repository;
 
 import com.university.library.model.LoanAsset;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -30,5 +32,12 @@ public class LoanAssetRepository {
 
     public List<LoanAsset> getLoanedItemsForUser(String userId) {
         return loans.values().stream().filter(Objects::nonNull).filter(loanAsset -> Objects.equals(loanAsset.getUserId() , userId)).collect(Collectors.toList());
+    }
+
+     public long countActiveLoansByUserId(String userId) {
+        return loans.values().stream()
+                     .filter(loanAsset -> Objects.equals(loanAsset.getUserId(), userId))
+                     .filter(loanAsset -> loanAsset.getReturnDate() == null || loanAsset.getReturnDate().after(new Date()))
+                     .count();
     }
 }
