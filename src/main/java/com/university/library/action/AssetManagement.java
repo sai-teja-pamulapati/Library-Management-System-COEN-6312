@@ -348,34 +348,57 @@ public class AssetManagement {
     }
 
     public void addNewsLetter() {
-    System.out.println("Enter NewsLetter's publication");
+    System.out.println("Enter Newsletter's publication");
     String publication = scanner.nextLine();
-    System.out.println("Enter Access Link for the NewsLetter");
-    String accessLink = scanner.nextLine();
     System.out.println("Enter Published Date in format dd/MM/yyyy");
     String dateStr = scanner.nextLine();
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    Date date = null;
+    Date date;
     try {
         date = sdf.parse(dateStr);
     } catch (ParseException e) {
-        System.out.println("Invalid Format");
+        System.out.println("Invalid Date Format");
         return;
     }
-    addNewsLetterToRepository(publication, accessLink, date);
-}
 
-public Asset addNewsLetterToRepository(String publication, String accessLink, Date date) {
-    NewsLetter newsLetter = new NewsLetter(accessLink, date, publication);
-    boolean checkAdd = assetRepository.addAsset(newsLetter);
-    if (checkAdd) {
-        System.out.println("NewsLetter Added Successfully with ID: " + newsLetter.getAssetId());
-        return newsLetter;
+    // Check if the newsletter for the given publication and month/year already exists
+    if (newsletterExists(publication, date)) {
+        System.out.println("This month's newsletter already exists for the publication.");
     } else {
-        System.out.println("NewsLetter addition failed");
-        return null;
+        // Proceed to add the newsletter
+        System.out.println("Enter Newsletter's Access Link");
+        String accessLink = scanner.nextLine();
+        NewsLetter newNewsLetter = new NewsLetter(accessLink, date, publication);
+        boolean added = assetRepository.addAsset(newNewsLetter); // Assuming addAsset method exists and handles different asset types
+        if (added) {
+            System.out.println("Newsletter added successfully.");
+        } else {
+            System.out.println("Failed to add newsletter.");
+        }
     }
 }
+
+private boolean newsletterExists(String publication, Date date) {
+    List<Asset> allAssets = assetRepository.getAllAssets();
+    Calendar calendar = Calendar.getInstance();
+
+    return allAssets.stream()
+            .filter(asset -> asset instanceof NewsLetter)
+            .map(asset -> (NewsLetter) asset)
+            .anyMatch(newsLetter -> {
+                calendar.setTime(newsLetter.getDate());
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+
+                calendar.setTime(date);
+                int checkYear = calendar.get(Calendar.YEAR);
+                int checkMonth = calendar.get(Calendar.MONTH);
+
+                return newsLetter.getPublication().equalsIgnoreCase(publication) && year == checkYear && month == checkMonth;
+            });
+}
+
+
 
 
    
