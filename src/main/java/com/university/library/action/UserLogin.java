@@ -166,7 +166,7 @@ public class UserLogin {
                         assetManagement.getBorrowingHistory();
                         break;
                     case "3":
-                        // left
+                        ViewNews.viewNewsletters();
                         break;
                     case "4":
                         // left
@@ -182,8 +182,10 @@ public class UserLogin {
                         break;
                     case "8":
                         // assetManagement.viewLibraryActivities();
+                        break;
                     case "9":
-                        // assetManagement.updateNewsLetter();
+                        assetManagement.addNewsLetter();
+                        break;
                     case "10":
                         return;
                     default:

@@ -54,15 +54,15 @@ public class App {
         // Hardcoded sample users
         new User("Admin", "admin@gmail.com", "admin123", "1234567890", "123 Main St", "1990-01-01", "Male",
                 UserRole.ADMIN).addUser(false);
-        new User("John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female",
+        new User("John Smith", "staff@gmail.com", "staff123", "0987654321", "456 Elm St", "1992-02-02", "Female",
                 UserRole.STAFF).addUser(false);
-        new User("Sam Wilson", "sam.wilson@gmail.com", "sam123", "1122334455", "789 Pine St", "1993-03-03", "Other",
+        new User("Sam Wilson", "librarian@gmail.com", "librarian", "1122334455", "789 Pine St", "1993-03-03", "Other",
                 UserRole.LIBRARIAN).addUser(false);
         new User("Sai Teja", "1", "1", "1122334455", "789 Pine St", "1993-03-03", "Other", UserRole.STUDENT)
                 .addUser(false);
-        new User("ram", "ram@gmail.com", "ram@123", "9632574125", "852 marc St", "0125-12-12", "Other",
+        new User("ram", "paiduser@gmail.com", "paiduser123", "9632574125", "852 marc St", "0125-12-12", "Other",
                 UserRole.PAID_USER).addUser(false);
-        new User("gy", "3", "3", "789456233", "753 mathie St", "8963-12-12", "Male",
+        new User("gy", "freeuser@gmail.com", "freeuser", "789456233", "753 mathie St", "8963-12-12", "Male",
                 UserRole.FREE_USER).addUser(false);
 
         // Hardcoded Assets

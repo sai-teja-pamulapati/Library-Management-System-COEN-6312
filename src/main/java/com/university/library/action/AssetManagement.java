@@ -3,6 +3,7 @@ package com.university.library.action;
 import com.university.library.App;
 import com.university.library.model.LoanAsset;
 import com.university.library.model.assets.Asset;
+import com.university.library.model.assets.digital.NewsLetter;
 import com.university.library.model.assets.physical.Book;
 import com.university.library.model.assets.physical.PhysicalAsset;
 import com.university.library.model.users.User;
@@ -345,4 +346,37 @@ public class AssetManagement {
             }
         }
     }
+
+    public void addNewsLetter() {
+    System.out.println("Enter NewsLetter's publication");
+    String publication = scanner.nextLine();
+    System.out.println("Enter Access Link for the NewsLetter");
+    String accessLink = scanner.nextLine();
+    System.out.println("Enter Published Date in format dd/MM/yyyy");
+    String dateStr = scanner.nextLine();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    Date date = null;
+    try {
+        date = sdf.parse(dateStr);
+    } catch (ParseException e) {
+        System.out.println("Invalid Format");
+        return;
+    }
+    addNewsLetterToRepository(publication, accessLink, date);
+}
+
+public Asset addNewsLetterToRepository(String publication, String accessLink, Date date) {
+    NewsLetter newsLetter = new NewsLetter(accessLink, date, publication);
+    boolean checkAdd = assetRepository.addAsset(newsLetter);
+    if (checkAdd) {
+        System.out.println("NewsLetter Added Successfully with ID: " + newsLetter.getAssetId());
+        return newsLetter;
+    } else {
+        System.out.println("NewsLetter addition failed");
+        return null;
+    }
+}
+
+
+   
 }
