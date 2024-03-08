@@ -58,12 +58,25 @@ public class PresentationRoomManagement {
 
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
         LocalDate endDate = readDate("Booking End Date (YYYY-MM-DD):");
-        
-        if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, endDate)) {
-            System.out.println("Room booked successfully.");
-        } else {
-            System.out.println("Failed to book the room.");
+
+        // Check for overlapping bookings
+        if (checkNoOverlap(roomId, startDate, endDate)) {
+            if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, endDate)) {
+                System.out.println("Room booked successfully.");
+            } else {
+                System.out.println("Failed to book the room. Room already booked for the selected dates.");
+            }
         }
+    }
+
+    private boolean checkNoOverlap(int roomId, LocalDate startDate, LocalDate endDate) {
+        List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
+        for (RoomBooking booking : roomBookings) {
+            if (endDate.isAfter(booking.getStartDate()) && startDate.isBefore(booking.getEndDate())) {
+                return false; // Overlapping booking found
+            }
+        }
+        return true; // No overlapping booking found
     }
 
     private LocalDate readDate(String message) {
@@ -134,5 +147,4 @@ public class PresentationRoomManagement {
             System.out.println(booking);
         }
     }
-    
 }

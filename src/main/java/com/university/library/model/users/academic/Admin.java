@@ -42,4 +42,3 @@ public class Admin extends AcademicUser {
         return getClass().getName() +"\n"+ super.toString();
     }
 }
- 

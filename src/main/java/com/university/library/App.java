@@ -56,7 +56,7 @@ public class App {
                 "42323", "2020-02-02", "1204 Blvd Maisonneuve", "Mon-Fri 9-5", "Permanent").addUser(false);
         new Staff(null,"John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female",
                 "42393", "2020-03-02", "Computer Science").addUser(false);
-        new Librarian("Sam Wilson", "sam.wilson@gmail.com", "sam123", "1122334455", "789 Pine St", "1993-03-03", "Other", "Female",
+        new Librarian(null, "Sam Wilson", "sam.wilson@gmail.com", "sam123", "789 Pine St", "1993-03-03", "Other", "Female",
                 "42323", "2020-02-02").addUser(false);
         new Student(null,"Sai Teja", "1", "1", "1122334455", "789 Pine St", "1993-03-03", "Other", "42323", "2020-02-02"
         , "Communication")
