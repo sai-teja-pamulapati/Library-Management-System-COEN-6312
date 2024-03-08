@@ -183,10 +183,16 @@ public class UserLogin {
                          assetManagement.updateBook();
                         break;
                     case "8":
+
                         AdminService.viewAllUsers();
                         break;
                     case "9":
                         UpdateNews.updateNewsletterProcess();
+
+                        // assetManagement.viewLibraryActivities();
+                       
+                    
+
                         break;
                     case "10":
                         roomManagement.manageRoomBooking();

@@ -3,6 +3,7 @@ package com.university.library.action;
 import com.university.library.App;
 import com.university.library.model.LoanAsset;
 import com.university.library.model.assets.Asset;
+import com.university.library.model.assets.digital.NewsLetter;
 import com.university.library.model.assets.physical.Book;
 import com.university.library.model.users.User;
 import com.university.library.repository.AssetRepository;
@@ -102,6 +103,27 @@ public class AssetManagement {
     }
 
     public LoanAsset processCheckout(List<Asset> searchedAssets , String requestedAssetId) {
+         User user = App.getLoggedInUser(); 
+
+         int borrowingLimit;
+          switch (user.getUserRole()) {
+        case STUDENT:
+            borrowingLimit = 1;
+            break;
+        case LIBRARIAN:
+            borrowingLimit = 2; 
+            break;
+        default:
+            borrowingLimit = 1; 
+    }
+
+    
+      long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
+      if (activeLoans >= borrowingLimit) {
+          System.out.println("You have reached your borrowing limit of " + borrowingLimit + " items. Please return an item to borrow a new one.");
+          return null;
+      }
+   
         Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
         if (requestedAssetOptional.isEmpty()) {
             System.out.println("Requested Object does not exist");
@@ -343,4 +365,59 @@ public class AssetManagement {
             }
         }
     }
+
+    public void addNewsLetter() {
+    System.out.println("Enter Newsletter's publication");
+    String publication = scanner.nextLine();
+    System.out.println("Enter Published Date in format dd/MM/yyyy");
+    String dateStr = scanner.nextLine();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    Date date;
+    try {
+        date = sdf.parse(dateStr);
+    } catch (ParseException e) {
+        System.out.println("Invalid Date Format");
+        return;
+    }
+
+    if (newsletterExists(publication, date)) {
+        System.out.println("This month's newsletter already exists for the publication.");
+    } else {
+        
+        System.out.println("Enter Newsletter's Access Link");
+        String accessLink = scanner.nextLine();
+        NewsLetter newNewsLetter = new NewsLetter(accessLink, date, publication);
+        boolean added = assetRepository.addAsset(newNewsLetter); 
+        if (added) {
+            System.out.println("Newsletter added successfully.");
+        } else {
+            System.out.println("Failed to add newsletter.");
+        }
+    }
+}
+
+private boolean newsletterExists(String publication, Date date) {
+    List<Asset> allAssets = assetRepository.getAllAssets();
+    Calendar calendar = Calendar.getInstance();
+
+    return allAssets.stream()
+            .filter(asset -> asset instanceof NewsLetter)
+            .map(asset -> (NewsLetter) asset)
+            .anyMatch(newsLetter -> {
+                calendar.setTime(newsLetter.getDate());
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+
+                calendar.setTime(date);
+                int checkYear = calendar.get(Calendar.YEAR);
+                int checkMonth = calendar.get(Calendar.MONTH);
+
+                return newsLetter.getPublication().equalsIgnoreCase(publication) && year == checkYear && month == checkMonth;
+            });
+}
+
+
+
+
+   
 }

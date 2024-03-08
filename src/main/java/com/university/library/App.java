@@ -1,5 +1,20 @@
 package com.university.library;
 
+
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+import java.util.TimeZone;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.university.library.action.UserLogin;
@@ -52,6 +67,7 @@ public class App {
 
     private static void initializeSystem() {
         // Hardcoded sample users
+
         new Admin(null,"Admin", "admin@gmail.com", "admin123", "1234567890", "123 Main St", "1990-01-01", "Male",
                 "42323", "2020-02-02", "1204 Blvd Maisonneuve", "Mon-Fri 9-5", "Permanent").addUser(false);
         new Staff(null,"John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female",
@@ -65,6 +81,8 @@ public class App {
         ).addUser(false);
         new FreeUser(null, "gy", "3", "3", "789456233", "753 mathie St", "8963-12-12", "Male", "Transportation"
         ).addUser(false);
+
+
 
         // Hardcoded Assets
         addAssets();
@@ -92,60 +110,33 @@ public class App {
         }
     }
 
+    
     private static void addAssets() {
-        // List of date formats you expect in the JSON file
-        final List<SimpleDateFormat> dateFormats = Arrays.asList(
-                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"), // ISO 8601 format
-                new SimpleDateFormat("MMM yyyy") // Custom format like "Jan 2024"
-        );
-        dateFormats.get(0).setTimeZone(TimeZone.getTimeZone("UTC")); // Set timezone for ISO 8601 format
+    Gson gson = new Gson();
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-            @Override
-            public Date deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context)
-                    throws JsonParseException {
-                ParseException lastException = null;
-                for (SimpleDateFormat format : dateFormats) {
-                    try {
-                        return format.parse(jsonElement.getAsString());
-                    } catch (ParseException e) {
-                        lastException = e;
-                    }
-                }
-                throw new JsonParseException("Failed to parse Date: " + jsonElement.getAsString(), lastException);
-            }
-        });
+    try (JsonReader reader = new JsonReader(new FileReader("assets.json"))) {
+        JsonElement jsonElement = JsonParser.parseReader(reader);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
 
-        // Build the Gson instance from the GsonBuilder
-        Gson gson = gsonBuilder.create();
+        addAssetsOfType(jsonObject.getAsJsonArray("books"), Book.class, gson);
+        addAssetsOfType(jsonObject.getAsJsonArray("laptops"), Laptop.class, gson);
+        addAssetsOfType(jsonObject.getAsJsonArray("newsletters"), NewsLetter.class, gson);
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
-        // Use this Gson instance for JSON parsing
-        try {
-            JsonReader reader = new JsonReader(new FileReader("assets.json"));
-            JsonElement jsonElement = JsonParser.parseReader(reader);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-            JsonArray books = jsonObject.getAsJsonArray("books");
-            for (JsonElement book : books) {
-                Asset book1 = gson.fromJson(book, Book.class);
-                assetRepository.addAsset(book1);
-            }
-
-            JsonArray laptops = jsonObject.getAsJsonArray("laptops");
-            for (JsonElement laptop : laptops) {
-                Asset laptop1 = gson.fromJson(laptop, Laptop.class);
-                assetRepository.addAsset(laptop1);
-            }
-
-            JsonArray newsletters = jsonObject.getAsJsonArray("newsletters");
-            for (JsonElement newsletter : newsletters) {
-                Asset newsletter1 = gson.fromJson(newsletter, NewsLetter.class);
-                assetRepository.addAsset(newsletter1);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+private static void addAssetsOfType(JsonArray jsonArray, Class<? extends Asset> assetType, Gson gson) {
+    if (jsonArray != null) {
+        for (JsonElement element : jsonArray) {
+            Asset asset = gson.fromJson(element, assetType);
+            assetRepository.addAsset(asset);
         }
     }
+}
+
+
 
 }
