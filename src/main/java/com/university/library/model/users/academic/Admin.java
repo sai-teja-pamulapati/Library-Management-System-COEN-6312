@@ -1,5 +1,7 @@
 package com.university.library.model.users.academic;
 
+import java.time.LocalDate;
+
 public class Admin extends AcademicUser {
 
     private String officeLocation;
@@ -35,6 +37,12 @@ public class Admin extends AcademicUser {
 
     public void setContractType(String contractType) {
         this.contractType = contractType;
+    }
+
+    public boolean isIssueDateValid() {
+        LocalDate today = LocalDate.now();
+        LocalDate issueDate = LocalDate.parse(this.getIssueDate()); // Assuming getIssueDate returns a String in the format "yyyy-MM-dd"
+        return !issueDate.isAfter(today);
     }
 
     @Override

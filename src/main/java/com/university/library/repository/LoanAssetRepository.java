@@ -23,12 +23,12 @@ public class LoanAssetRepository {
         return instance;
     }
 
+    public List<LoanAsset> getLoanedItemsForUser(String userId) {
+        return loans.values().stream().filter(Objects::nonNull).filter(loanAsset -> Objects.equals(loanAsset.getUserId() , userId)).collect(Collectors.toList());
+    }
+
     public void saveLoanAsset(LoanAsset loanAsset) {
         loanAsset.setLoanAssetId(String.valueOf(assetIdGenerator.getAndIncrement()));
         loans.put(loanAsset.getLoanAssetId(), loanAsset);
-    }
-
-    public List<LoanAsset> getLoanedItemsForUser(String userId) {
-        return loans.values().stream().filter(Objects::nonNull).filter(loanAsset -> Objects.equals(loanAsset.getUserId() , userId)).collect(Collectors.toList());
     }
 }
