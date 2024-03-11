@@ -108,5 +108,7 @@ public abstract class Asset {
         loanAssetRepository.saveLoanAsset(loanAsset);
         System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
         return loanAsset;
+
     }
+
 }

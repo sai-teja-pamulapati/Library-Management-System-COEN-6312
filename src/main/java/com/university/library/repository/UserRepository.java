@@ -1,6 +1,8 @@
 package com.university.library.repository;
 
 import com.university.library.model.users.User;
+import com.university.library.model.users.academic.Admin;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +64,11 @@ public class UserRepository {
         if (exists(user.getEmailId())) {
             users.put(user.getEmailId(), user);
         }
+    }
+
+    public boolean isAdmin(String emailId) {
+        User user = getUser(emailId);
+        return user instanceof Admin;
     }
 
 }

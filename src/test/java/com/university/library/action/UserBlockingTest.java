@@ -1,5 +1,6 @@
 package com.university.library.action;
 
+import com.university.library.App;
 import com.university.library.model.users.User;
 import com.university.library.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -45,7 +46,7 @@ public class UserBlockingTest {
         String inputData = "testuser@example.com\n";
         ByteArrayInputStream testInput = new ByteArrayInputStream(inputData.getBytes());
         System.setIn(testInput);
-        UserBlocking.blockUser();
+        UserBlocking.blockUser(App.getLoggedInUser());
 
         assertTrue(userRepository.getUser("testuser@example.com").isBlocked(), "User should be blocked");
         assertFalse(outContent.toString().contains("User has been blocked"), "The output should confirm that the user has been blocked");
@@ -62,7 +63,7 @@ public class UserBlockingTest {
 
         String input = "testuser@example.com\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        UserBlocking.unblockUser();
+        UserBlocking.unblockUser(App.getLoggedInUser());
 
         assertFalse(userRepository.getUser("testuser@example.com").isBlocked(), "User should be unblocked");
         assertFalse(outContent.toString().contains("User has been unblocked"), "The output should confirm that the user has been unblocked");

@@ -157,7 +157,9 @@ public class UserLogin {
                         "8: View Library Activities\n" +
                         "9: Update NewsLetter\n" +
                         "10. Book/Cancel Discussion Room\n" +
-                        "11: Logout\n" +
+                        "11: Block User\n" +
+                        "12: Unblock User\n" +
+                        "13: Logout\n" +
                         "******************************************************************************************\n");
                 String librarianCommands = scanner.nextLine();
                 switch (librarianCommands) {
@@ -180,7 +182,7 @@ public class UserLogin {
                         assetManagement.removeBook();
                         break;
                     case "7":
-                         assetManagement.updateBook();
+                        assetManagement.updateBook();
                         break;
                     case "8":
                         AdminService.viewAllUsers();
@@ -192,6 +194,12 @@ public class UserLogin {
                         roomManagement.manageRoomBooking();
                         break;
                     case "11":
+                        UserBlocking.blockUser(App.getLoggedInUser());
+                        break;
+                    case "12":
+                        UserBlocking.unblockUser(App.getLoggedInUser());
+                        break;
+                    case "13":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
@@ -343,10 +351,10 @@ public class UserLogin {
                         UserRemoval.removeUser();
                         break;
                     case "9":
-                        UserBlocking.blockUser();
+                        UserBlocking.blockUser(App.getLoggedInUser());
                         break;
                     case "10":
-                        UserBlocking.unblockUser();
+                        UserBlocking.unblockUser(App.getLoggedInUser());
                         break;
                     case "11":
                         AdminService.viewAllUsers();
