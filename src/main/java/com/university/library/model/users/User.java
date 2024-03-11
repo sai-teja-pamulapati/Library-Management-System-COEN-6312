@@ -59,15 +59,6 @@ public class User {
         this.gender = gender;
     }
 
-    // public static User login(String emailId , String password) {
-    //     User user = userRepository.getUser(emailId);
-    //     if (user == null || !user.getPassword().equals(password)) {
-    //         System.out.println("Invalid Credentials!!");
-    //         return null;
-    //     }
-    //     System.out.println("Login Successful!");
-    //     return user;
-    // }
 
     public static User login(String emailId , String password) {
     User user = userRepository.getUser(emailId);

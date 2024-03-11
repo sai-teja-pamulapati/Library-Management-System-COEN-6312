@@ -35,15 +35,6 @@ public class NewsLetter extends DigitalAsset {
         this.publication = publication;
     }
 
-    // @Override
-    // public String toString() {
-    //     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
-    //     return "NewsLetter Details: \n" +
-    //             "Asset ID: " + getAssetId() + "\n" +
-    //             "Publication Date: " + dateFormat.format(date) + "\n" +
-    //             "Publication: " + publication + "\n" +
-    //             "Access Link: " + getAccessLink() + "\n" ;
-    // }
     @Override
     public String toString() {
     return "NewsLetter Details: \n" +
