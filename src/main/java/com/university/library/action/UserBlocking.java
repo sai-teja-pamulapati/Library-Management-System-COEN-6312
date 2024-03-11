@@ -1,10 +1,10 @@
 package com.university.library.action;
 
-import java.util.Scanner;
-
 import com.university.library.model.users.User;
 import com.university.library.model.users.academic.Admin;
 import com.university.library.repository.UserRepository;
+
+import java.util.Scanner;
 
 public class UserBlocking {
     private static Scanner scanner = new Scanner(System.in);

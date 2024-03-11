@@ -59,15 +59,23 @@ public class User {
         this.gender = gender;
     }
 
+
     public static User login(String emailId , String password) {
-        User user = userRepository.getUser(emailId);
-        if (user == null || !user.getPassword().equals(password)) {
-            System.out.println("Invalid Credentials!!");
-            return null;
-        }
-        System.out.println("Login Successful!");
-        return user;
+    User user = userRepository.getUser(emailId);
+    if (user == null) {
+        System.out.println("Invalid Credentials!!");
+        return null;
+    } else if (user.isBlocked()) {
+        System.out.println("This account is blocked.");
+        return null;
+    } else if (!user.getPassword().equals(password)) {
+        System.out.println("Invalid Credentials!!");
+        return null;
     }
+    System.out.println("Login Successful!");
+    return user;
+}
+
 
     public static User register(User newUser) {
         return newUser.addUser();

@@ -7,6 +7,8 @@ import com.university.library.repository.AssetRepository;
 import com.university.library.repository.LoanAssetRepository;
 import org.apache.commons.lang3.time.DateUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public abstract class Asset {
@@ -106,7 +108,9 @@ public abstract class Asset {
         this.availability = false;
         this.updateAsset();
         loanAssetRepository.saveLoanAsset(loanAsset);
-        System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println("Requested Asset has been borrowed. Please return the item by " + dateFormat.format(loanAsset.getReturnDate()) + ".");
+        //System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
         return loanAsset;
 
     }

@@ -1,6 +1,8 @@
 package com.university.library.repository;
 
 import com.university.library.model.LoanAsset;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -31,4 +33,12 @@ public class LoanAssetRepository {
         loanAsset.setLoanAssetId(String.valueOf(assetIdGenerator.getAndIncrement()));
         loans.put(loanAsset.getLoanAssetId(), loanAsset);
     }
+
+     public long countActiveLoansByUserId(String userId) {
+        return loans.values().stream()
+                     .filter(loanAsset -> Objects.equals(loanAsset.getUserId(), userId))
+                     .filter(loanAsset -> loanAsset.getReturnDate() == null || loanAsset.getReturnDate().after(new Date()))
+                     .count();
+    }
+
 }
