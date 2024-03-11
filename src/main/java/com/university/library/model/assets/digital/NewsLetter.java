@@ -1,6 +1,5 @@
 package com.university.library.model.assets.digital;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NewsLetter extends DigitalAsset {
@@ -13,7 +12,7 @@ public class NewsLetter extends DigitalAsset {
 
     public NewsLetter(String accessLink, Date date, String publication) {
         super(accessLink);
-        this.date = date;
+        setDate(date);
         this.publication = publication;
     }
 
@@ -22,6 +21,9 @@ public class NewsLetter extends DigitalAsset {
     }
 
     public void setDate(Date date) {
+        if (date.after(new Date())) {
+            throw new IllegalArgumentException("Publication date cannot be in the future");
+        }
         this.date = date;
     }
 

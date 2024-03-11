@@ -65,16 +65,36 @@ public class PresentationRoomRepository {
     }
 
     public boolean addRoom(RoomBooking room) {
-        String key = createKey(room.getUserId(), room.getRoomId(), room.getStartDate());
-        if (bookingsByDateAndRoom.containsKey(key)) {
+        // Check for overlapping bookings for the same room and date
+        if (hasOverlap(room)) {
             return false;
         }
-
+        // No overlap, proceed with adding the booking
+        String key = createKey(room.getUserId(), room.getRoomId(), room.getStartDate());
         bookingsByDateAndRoom.put(key, room);
         bookingsByStudent.computeIfAbsent(room.getUserId(), k -> new ArrayList<>()).add(room);
         return true;
     }
 
+        private boolean hasOverlap(RoomBooking newBooking) {
+            for (RoomBooking existingBooking : bookingsByDateAndRoom.values()) {
+                if (newBooking.getRoomId() == existingBooking.getRoomId() &&
+                    newBooking.getStartDate().isEqual(existingBooking.getStartDate())) {
+                    return true; // Overlapping booking found
+                }
+            }
+            return false; // No overlapping booking found
+        }
+
+    public List<RoomBooking> getRoomBookingsByRoomId(int roomId) {
+        List<RoomBooking> bookings = new ArrayList<>();
+        for (RoomBooking booking : bookingsByDateAndRoom.values()) {
+            if (booking.getRoomId() == roomId) {
+                bookings.add(booking);
+            }
+        }
+        return bookings;
+    }
     public boolean removeRoom(String userId , int roomId , LocalDate startDate) {
         String key = createKey(userId, roomId, startDate);
         if (!bookingsByDateAndRoom.containsKey(key)) {

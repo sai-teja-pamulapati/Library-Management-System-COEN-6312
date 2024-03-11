@@ -1,20 +1,6 @@
 package com.university.library;
 
 
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Scanner;
-import java.util.TimeZone;
-import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.university.library.action.UserLogin;
@@ -34,10 +20,8 @@ import com.university.library.repository.AssetRepository;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class App {
 
@@ -72,12 +56,12 @@ public class App {
                 "42323", "2020-02-02", "1204 Blvd Maisonneuve", "Mon-Fri 9-5", "Permanent").addUser(false);
         new Staff(null,"John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female",
                 "42393", "2020-03-02", "Computer Science").addUser(false);
-        new Librarian("Sam Wilson", "sam.wilson@gmail.com", "sam123", "1122334455", "789 Pine St", "1993-03-03", "Other", "Female",
+        new Librarian(null, "Sam Wilson", "sam.wilson@gmail.com", "sam123", "789 Pine St", "1993-03-03", "Other", "Female",
                 "42323", "2020-02-02").addUser(false);
         new Student(null,"Sai Teja", "1", "1", "1122334455", "789 Pine St", "1993-03-03", "Other", "42323", "2020-02-02"
         , "Communication")
                 .addUser(false);
-        new PaidUser(null, "ram", "ram@gmail.com", "ram@123", "9632574125", "852 marc St", "0125-12-12", "Other", "STM"
+        new PaidUser(null, "ram", "ram@123", "ram@gmail.com", "9632574125", "852 marc St", "0125-12-12", "Other", "STM"
         ).addUser(false);
         new FreeUser(null, "gy", "3", "3", "789456233", "753 mathie St", "8963-12-12", "Male", "Transportation"
         ).addUser(false);

@@ -1,5 +1,11 @@
 package com.university.library.action;
 
+import com.university.library.App;
+import com.university.library.model.PresentationRoom;
+import com.university.library.model.RoomBooking;
+import com.university.library.model.users.User;
+import com.university.library.repository.PresentationRoomRepository;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -7,12 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-import com.university.library.App;
-import com.university.library.model.PresentationRoom;
-import com.university.library.model.RoomBooking;
-import com.university.library.model.users.User;
-import com.university.library.repository.PresentationRoomRepository;
 
 public class PresentationRoomManagement {
 
@@ -58,12 +58,25 @@ public class PresentationRoomManagement {
 
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
         LocalDate endDate = readDate("Booking End Date (YYYY-MM-DD):");
-        
-        if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, endDate)) {
-            System.out.println("Room booked successfully.");
-        } else {
-            System.out.println("Failed to book the room.");
+
+        // Check for overlapping bookings
+        if (checkNoOverlap(roomId, startDate, endDate)) {
+            if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, endDate)) {
+                System.out.println("Room booked successfully.");
+            } else {
+                System.out.println("Failed to book the room. Room already booked for the selected dates.");
+            }
         }
+    }
+
+    private boolean checkNoOverlap(int roomId, LocalDate startDate, LocalDate endDate) {
+        List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
+        for (RoomBooking booking : roomBookings) {
+            if (endDate.isAfter(booking.getStartDate()) && startDate.isBefore(booking.getEndDate())) {
+                return false; // Overlapping booking found
+            }
+        }
+        return true; // No overlapping booking found
     }
 
     private LocalDate readDate(String message) {
@@ -134,5 +147,4 @@ public class PresentationRoomManagement {
             System.out.println(booking);
         }
     }
-    
 }
