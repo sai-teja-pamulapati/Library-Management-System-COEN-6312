@@ -3,14 +3,23 @@ package com.university.library.action;
 import com.university.library.App;
 import com.university.library.model.LoanAsset;
 import com.university.library.model.assets.Asset;
+import com.university.library.model.assets.digital.DigitalBook;
 import com.university.library.model.assets.digital.NewsLetter;
 import com.university.library.model.assets.physical.Book;
+import com.university.library.model.assets.physical.Laptop;
 import com.university.library.model.users.User;
+import com.university.library.model.users.academic.Admin;
+import com.university.library.model.users.academic.Librarian;
+import com.university.library.model.users.academic.Staff;
+import com.university.library.model.users.academic.Student;
+import com.university.library.model.users.nonacademic.FreeUser;
+import com.university.library.model.users.nonacademic.PaidUser;
 import com.university.library.repository.AssetRepository;
 import com.university.library.repository.LoanAssetRepository;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -103,33 +112,65 @@ public class AssetManagement {
     }
 
     public LoanAsset processCheckout(List<Asset> searchedAssets , String requestedAssetId) {
-         User user = App.getLoggedInUser(); 
-
-         int borrowingLimit;
-          switch (user.getUserRole()) {
-        case STUDENT:
-            borrowingLimit = 1;
-            break;
-        case LIBRARIAN:
-            borrowingLimit = 2; 
-            break;
-        default:
-            borrowingLimit = 1; 
-    }
-
-    
-      long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
-      if (activeLoans >= borrowingLimit) {
-          System.out.println("You have reached your borrowing limit of " + borrowingLimit + " items. Please return an item to borrow a new one.");
-          return null;
-      }
-   
+        User user = App.getLoggedInUser();
         Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
+
         if (requestedAssetOptional.isEmpty()) {
             System.out.println("Requested Object does not exist");
+            return null;
         }
         Asset requestedAsset = requestedAssetOptional.get();
+
+        int borrowingLimit = getBorrowingLimit(requestedAsset, user);
+        long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
+
+        if (borrowingLimit != -1 && activeLoans >= borrowingLimit) {
+            System.out.println(MessageFormat.format("You have reached your borrowing limit of \"{0}\" {1}s. Please return an item to borrow a new one." , borrowingLimit, requestedAsset.getClass().getSimpleName()));
+            return null;
+        }
+
         return requestedAsset.loanAsset();
+    }
+
+    private int getBorrowingLimit(Asset requestedAsset , User user) {
+        if (requestedAsset instanceof Laptop){
+            if (user instanceof Librarian){
+                return 2;
+            } else if (user instanceof Admin){
+                return 2;
+            } else if (user instanceof Staff){
+                return 2;
+            } else if (user instanceof Student){
+                return 1;
+            } else if (user instanceof PaidUser){
+                return 0;
+            } else if (user instanceof FreeUser){
+                return 0;
+            }
+        } else if (requestedAsset instanceof Book) {
+            if (user instanceof Librarian){
+                return 100;
+            } else if (user instanceof Admin){
+                return 50;
+            } else if (user instanceof Staff){
+                return 50;
+            } else if (user instanceof Student){
+                return 10;
+            } else if (user instanceof PaidUser){
+                return 10;
+            } else if (user instanceof FreeUser){
+                return 0;
+            }
+        } else if (requestedAsset instanceof DigitalBook){
+            if (user instanceof PaidUser){
+                return 20;
+            } else if (user instanceof FreeUser){
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+        return 0;
     }
 
     private void searchByKeywords() {
@@ -367,57 +408,57 @@ public class AssetManagement {
     }
 
     public void addNewsLetter() {
-    System.out.println("Enter Newsletter's publication");
-    String publication = scanner.nextLine();
-    System.out.println("Enter Published Date in format dd/MM/yyyy");
-    String dateStr = scanner.nextLine();
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    Date date;
-    try {
-        date = sdf.parse(dateStr);
-    } catch (ParseException e) {
-        System.out.println("Invalid Date Format");
-        return;
-    }
+        System.out.println("Enter Newsletter's publication");
+        String publication = scanner.nextLine();
+        System.out.println("Enter Published Date in format dd/MM/yyyy");
+        String dateStr = scanner.nextLine();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date date;
+        try {
+            date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            System.out.println("Invalid Date Format");
+            return;
+        }
 
-    if (newsletterExists(publication, date)) {
-        System.out.println("This month's newsletter already exists for the publication.");
-    } else {
-        
-        System.out.println("Enter Newsletter's Access Link");
-        String accessLink = scanner.nextLine();
-        NewsLetter newNewsLetter = new NewsLetter(accessLink, date, publication);
-        boolean added = assetRepository.addAsset(newNewsLetter); 
-        if (added) {
-            System.out.println("Newsletter added successfully.");
+        if (newsletterExists(publication, date)) {
+            System.out.println("This month's newsletter already exists for the publication.");
         } else {
-            System.out.println("Failed to add newsletter.");
+
+            System.out.println("Enter Newsletter's Access Link");
+            String accessLink = scanner.nextLine();
+            NewsLetter newNewsLetter = new NewsLetter(accessLink, date, publication);
+            boolean added = assetRepository.addAsset(newNewsLetter);
+            if (added) {
+                System.out.println("Newsletter added successfully.");
+            } else {
+                System.out.println("Failed to add newsletter.");
+            }
         }
     }
-}
 
-private boolean newsletterExists(String publication, Date date) {
-    List<Asset> allAssets = assetRepository.getAllAssets();
-    Calendar calendar = Calendar.getInstance();
+    private boolean newsletterExists(String publication, Date date) {
+        List<Asset> allAssets = assetRepository.getAllAssets();
+        Calendar calendar = Calendar.getInstance();
 
-    return allAssets.stream()
-            .filter(asset -> asset instanceof NewsLetter)
-            .map(asset -> (NewsLetter) asset)
-            .anyMatch(newsLetter -> {
-                calendar.setTime(newsLetter.getDate());
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
+        return allAssets.stream()
+                .filter(asset -> asset instanceof NewsLetter)
+                .map(asset -> (NewsLetter) asset)
+                .anyMatch(newsLetter -> {
+                    calendar.setTime(newsLetter.getDate());
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH);
 
-                calendar.setTime(date);
-                int checkYear = calendar.get(Calendar.YEAR);
-                int checkMonth = calendar.get(Calendar.MONTH);
+                    calendar.setTime(date);
+                    int checkYear = calendar.get(Calendar.YEAR);
+                    int checkMonth = calendar.get(Calendar.MONTH);
 
-                return newsLetter.getPublication().equalsIgnoreCase(publication) && year == checkYear && month == checkMonth;
-            });
-}
-
+                    return newsLetter.getPublication().equalsIgnoreCase(publication) && year == checkYear && month == checkMonth;
+                });
+    }
 
 
 
-   
+
+
 }
