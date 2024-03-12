@@ -65,10 +65,10 @@ public class PresentationRoomManagement {
             return;
         }
 
-        /*if (!isWithinTwoWeeksRange(startDate)) {
+        if (!isWithinTwoWeeksRange(startDate)) {
             System.out.println("Rooms cannot be booked more than two weeks in advance.");
             return;
-        }*/
+        }
 
         // Check for overlapping bookings
         if (checkNoOverlap(roomId, startDate, endDate)) {
@@ -81,11 +81,11 @@ public class PresentationRoomManagement {
 
     }
 
-    /*private boolean isWithinTwoWeeksRange(LocalDate startDate) {
+    private boolean isWithinTwoWeeksRange(LocalDate startDate) {
         LocalDate today = LocalDate.now();
         LocalDate twoWeeksAhead = today.plusWeeks(2);
         return !startDate.isAfter(twoWeeksAhead);
-    }*/
+    }
 
     private boolean hasReachedBookingLimit(User user) {
         List<RoomBooking> bookings = repository.getRoomsByUserId(user.getUserId());
