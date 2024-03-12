@@ -33,18 +33,18 @@ public class PresentationRoomRepository {
         featuresRoom3.add("Projector");
         featuresRoom3.add("Table and chairs");
         presentationRooms.put(201, new PresentationRoom(201, featuresRoom3));
-        
+
         List<String> featuresRoom4 = new ArrayList<>();
         featuresRoom4.add("Video Conference");
         featuresRoom4.add("Computers");
         presentationRooms.put(202, new PresentationRoom(202, featuresRoom4));
-        
+
         List<String> featuresRoom5 = new ArrayList<>();
         featuresRoom5.add("Projector");
         featuresRoom5.add("Whiteboard");
         featuresRoom5.add("Charging sockets");
         presentationRooms.put(301, new PresentationRoom(301, featuresRoom5));
-        
+
         List<String> featuresRoom6 = new ArrayList<>();
         featuresRoom6.add("Video Conference");
         featuresRoom6.add("Internet");
@@ -65,26 +65,11 @@ public class PresentationRoomRepository {
     }
 
     public boolean addRoom(RoomBooking room) {
-        // Check for overlapping bookings for the same room and date
-        if (hasOverlap(room)) {
-            return false;
-        }
-        // No overlap, proceed with adding the booking
         String key = createKey(room.getUserId(), room.getRoomId(), room.getStartDate());
         bookingsByDateAndRoom.put(key, room);
         bookingsByStudent.computeIfAbsent(room.getUserId(), k -> new ArrayList<>()).add(room);
         return true;
     }
-
-        private boolean hasOverlap(RoomBooking newBooking) {
-            for (RoomBooking existingBooking : bookingsByDateAndRoom.values()) {
-                if (newBooking.getRoomId() == existingBooking.getRoomId() &&
-                    newBooking.getStartDate().isEqual(existingBooking.getStartDate())) {
-                    return true; // Overlapping booking found
-                }
-            }
-            return false; // No overlapping booking found
-        }
 
     public List<RoomBooking> getRoomBookingsByRoomId(int roomId) {
         List<RoomBooking> bookings = new ArrayList<>();

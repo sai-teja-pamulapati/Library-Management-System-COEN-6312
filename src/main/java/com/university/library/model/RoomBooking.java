@@ -79,10 +79,17 @@ public class RoomBooking {
         return Objects.hash(roomId, userId, startDate, endDate);
     }
 
-    // Implementation of the OCL constraint to check for overlapping bookings
-    public boolean overlapsWith(RoomBooking otherBooking) {
-        return this.roomId == otherBooking.roomId &&
-                this.endDate.isAfter(otherBooking.startDate) &&
-                this.startDate.isBefore(otherBooking.endDate);
+    public static boolean overlapsWith(RoomBooking booking1, RoomBooking booking2) {
+        boolean overlaps = booking1.roomId == booking2.roomId &&
+        !booking1.endDate.isBefore(booking2.startDate) &&
+        !booking1.startDate.isAfter(booking2.endDate);
+        // debug
+        System.out.println("Checking overlap between:");
+        System.out.println("Booking 1: " + booking1);
+        System.out.println("Booking 2: " + booking2);
+        System.out.println("Overlap: " + overlaps);
+
+        return overlaps;
     }
 }
+

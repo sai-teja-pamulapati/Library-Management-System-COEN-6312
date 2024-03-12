@@ -29,8 +29,8 @@ public class PresentationRoom {
 
     @Override
     public String toString() {
-        return "Room ID: " + roomId + 
-               ", Features: " + 
-               String.join(", ", features);
+        return "Room ID: " + roomId +
+                ", Features: " +
+                String.join(", ", features);
     }
 }

@@ -59,25 +59,35 @@ public class PresentationRoomManagement {
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
         LocalDate endDate = readDate("Booking End Date (YYYY-MM-DD):");
 
-        // Check for overlapping bookings
-        if (checkNoOverlap(roomId, startDate, endDate)) {
+        if (checkNoOverlap(roomId, currentLoggedInUser.getUserId(), startDate, endDate)) {
             if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, endDate)) {
                 System.out.println("Room booked successfully.");
             } else {
                 System.out.println("Failed to book the room. Room already booked for the selected dates.");
             }
+        } else {
+            System.out.println("Failed to book the room. Overlapping booking found.");
         }
     }
 
-    private boolean checkNoOverlap(int roomId, LocalDate startDate, LocalDate endDate) {
+
+    public RoomBooking createDummyBooking(int roomId, String userId, LocalDate startDate, LocalDate endDate) {
+        return new RoomBooking(roomId, userId, startDate, endDate);
+    }
+
+    private boolean checkNoOverlap(int roomId, String userId, LocalDate startDate, LocalDate endDate) {
+
         List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
+
+        RoomBooking newBooking = new RoomBooking(roomId, userId, startDate, endDate);
         for (RoomBooking booking : roomBookings) {
-            if (endDate.isAfter(booking.getStartDate()) && startDate.isBefore(booking.getEndDate())) {
-                return false; // Overlapping booking found
+            if (RoomBooking.overlapsWith(booking, newBooking)) {
+                return false;
             }
         }
-        return true; // No overlapping booking found
+        return true;
     }
+
 
     private LocalDate readDate(String message) {
         LocalDate date = null;
@@ -103,7 +113,7 @@ public class PresentationRoomManagement {
             PresentationRoom room = rooms.get(roomId);
             System.out.println(index++ + ". " + room);
         }
-        
+
         System.out.println("Select a room by entering its number:");
         try {
             int selection = Integer.parseInt(scanner.nextLine());
