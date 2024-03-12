@@ -6,7 +6,9 @@ import com.university.library.model.RoomBooking;
 import com.university.library.model.users.User;
 import com.university.library.repository.PresentationRoomRepository;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -58,7 +60,14 @@ public class PresentationRoomManagement {
         }
 
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
+        LocalTime startTime = readTime("Booking Start Time (HH:MM):");
         LocalDate endDate = readDate("Booking End Date (YYYY-MM-DD):");
+        LocalTime endTime = readTime("Booking End Time (HH:MM):");
+
+        if (!isValidTimeRange(startTime, endTime)) {
+            System.out.println("Invalid booking time. Must be between 10 a.m. to 10 p.m., min 30 min and max 3 hours.");
+        }
+      
 
         if (hasReachedBookingLimit(currentLoggedInUser)) {
             System.out.println("You cannot have more than three bookings.");
@@ -72,13 +81,22 @@ public class PresentationRoomManagement {
 
         // Check for overlapping bookings
         if (checkNoOverlap(roomId, startDate, endDate)) {
-            if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, endDate)) {
+            if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, endDate, startTime, endTime)) {
                 System.out.println("Room booked successfully.");
             } else {
-                System.out.println("Failed to book the room. Room already booked for the selected dates.");
+                System.out.println("Failed to book the room. You can only book one room per day.");
             }
         }
 
+    }
+
+    private boolean isValidTimeRange(LocalTime startTime, LocalTime endTime) {
+        LocalTime openTime = LocalTime.of(10, 0); // 10 a.m.
+        LocalTime closeTime = LocalTime.of(22, 0); // 10 p.m.
+        Duration duration = Duration.between(startTime, endTime);
+    
+        return !startTime.isBefore(openTime) && !endTime.isAfter(closeTime) &&
+                duration.toMinutes() >= 30 && duration.toHours() <= 3;
     }
 
     private boolean isWithinTwoWeeksRange(LocalDate startDate) {
@@ -117,6 +135,20 @@ public class PresentationRoomManagement {
         return date;
     }
 
+    private LocalTime readTime(String message) {
+        LocalTime time = null;
+        while (time == null) {
+            System.out.println(message);
+            String input = scanner.nextLine();
+            try {
+                time = LocalTime.parse(input, DateTimeFormatter.ofPattern("HH:mm"));
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time format. Please use HH:MM. Try again.");
+            }
+        }
+        return time;
+    }
+
     private int displayAndSelectAvailableRooms() {
         System.out.println("Available Presentation Rooms:");
         Map<Integer, PresentationRoom> rooms = repository.getAllPresentationRooms();
@@ -139,8 +171,8 @@ public class PresentationRoomManagement {
         }
     }
 
-    private boolean bookRoom(String userId , int roomId , LocalDate startDate , LocalDate endDate) {
-        RoomBooking room = new RoomBooking(roomId, userId, startDate, endDate);
+    private boolean bookRoom(String userId , int roomId , LocalDate startDate , LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        RoomBooking room = new RoomBooking(roomId, userId, startDate, endDate, startTime, endTime);
         return repository.addRoom(room);
     }
 
