@@ -67,6 +67,7 @@ public class PresentationRoomManagement {
                 System.out.println("Failed to book the room. Room already booked for the selected dates.");
             }
         }
+
     }
 
     private boolean checkNoOverlap(int roomId, LocalDate startDate, LocalDate endDate) {

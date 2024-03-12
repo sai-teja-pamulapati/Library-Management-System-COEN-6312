@@ -69,22 +69,22 @@ public class PresentationRoomRepository {
         if (hasOverlap(room)) {
             return false;
         }
-        // No overlap, proceed with adding the booking
+        // No overlap and no existing booking on the same date.
         String key = createKey(room.getUserId(), room.getRoomId(), room.getStartDate());
         bookingsByDateAndRoom.put(key, room);
         bookingsByStudent.computeIfAbsent(room.getUserId(), k -> new ArrayList<>()).add(room);
         return true;
     }
 
-        private boolean hasOverlap(RoomBooking newBooking) {
-            for (RoomBooking existingBooking : bookingsByDateAndRoom.values()) {
-                if (newBooking.getRoomId() == existingBooking.getRoomId() &&
-                    newBooking.getStartDate().isEqual(existingBooking.getStartDate())) {
-                    return true; // Overlapping booking found
-                }
+    private boolean hasOverlap(RoomBooking newBooking) {
+        for (RoomBooking existingBooking : bookingsByDateAndRoom.values()) {
+            if (newBooking.getRoomId() == existingBooking.getRoomId() &&
+                newBooking.getStartDate().isEqual(existingBooking.getStartDate())) {
+                return true; // Overlapping booking found
             }
-            return false; // No overlapping booking found
         }
+        return false; // No overlapping booking found
+    }
 
     public List<RoomBooking> getRoomBookingsByRoomId(int roomId) {
         List<RoomBooking> bookings = new ArrayList<>();
@@ -113,4 +113,5 @@ public class PresentationRoomRepository {
     private String createKey(String userId , int roomId , LocalDate localDate) {
         return userId + "-" + roomId + "-" + localDate;
     }
+
 }
