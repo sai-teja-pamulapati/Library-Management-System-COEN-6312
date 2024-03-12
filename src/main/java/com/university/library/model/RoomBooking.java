@@ -38,7 +38,9 @@ public class RoomBooking {
     }
 
     public void setStartDate(LocalDate startDate) {
-        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
+        if (startDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Bookings must be made for future dates.");
+        } else if(endDate != null && startDate != null && endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date must be after the start date");
         }
         this.startDate = startDate;

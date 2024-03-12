@@ -268,7 +268,7 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3. View Newsletter\n" +
                         "4. View Notifications\n" +
-                        "5. Book/Cancel Discussion Room\n" +
+                        "5. Book/Cancel Presentation Room\n" +
                         "6. Pay Fines\n" +
                         "7. Logout\n" +
                         "******************************************************************************************\n");
@@ -321,7 +321,7 @@ public class UserLogin {
                         "3. View Notifications\n" +
                         "4. View Newsletter\n" +
                         "5. Update Newsletter\n" +
-                        "6. Book/Cancel Discussion Room\n" +
+                        "6. Book/Cancel Presentation Room\n" +
                         "7. Add User\n" +
                         "8. Remove User\n" +
                         "9. Block User\n" +

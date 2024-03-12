@@ -50,6 +50,7 @@ public class PresentationRoomManagement {
     }
 
     private void bookRoomProcess(User currentLoggedInUser) {
+
         int roomId = displayAndSelectAvailableRooms();
         if (roomId == -1) {
             System.out.println("Invalid selection. Going back to main menu.");
@@ -58,6 +59,16 @@ public class PresentationRoomManagement {
 
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
         LocalDate endDate = readDate("Booking End Date (YYYY-MM-DD):");
+
+        if (hasReachedBookingLimit(currentLoggedInUser)) {
+            System.out.println("You cannot have more than three bookings.");
+            return;
+        }
+
+        /*if (!isWithinTwoWeeksRange(startDate)) {
+            System.out.println("Rooms cannot be booked more than two weeks in advance.");
+            return;
+        }*/
 
         // Check for overlapping bookings
         if (checkNoOverlap(roomId, startDate, endDate)) {
@@ -68,6 +79,17 @@ public class PresentationRoomManagement {
             }
         }
 
+    }
+
+    /*private boolean isWithinTwoWeeksRange(LocalDate startDate) {
+        LocalDate today = LocalDate.now();
+        LocalDate twoWeeksAhead = today.plusWeeks(2);
+        return !startDate.isAfter(twoWeeksAhead);
+    }*/
+
+    private boolean hasReachedBookingLimit(User user) {
+        List<RoomBooking> bookings = repository.getRoomsByUserId(user.getUserId());
+        return bookings.size() >= 3; // Check if the user already has three bookings
     }
 
     private boolean checkNoOverlap(int roomId, LocalDate startDate, LocalDate endDate) {
