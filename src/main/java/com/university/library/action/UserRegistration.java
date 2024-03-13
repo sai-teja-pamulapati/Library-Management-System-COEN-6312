@@ -27,31 +27,28 @@ public class UserRegistration {
 
         Console console = System.console();
 
-        String prompt = selfRegistration ? "Please enter your name:" : "Please enter name of user:";
-        System.out.println(prompt);
-        String name = scanner.nextLine();
+        String name = getInputFromUser(selfRegistration, "Please enter your name:", "Please enter name of user:");
 
-        String emailId = getEmailId(selfRegistration);
+        String emailId;
+        while(true) {
+            emailId = getInputFromUser(selfRegistration, "Please enter your email ID:", "Please enter user's email ID:");
+            if (validateEmailId(emailId)){
+                break;
+            }
+            System.out.println("Wrong email format!! Please enter the email id in this format - xyz@abc.com");
+        }
 
-        prompt = selfRegistration ? "Please enter your password" : "Please enter user's desired password";
-        System.out.println(prompt);
         String password = new String(console.readPassword());
 
-        prompt = selfRegistration ? "Please enter your mobile number" : "Please enter user's mobile number";
-        System.out.println(prompt);
-        String mobileNumber = scanner.nextLine();
+        String mobileNumber = getInputFromUser(selfRegistration, "Please enter your mobile number", "Please enter user's mobile number");
 
-        prompt = selfRegistration ? "Please enter your address" : "Please enter user's address";
-        System.out.println(prompt);
-        String address = scanner.nextLine();
+        String address = getInputFromUser(selfRegistration, "Please enter your address", "Please enter user's address");
 
-        prompt = selfRegistration ? "Please enter your date of birth (YYYY-MM-DD)" : "Please enter user's date of birth (YYYY-MM-DD)";
-        System.out.println(prompt);
-        String dateOfBirth = scanner.nextLine();
+        String dateOfBirth = getInputFromUser(selfRegistration, "Please enter your date of birth (YYYY-MM-DD)", "Please enter user's date of birth (YYYY-MM-DD)");
 
         String gender = "";
         while(true) {
-            System.out.print("Please select your gender:\n" +
+            System.out.print("Please select the gender:\n" +
                 "1. Male\n" +
                 "2. Female\n" +
                 "3. Other\n");
@@ -83,17 +80,12 @@ public class UserRegistration {
         }
     }
 
-    private static String getEmailId(boolean selfRegistration) {
-        String prompt = selfRegistration ? "Please enter your email ID:" : "Please enter user's email ID:";
+    private static String getInputFromUser(boolean selfRegistration , String selfPrompt , String userPrompt) {
+        String prompt = selfRegistration ? selfPrompt : userPrompt;
         System.out.println(prompt);
-        while(true) {
-            String emailId = scanner.nextLine();
-            if (validateEmailId(emailId)){
-                return emailId;
-            }
-            System.out.println("Wrong email format!! Please enter the email id in this format - xyz@abc.com");
-        }
+        return scanner.nextLine();
     }
+
 
     public static boolean validateEmailId(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
@@ -131,16 +123,16 @@ public class UserRegistration {
 
         switch (userRole) {
             case ADMIN:
-                newUser = new Admin(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , null, null, null, null, null);
+                newUser = getAdminUser(name , emailId , password , mobileNumber , address , dateOfBirth , gender, selfRegistration);
                 break;
             case STUDENT:
-                newUser = new Student(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , null, null, null);
+                newUser = getStudentUser(name , emailId , password , mobileNumber , address , dateOfBirth , gender, selfRegistration);
                 break;
             case STAFF:
-                newUser = new Staff(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , null, null, null);
+                newUser = getStaffUser(name , emailId , password , mobileNumber , address , dateOfBirth , gender, selfRegistration);
                 break;
             case LIBRARIAN:
-                newUser = new Librarian(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , null, null);
+                newUser = getLibrarianUser(name , emailId , password , mobileNumber , address , dateOfBirth , gender, selfRegistration);
                 break;
             case FREE_USER:
                 newUser = new FreeUser(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , null);
@@ -150,5 +142,30 @@ public class UserRegistration {
                 break;
         }
         return newUser;
+    }
+
+    private static User getLibrarianUser(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
+        String universityId = getInputFromUser(selfRegistration, "Please enter your university id", "Please enter user's university id");
+        String department = getInputFromUser(selfRegistration, "Please enter your department", "Please enter user's department");
+        return new Librarian(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId, department);
+    }
+
+    private static User getStaffUser(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
+        String universityId = getInputFromUser(selfRegistration, "Please enter your university id", "Please enter user's university id");
+        String department = getInputFromUser(selfRegistration, "Please enter your department", "Please enter user's department");
+        return new Staff(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId, null, department);
+    }
+
+    private static User getStudentUser(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
+        String universityId = getInputFromUser(selfRegistration, "Please enter your university id", "Please enter user's university id");
+        String department = getInputFromUser(selfRegistration, "Please enter your department", "Please enter user's department");
+        return new Student(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId, null, department);
+    }
+
+    private static User getAdminUser(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
+        String universityId = getInputFromUser(selfRegistration, "Please enter your university id", "Please enter user's university id");
+        String officeHours = getInputFromUser(selfRegistration, "Please enter your office hours", "Please enter user's office hours");
+        String officeLocation = getInputFromUser(selfRegistration, "Please enter your office location", "Please enter user's office location");
+        return new Admin(null , name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId , null , officeLocation , officeHours , null);
     }
 }
