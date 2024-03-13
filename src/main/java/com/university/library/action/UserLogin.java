@@ -156,7 +156,7 @@ public class UserLogin {
                         "7: Update Book Details\n" +
                         "8: View Library Activities\n" +
                         "9: Update NewsLetter\n" +
-                        "10. Book/Cancel Discussion Room\n" +
+                        "10. Book/Cancel Presentation Room\n" +
                         "11: Block User\n" +
                         "12: Unblock User\n" +
                         "13: Logout\n" +
@@ -225,7 +225,7 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3. View Newsletter\n" +
                         "4. View Notifications\n" +
-                        "5. Book/Cancel Discussion Room\n" +
+                        "5. Book/Cancel Presentation Room\n" +
                         "6. Pay Fines\n" +
                         "7. Logout\n" +
                         "******************************************************************************************\n");

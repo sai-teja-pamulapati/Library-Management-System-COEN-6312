@@ -4,6 +4,7 @@ import com.university.library.model.PresentationRoom;
 import com.university.library.model.RoomBooking;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,12 +66,10 @@ public class PresentationRoomRepository {
     }
 
     public boolean addRoom(RoomBooking room) {
-        // Check for overlapping bookings for the same room and date
         if (hasOverlap(room)) {
             return false;
         }
-        // No overlap and no existing booking on the same date.
-        String key = createKey(room.getUserId(), room.getRoomId(), room.getStartDate());
+        String key = createKey(room.getUserId(), room.getRoomId(), room.getStartDate(), room.getStartTime(), room.getEndTime());
         bookingsByDateAndRoom.put(key, room);
         bookingsByStudent.computeIfAbsent(room.getUserId(), k -> new ArrayList<>()).add(room);
         return true;
@@ -79,11 +78,13 @@ public class PresentationRoomRepository {
     private boolean hasOverlap(RoomBooking newBooking) {
         for (RoomBooking existingBooking : bookingsByDateAndRoom.values()) {
             if (newBooking.getRoomId() == existingBooking.getRoomId() &&
-                newBooking.getStartDate().isEqual(existingBooking.getStartDate())) {
-                return true; // Overlapping booking found
+                newBooking.getStartDate().isEqual(existingBooking.getStartDate()) &&
+                !(newBooking.getEndTime().isBefore(existingBooking.getStartTime()) ||
+                  newBooking.getStartTime().isAfter(existingBooking.getEndTime()))) {
+                return true;
             }
         }
-        return false; // No overlapping booking found
+        return false;
     }
 
     public List<RoomBooking> getRoomBookingsByRoomId(int roomId) {
@@ -95,8 +96,8 @@ public class PresentationRoomRepository {
         }
         return bookings;
     }
-    public boolean removeRoom(String userId , int roomId , LocalDate startDate) {
-        String key = createKey(userId, roomId, startDate);
+    public boolean removeRoom(String userId , int roomId , LocalDate startDate, LocalTime startTime, LocalTime endTime) {
+        String key = createKey(userId, roomId, startDate, startTime, endTime);
         if (!bookingsByDateAndRoom.containsKey(key)) {
             return false;
         }
@@ -110,8 +111,8 @@ public class PresentationRoomRepository {
         return bookingsByStudent.getOrDefault(userId, new ArrayList<>());
     }
 
-    private String createKey(String userId , int roomId , LocalDate localDate) {
-        return userId + "-" + roomId + "-" + localDate;
+    private String createKey(String userId , int roomId , LocalDate startDate, LocalTime startTime, LocalTime endTime) {
+        return userId + "-" + roomId + "-" + startDate + "-" + startTime + "-" + endTime;
     }
 
 }
