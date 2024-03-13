@@ -31,6 +31,7 @@ public class UserRepository {
 
     public boolean addUser(User user) {
         if (exists(user.getEmailId())) {
+            System.out.println("Account already exists for the email id");
             return false;
         }
         user.setUserId(String.valueOf(assetIdGenerator.getAndIncrement()));
