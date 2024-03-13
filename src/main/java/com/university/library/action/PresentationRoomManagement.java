@@ -60,17 +60,22 @@ public class PresentationRoomManagement {
         }
 
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
+
+        if (userHasBookingOnDate(currentLoggedInUser, startDate)) {
+            System.out.println("You already have a booking on this date. You cannot book more than one room in a day.");
+            return;
+        }
+
         LocalTime startTime = readTime("Booking Start Time (HH:MM):");
         LocalTime endTime = readTime("Booking End Time (HH:MM):");
-
-        if (!isValidTimeRange(startTime, endTime)) {
-            System.out.println("Invalid booking time. Must be between 10 a.m. to 10 p.m., min 30 min and max 3 hours.");
-        }
-      
 
         if (hasReachedBookingLimit(currentLoggedInUser)) {
             System.out.println("You cannot have more than three bookings.");
             return;
+        }
+
+        if (!isValidTimeRange(startTime, endTime)) {
+            System.out.println("Invalid booking time. Must be between 10 a.m. to 10 p.m., duration is min 30 min and max 3 hours.");
         }
 
         if (!isWithinTwoWeeksRange(startDate)) {
@@ -83,7 +88,7 @@ public class PresentationRoomManagement {
             if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, startTime, endTime)) {
                 System.out.println("Room booked successfully.");
             } else {
-                System.out.println("Failed to book the room. You can only book one room per day.");
+                System.out.println("Failed to book the room. Time conflict with other bookings.");
             }
         }
 
@@ -117,6 +122,11 @@ public class PresentationRoomManagement {
             }
         }
         return true; // No overlapping booking found
+    }
+
+    private boolean userHasBookingOnDate(User user, LocalDate date) {
+        List<RoomBooking> userBookings = repository.getRoomsByUserId(user.getUserId());
+        return userBookings.stream().anyMatch(booking -> booking.getStartDate().isEqual(date));
     }
 
     private LocalDate readDate(String message) {

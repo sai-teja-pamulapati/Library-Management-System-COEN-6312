@@ -1,10 +1,3 @@
-
-    /* Implementation of the OCL constraint to check for overlapping bookings
-    public boolean overlapsWith(RoomBooking otherBooking) {
-        return this.roomId == otherBooking.roomId &&
-                this.endDate.isAfter(otherBooking.startDate) &&
-                this.startDate.isBefore(otherBooking.endDate);
-    }*/
 package com.university.library.model;
 
 import java.time.LocalDate;
@@ -102,5 +95,12 @@ public class RoomBooking {
     @Override
     public int hashCode() {
         return Objects.hash(roomId, userId, startDate, startTime, endTime);
+    }
+
+    // Implementation of the OCL constraint to check for overlapping bookings
+    public boolean overlapsWith(RoomBooking otherBooking) {
+        return this.roomId == otherBooking.roomId &&
+                this.endTime.isAfter(otherBooking.startTime) &&
+                this.startTime.isBefore(otherBooking.endTime);
     }
 }
