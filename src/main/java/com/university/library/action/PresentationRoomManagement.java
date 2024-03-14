@@ -100,6 +100,8 @@ public class PresentationRoomManagement {
         if (checkNoOverlap(roomId, startDateTime, endDateTime)) {
             if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDateTime, endDateTime)) {
                 System.out.println("Room booked successfully.");
+            } else {
+                System.out.println("Failed to Book the room!!");
             }
         } else {
                 System.out.println("Failed to book the room. Time conflict with other bookings.");
@@ -218,8 +220,7 @@ public class PresentationRoomManagement {
         }
         
         int selection = scanner.nextInt();
-        scanner.nextLine();
-        
+
         if (selection < 1 || selection > bookings.size()) {
             System.out.println("Invalid selection. Going back to main menu.");
             return;
@@ -227,7 +228,7 @@ public class PresentationRoomManagement {
         
         RoomBooking bookingToCancel = bookings.get(selection - 1);
         
-        if (repository.removeRoom(bookingToCancel.getUserId(), bookingToCancel.getRoomId(), bookingToCancel.getStartTime(), bookingToCancel.getEndTime())) {
+        if (repository.removeRoom(bookingToCancel)) {
             System.out.println("Booking cancelled successfully.");
         } else {
             System.out.println("Failed to cancel the booking.");

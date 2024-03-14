@@ -80,14 +80,14 @@ public class PresentationRoomRepository {
         }
         return bookings;
     }
-    public boolean removeRoom(String userId , int roomId , LocalDateTime startTime, LocalDateTime endTime) {
-        String key = createKey(userId, roomId, startTime, endTime);
+    public boolean removeRoom(RoomBooking booking) {
+        String key = createKey(booking.getUserId(), booking.getRoomId(), booking.getStartTime(), booking.getEndTime());
         if (!bookingsByDateAndRoom.containsKey(key)) {
             return false;
         }
         bookingsByDateAndRoom.remove(key);
-        List<RoomBooking> userBookings = bookingsByStudent.get(userId);
-        userBookings.removeIf(room -> room.getRoomId() == roomId && room.getStartTime().equals(startTime));
+        List<RoomBooking> userBookings = bookingsByStudent.get(booking.getUserId());
+        userBookings.removeIf(room -> room.getRoomId() == booking.getRoomId() && room.getStartTime().equals(booking.getStartTime()));
         return true;
     }
 
