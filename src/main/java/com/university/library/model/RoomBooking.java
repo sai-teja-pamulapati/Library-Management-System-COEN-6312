@@ -1,22 +1,24 @@
 package com.university.library.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class RoomBooking {
     private int roomId;
     private String userId;
-    private LocalDate startDate;
-    private LocalDate endDate;
 
-    public RoomBooking(int roomId, String userId, LocalDate startDate, LocalDate endDate) {
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+
+    public RoomBooking(int roomId, String userId, LocalDateTime startTime, LocalDateTime endTime) {
         this.roomId = roomId;
         this.userId = userId;
-        setStartDate(startDate);
-        setEndDate(endDate);
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
+    // Getters and setters
     public int getRoomId() {
         return roomId;
     }
@@ -33,34 +35,28 @@ public class RoomBooking {
         this.userId = userId;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("End date must be after the start date");
-        }
-        this.startDate = startDate;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("End date must be after the start date");
-        }
-        this.endDate = endDate;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return "Room ID: " + roomId +
-                ", Start Date: " + startDate.format(formatter) +
-                ", End Date: " + endDate.format(formatter);
+                ", Booking Start Time: " + startTime.format(dateFormatter) +
+                ", Booking End Time: " + endTime.format(dateFormatter);
     }
 
     @Override
@@ -68,21 +64,14 @@ public class RoomBooking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoomBooking that = (RoomBooking) o;
-        return roomId == that.roomId &&
-                userId.equals(that.userId) &&
-                startDate.equals(that.startDate) &&
-                endDate.equals(that.endDate);
+        return roomId == that.roomId && userId.equals(that.userId) &&
+                startTime.equals(that.startTime) &&
+                endTime.equals(that.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomId, userId, startDate, endDate);
+        return Objects.hash(roomId, userId, startTime, endTime);
     }
 
-    // Implementation of the OCL constraint to check for overlapping bookings
-    public boolean overlapsWith(RoomBooking otherBooking) {
-        return this.roomId == otherBooking.roomId &&
-                this.endDate.isAfter(otherBooking.startDate) &&
-                this.startDate.isBefore(otherBooking.endDate);
-    }
 }

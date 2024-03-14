@@ -23,7 +23,6 @@ public class User {
             }
             return this;
         }
-        System.out.println("Registration failed.");
         return null;
     }
 
