@@ -1,21 +1,19 @@
 package com.university.library.model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class RoomBooking {
     private int roomId;
     private String userId;
-    private LocalDate startDate;
-    private LocalTime startTime;
-    private LocalTime endTime;
 
-    public RoomBooking(int roomId, String userId, LocalDate startDate, LocalTime startTime, LocalTime endTime) {
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+
+    public RoomBooking(int roomId, String userId, LocalDateTime startTime, LocalDateTime endTime) {
         this.roomId = roomId;
         this.userId = userId;
-        setStartDate(startDate);
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -37,38 +35,29 @@ public class RoomBooking {
         this.userId = userId;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
     @Override
     public String toString() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return "Room ID: " + roomId +
-                ", Date: " + startDate.format(dateFormatter) +
-                ", Start Time: " + startTime.format(timeFormatter) +
-                ", End Time: " + endTime.format(timeFormatter);
+                ", Booking Start Time: " + startTime.format(dateFormatter) +
+                ", Booking End Time: " + endTime.format(dateFormatter);
     }
 
     @Override
@@ -77,19 +66,13 @@ public class RoomBooking {
         if (o == null || getClass() != o.getClass()) return false;
         RoomBooking that = (RoomBooking) o;
         return roomId == that.roomId && userId.equals(that.userId) &&
-                startDate.equals(that.startDate) && startTime.equals(that.startTime) &&
+                startTime.equals(that.startTime) &&
                 endTime.equals(that.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomId, userId, startDate, startTime, endTime);
+        return Objects.hash(roomId, userId, startTime, endTime);
     }
 
-    // Implementation of the OCL constraint to check for overlapping bookings
-    public boolean overlapsWith(RoomBooking otherBooking) {
-        return this.roomId == otherBooking.roomId &&
-                this.endTime.isAfter(otherBooking.startTime) &&
-                this.startTime.isBefore(otherBooking.endTime);
-    }
 }

@@ -3,8 +3,7 @@ package com.university.library.repository;
 import com.university.library.model.PresentationRoom;
 import com.university.library.model.RoomBooking;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,25 +65,10 @@ public class PresentationRoomRepository {
     }
 
     public boolean addRoom(RoomBooking room) {
-        if (hasOverlap(room)) {
-            return false;
-        }
-        String key = createKey(room.getUserId(), room.getRoomId(), room.getStartDate(), room.getStartTime(), room.getEndTime());
+        String key = createKey(room.getUserId(), room.getRoomId(), room.getStartTime(), room.getEndTime());
         bookingsByDateAndRoom.put(key, room);
         bookingsByStudent.computeIfAbsent(room.getUserId(), k -> new ArrayList<>()).add(room);
         return true;
-    }
-
-    private boolean hasOverlap(RoomBooking newBooking) {
-        for (RoomBooking existingBooking : bookingsByDateAndRoom.values()) {
-            if (newBooking.getRoomId() == existingBooking.getRoomId() &&
-                newBooking.getStartDate().isEqual(existingBooking.getStartDate()) &&
-                !(newBooking.getEndTime().isBefore(existingBooking.getStartTime()) ||
-                  newBooking.getStartTime().isAfter(existingBooking.getEndTime()))) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public List<RoomBooking> getRoomBookingsByRoomId(int roomId) {
@@ -96,14 +80,14 @@ public class PresentationRoomRepository {
         }
         return bookings;
     }
-    public boolean removeRoom(String userId , int roomId , LocalDate startDate, LocalTime startTime, LocalTime endTime) {
-        String key = createKey(userId, roomId, startDate, startTime, endTime);
+    public boolean removeRoom(String userId , int roomId , LocalDateTime startTime, LocalDateTime endTime) {
+        String key = createKey(userId, roomId, startTime, endTime);
         if (!bookingsByDateAndRoom.containsKey(key)) {
             return false;
         }
         bookingsByDateAndRoom.remove(key);
         List<RoomBooking> userBookings = bookingsByStudent.get(userId);
-        userBookings.removeIf(room -> room.getRoomId() == roomId && room.getStartDate().equals(startDate));
+        userBookings.removeIf(room -> room.getRoomId() == roomId && room.getStartTime().equals(startTime));
         return true;
     }
 
@@ -111,8 +95,8 @@ public class PresentationRoomRepository {
         return bookingsByStudent.getOrDefault(userId, new ArrayList<>());
     }
 
-    private String createKey(String userId , int roomId , LocalDate startDate, LocalTime startTime, LocalTime endTime) {
-        return userId + "-" + roomId + "-" + startDate + "-" + startTime + "-" + endTime;
+    private String createKey(String userId , int roomId , LocalDateTime startTime, LocalDateTime endTime) {
+        return userId + "-" + roomId + "-"  + startTime + "-" + endTime;
     }
 
 }

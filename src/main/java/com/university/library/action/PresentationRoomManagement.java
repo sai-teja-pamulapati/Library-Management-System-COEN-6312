@@ -8,6 +8,7 @@ import com.university.library.repository.PresentationRoomRepository;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -52,6 +53,10 @@ public class PresentationRoomManagement {
     }
 
     private void roomBookingProcess(User currentLoggedInUser) {
+        if (hasReachedBookingLimit(currentLoggedInUser)) {
+            System.out.println("You cannot have more than three bookings.");
+            return;
+        }
 
         int roomId = displayAndSelectAvailableRooms();
         if (roomId == -1) {
@@ -59,15 +64,15 @@ public class PresentationRoomManagement {
             return;
         }
 
-        LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
+        LocalDate bookingDate = readDate("Booking Start Date (YYYY-MM-DD):");
 
-        if (startDate.isBefore(LocalDate.now())) {
+        if (bookingDate.isBefore(LocalDate.now())) {
             System.out.println("Bookings must be made for future dates.");
             return;
-        } else if (!isWithinTwoWeeksRange(startDate)) {
+        } else if (!isWithinTwoWeeksRange(bookingDate)) {
             System.out.println("Rooms cannot be booked more than two weeks in advance.");
             return;
-        } else if (userHasBookingOnDate(currentLoggedInUser, startDate)) {
+        } else if (userHasBookingOnDate(currentLoggedInUser, bookingDate)) {
             System.out.println("You already have a booking on this date. You cannot book more than one room in a day.");
             return;
         }
@@ -81,21 +86,19 @@ public class PresentationRoomManagement {
 
         LocalTime endTime = readTime("Booking End Time (HH:MM):");
 
-        if(endTime != null && startTime != null && endTime.isBefore(startTime)) {
+        LocalDateTime startDateTime = LocalDateTime.of(bookingDate, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(bookingDate, endTime);
+
+        if(endTime.isBefore(startTime)) {
             System.out.println("End time must be after the start time.");
             return;
-        } else if (!isValidTimeRange(startTime, endTime)) {
+        } else if (!isValidTimeRange(startDateTime, endDateTime)) {
             System.out.println("Invalid booking time. Rooms are only available between 10 a.m. to 10 p.m., duration must be min 30 mins and max 3 hours!");
             return;
         }
 
-        if (hasReachedBookingLimit(currentLoggedInUser)) {
-            System.out.println("You cannot have more than three bookings.");
-            return;
-        }
-
-        if (checkNoOverlap(roomId, startDate, startTime, endTime)) {
-            if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, startTime, endTime)) {
+        if (checkNoOverlap(roomId, startDateTime, endDateTime)) {
+            if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDateTime, endDateTime)) {
                 System.out.println("Room booked successfully.");
             }
         } else {
@@ -103,9 +106,9 @@ public class PresentationRoomManagement {
             }
         }
 
-    private boolean isValidTimeRange(LocalTime startTime, LocalTime endTime) {
-        LocalTime openTime = LocalTime.of(10, 0); // 10 a.m.
-        LocalTime closeTime = LocalTime.of(22, 0); // 10 p.m.
+    private boolean isValidTimeRange(LocalDateTime startTime, LocalDateTime endTime) {
+        LocalDateTime openTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), 10, 0); // 10 a.m.
+        LocalDateTime closeTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), 22, 0);  // 10 p.m.
         Duration duration = Duration.between(startTime, endTime);
     
         return !startTime.isBefore(openTime) && !endTime.isAfter(closeTime) &&
@@ -123,10 +126,10 @@ public class PresentationRoomManagement {
         return bookings.size() >= 3;
     }
 
-    private boolean checkNoOverlap(int roomId, LocalDate startDate, LocalTime startTime, LocalTime endTime) {
+    private boolean checkNoOverlap(int roomId, LocalDateTime startTime, LocalDateTime endTime) {
         List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
         for (RoomBooking booking : roomBookings) {
-            if (endTime.isAfter(booking.getStartTime()) && startTime.isBefore(booking.getEndTime())) {
+            if (isSameDay (startTime, booking.getStartTime()) && endTime.isAfter(booking.getStartTime()) && startTime.isBefore(booking.getEndTime())) {
                 return false;
             }
         }
@@ -134,9 +137,15 @@ public class PresentationRoomManagement {
 
     }
 
+    public static boolean isSameDay(LocalDateTime date1, LocalDateTime date2) {
+        LocalDate localDate1 = date1.toLocalDate();
+        LocalDate localDate2 = date2.toLocalDate();
+        return localDate1.isEqual(localDate2);
+    }
+
     private boolean userHasBookingOnDate(User user, LocalDate date) {
         List<RoomBooking> userBookings = repository.getRoomsByUserId(user.getUserId());
-        return userBookings.stream().anyMatch(booking -> booking.getStartDate().isEqual(date));
+        return userBookings.stream().anyMatch(booking -> isSameDay (booking.getStartTime(),date.atStartOfDay()));
     }
 
     private LocalDate readDate(String message) {
@@ -190,8 +199,8 @@ public class PresentationRoomManagement {
         }
     }
 
-    private boolean bookRoom(String userId , int roomId , LocalDate startDate , LocalTime startTime, LocalTime endTime) {
-        RoomBooking room = new RoomBooking(roomId, userId, startDate, startTime, endTime);
+    private boolean bookRoom(String userId , int roomId , LocalDateTime startTime, LocalDateTime endTime) {
+        RoomBooking room = new RoomBooking(roomId, userId, startTime, endTime);
         return repository.addRoom(room);
     }
 
@@ -218,7 +227,7 @@ public class PresentationRoomManagement {
         
         RoomBooking bookingToCancel = bookings.get(selection - 1);
         
-        if (repository.removeRoom(bookingToCancel.getUserId(), bookingToCancel.getRoomId(), bookingToCancel.getStartDate(), bookingToCancel.getStartTime(), bookingToCancel.getEndTime())) {
+        if (repository.removeRoom(bookingToCancel.getUserId(), bookingToCancel.getRoomId(), bookingToCancel.getStartTime(), bookingToCancel.getEndTime())) {
             System.out.println("Booking cancelled successfully.");
         } else {
             System.out.println("Failed to cancel the booking.");
