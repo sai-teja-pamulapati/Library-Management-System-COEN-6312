@@ -79,9 +79,11 @@ public class PresentationRoomManagement {
 
         LocalTime startTime = readTime("Booking Start Time (HH:MM):");
 
-        if (startTime.isBefore(LocalTime.now())) {
+        if (bookingDate.isBefore(LocalDate.now())) {
+            if (startTime.isBefore(LocalTime.now())) {
             System.out.println("Booking time must be in future.");
             return;
+            }
         }
 
         LocalTime endTime = readTime("Booking End Time (HH:MM):");
@@ -104,7 +106,13 @@ public class PresentationRoomManagement {
                 System.out.println("Failed to Book the room!!");
             }
         } else {
-                System.out.println("Failed to book the room. Time conflict with other bookings.");
+                List<RoomBooking> overlappingBookings = getOverlappingBookings(roomId, startDateTime, endDateTime);
+                if (!overlappingBookings.isEmpty()) {
+                    System.out.println("Failed to book the room. Time conflict with the following booking:");
+                    for (RoomBooking booking : overlappingBookings) {
+                        System.out.println(booking);
+                    }
+                }
             }
         }
 
@@ -137,6 +145,17 @@ public class PresentationRoomManagement {
         }
         return true;
 
+    }
+
+    private List<RoomBooking> getOverlappingBookings(int roomId, LocalDateTime startTime, LocalDateTime endTime) {
+        List<RoomBooking> overlappingBookings = new ArrayList<>();
+        List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
+        for (RoomBooking booking : roomBookings) {
+            if (endTime.isAfter(booking.getStartTime()) && startTime.isBefore(booking.getEndTime())) {
+                overlappingBookings.add(booking);
+            }
+        }
+        return overlappingBookings;
     }
 
     public static boolean isSameDay(LocalDateTime date1, LocalDateTime date2) {
