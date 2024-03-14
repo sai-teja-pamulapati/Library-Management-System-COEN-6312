@@ -211,7 +211,6 @@ public class PresentationRoomManagement {
         int selection = scanner.nextInt();
         scanner.nextLine();
         
-        // Check if selection is valid
         if (selection < 1 || selection > bookings.size()) {
             System.out.println("Invalid selection. Going back to main menu.");
             return;
@@ -219,7 +218,6 @@ public class PresentationRoomManagement {
         
         RoomBooking bookingToCancel = bookings.get(selection - 1);
         
-        // Now, cancel the selected booking
         if (repository.removeRoom(bookingToCancel.getUserId(), bookingToCancel.getRoomId(), bookingToCancel.getStartDate(), bookingToCancel.getStartTime(), bookingToCancel.getEndTime())) {
             System.out.println("Booking cancelled successfully.");
         } else {
