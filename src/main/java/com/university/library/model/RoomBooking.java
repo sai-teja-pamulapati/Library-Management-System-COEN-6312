@@ -42,9 +42,6 @@ public class RoomBooking {
     }
 
     public void setStartDate(LocalDate startDate) {
-        if (startDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Bookings must be made for future dates.");
-        }
         this.startDate = startDate;
     }
 
@@ -53,11 +50,6 @@ public class RoomBooking {
     }
 
     public void setStartTime(LocalTime startTime) {
-        if (startTime.isBefore(LocalTime.now())) {
-            throw new IllegalArgumentException("Booking time must be in future.");
-        } else if(endTime != null && startTime != null && endTime.isBefore(startTime)) {
-            throw new IllegalArgumentException("End time must be after the start time");
-        }
         this.startTime = startTime;
     }
 
@@ -66,9 +58,6 @@ public class RoomBooking {
     }
 
     public void setEndTime(LocalTime endTime) {
-        if (startTime != null && endTime != null && endTime.isBefore(startTime)) {
-            throw new IllegalArgumentException("End time must be after the start time");
-        }
         this.endTime = endTime;
     }
 

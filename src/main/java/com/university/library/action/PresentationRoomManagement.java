@@ -61,38 +61,47 @@ public class PresentationRoomManagement {
 
         LocalDate startDate = readDate("Booking Start Date (YYYY-MM-DD):");
 
-        if (userHasBookingOnDate(currentLoggedInUser, startDate)) {
+        if (startDate.isBefore(LocalDate.now())) {
+            System.out.println("Bookings must be made for future dates.");
+            return;
+        } else if (!isWithinTwoWeeksRange(startDate)) {
+            System.out.println("Rooms cannot be booked more than two weeks in advance.");
+            return;
+        } else if (userHasBookingOnDate(currentLoggedInUser, startDate)) {
             System.out.println("You already have a booking on this date. You cannot book more than one room in a day.");
             return;
         }
 
         LocalTime startTime = readTime("Booking Start Time (HH:MM):");
+
+        if (startTime.isBefore(LocalTime.now())) {
+            System.out.println("Booking time must be in future.");
+            return;
+        }
+
         LocalTime endTime = readTime("Booking End Time (HH:MM):");
+
+        if(endTime != null && startTime != null && endTime.isBefore(startTime)) {
+            System.out.println("End time must be after the start time.");
+            return;
+        } else if (!isValidTimeRange(startTime, endTime)) {
+            System.out.println("Invalid booking time. Rooms are only available between 10 a.m. to 10 p.m., duration must be min 30 mins and max 3 hours!");
+            return;
+        }
 
         if (hasReachedBookingLimit(currentLoggedInUser)) {
             System.out.println("You cannot have more than three bookings.");
             return;
         }
 
-        if (!isValidTimeRange(startTime, endTime)) {
-            System.out.println("Invalid booking time. Must be between 10 a.m. to 10 p.m., duration is min 30 min and max 3 hours.");
-        }
-
-        if (!isWithinTwoWeeksRange(startDate)) {
-            System.out.println("Rooms cannot be booked more than two weeks in advance.");
-            return;
-        }
-
-        // Check for overlapping bookings
         if (checkNoOverlap(roomId, startDate, startTime, endTime)) {
             if (bookRoom(currentLoggedInUser.getUserId(), roomId, startDate, startTime, endTime)) {
                 System.out.println("Room booked successfully.");
-            } else {
+            }
+        } else {
                 System.out.println("Failed to book the room. Time conflict with other bookings.");
             }
         }
-
-    }
 
     private boolean isValidTimeRange(LocalTime startTime, LocalTime endTime) {
         LocalTime openTime = LocalTime.of(10, 0); // 10 a.m.
@@ -111,17 +120,18 @@ public class PresentationRoomManagement {
 
     private boolean hasReachedBookingLimit(User user) {
         List<RoomBooking> bookings = repository.getRoomsByUserId(user.getUserId());
-        return bookings.size() >= 3; // Check if the user already has three bookings
+        return bookings.size() >= 3;
     }
 
     private boolean checkNoOverlap(int roomId, LocalDate startDate, LocalTime startTime, LocalTime endTime) {
         List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
         for (RoomBooking booking : roomBookings) {
             if (endTime.isAfter(booking.getStartTime()) && startTime.isBefore(booking.getEndTime())) {
-                return false; // Overlapping booking found
+                return false;
             }
         }
-        return true; // No overlapping booking found
+        return true;
+
     }
 
     private boolean userHasBookingOnDate(User user, LocalDate date) {
