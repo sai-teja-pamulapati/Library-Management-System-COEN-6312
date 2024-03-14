@@ -25,20 +25,12 @@ public class UserRegistration {
 
     public static void register(boolean selfRegistration) {
 
-        Console console = System.console();
 
         String name = getInputFromUser(selfRegistration, "Please enter your name:", "Please enter name of user:");
 
-        String emailId;
-        while(true) {
-            emailId = getInputFromUser(selfRegistration, "Please enter your email ID:", "Please enter user's email ID:");
-            if (validateEmailId(emailId)){
-                break;
-            }
-            System.out.println("Wrong email format!! Please enter the email id in this format - xyz@abc.com");
-        }
+        String emailId = getEmailId(selfRegistration);
 
-        String password = new String(console.readPassword());
+        String password = getPassword(selfRegistration, emailId);
 
         String mobileNumber = getInputFromUser(selfRegistration, "Please enter your mobile number", "Please enter user's mobile number");
 
@@ -78,6 +70,34 @@ public class UserRegistration {
         } else {
             System.out.println("User registration failed. Email ID already exists.");
         }
+    }
+
+    private static String getEmailId(boolean selfRegistration) {
+        String emailId;
+        while(true) {
+            emailId = getInputFromUser(selfRegistration , "Please enter your email ID:", "Please enter user's email ID:");
+            if (validateEmailId(emailId)){
+                break;
+            }
+            System.out.println("Wrong email format!! Please enter the email id in this format - xyz@abc.com");
+        }
+        return emailId;
+    }
+
+    private static String getPassword(boolean selfRegistration , String emailId) {
+        String prompt = selfRegistration ? "Please enter your password" : "Please enter the User's password";
+        System.out.println(prompt);
+        Console console = System.console();
+        String password;
+        while(true) {
+            password = new String(console.readPassword());
+            if (password.equalsIgnoreCase(emailId)){
+                System.out.println("Your password and email id should be different");
+                continue;
+            }
+            break;
+        }
+        return password;
     }
 
     private static String getInputFromUser(boolean selfRegistration , String selfPrompt , String userPrompt) {
@@ -145,27 +165,38 @@ public class UserRegistration {
     }
 
     private static User getLibrarianUser(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
-        String universityId = getInputFromUser(selfRegistration, "Please enter your university id", "Please enter user's university id");
+        String universityId = getUniversityId(selfRegistration);
         String department = getInputFromUser(selfRegistration, "Please enter your department", "Please enter user's department");
         return new Librarian(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId, department);
     }
 
     private static User getStaffUser(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
-        String universityId = getInputFromUser(selfRegistration, "Please enter your university id", "Please enter user's university id");
+        String universityId = getUniversityId(selfRegistration);
         String department = getInputFromUser(selfRegistration, "Please enter your department", "Please enter user's department");
         return new Staff(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId, null, department);
     }
 
     private static User getStudentUser(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
-        String universityId = getInputFromUser(selfRegistration, "Please enter your university id", "Please enter user's university id");
+        String universityId = getUniversityId(selfRegistration);
         String department = getInputFromUser(selfRegistration, "Please enter your department", "Please enter user's department");
         return new Student(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId, null, department);
     }
 
     private static User getAdminUser(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
-        String universityId = getInputFromUser(selfRegistration, "Please enter your university id", "Please enter user's university id");
+        String universityId = getUniversityId(selfRegistration);
         String officeHours = getInputFromUser(selfRegistration, "Please enter your office hours", "Please enter user's office hours");
         String officeLocation = getInputFromUser(selfRegistration, "Please enter your office location", "Please enter user's office location");
         return new Admin(null , name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId , null , officeLocation , officeHours , null);
+    }
+
+    private static String getUniversityId(boolean selfRegistration) {
+        while(true) {
+            String universityId = getInputFromUser(selfRegistration , "Please enter your university id" , "Please enter user's university id");
+            if (userRepository.checkIfUniversityIdExists(universityId)){
+                System.out.println("University Id already assigned to someone else. Please use another one.");
+                continue;
+            }
+            return universityId;
+        }
     }
 }
