@@ -35,7 +35,6 @@ public class RoomBooking {
         this.userId = userId;
     }
 
-
     public LocalDateTime getStartTime() {
         return startTime;
     }

@@ -131,7 +131,7 @@ public class PresentationRoomManagement {
     private boolean checkNoOverlap(int roomId, LocalDateTime startTime, LocalDateTime endTime) {
         List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
         for (RoomBooking booking : roomBookings) {
-            if (isSameDay (startTime, booking.getStartTime()) && endTime.isAfter(booking.getStartTime()) && startTime.isBefore(booking.getEndTime())) {
+            if (endTime.isAfter(booking.getStartTime()) && startTime.isBefore(booking.getEndTime())) {
                 return false;
             }
         }
