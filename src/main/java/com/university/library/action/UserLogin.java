@@ -320,15 +320,16 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3. View Notifications\n" +
                         "4. View Newsletter\n" +
-                        "5. Update Newsletter\n" +
-                        "6. Book/Cancel Discussion Room\n" +
-                        "7. Add User\n" +
-                        "8. Remove User\n" +
-                        "9. Block User\n" +
-                        "10. Unblock User\n" +
-                        "11. View All Users\n" +
-                        "12. Pay Fines\n" +
-                        "13. Logout\n" +
+                        "5. Add Newsletter\n" +
+                        "6. Update Newsletter\n" +
+                        "7. Book/Cancel Discussion Room\n" +
+                        "8. Add User\n" +
+                        "9. Remove User\n" +
+                        "10. Block User\n" +
+                        "11. Unblock User\n" +
+                        "12. View All Users\n" +
+                        "13. Pay Fines\n" +
+                        "14. Logout\n" +
                         "******************************************************************************************\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
@@ -345,30 +346,33 @@ public class UserLogin {
                         ViewNews.viewNewsletters();
                         break;
                     case "5":
-                        UpdateNews.updateNewsletterProcess();
+                        assetManagement.addNewsLetter();
                         break;
                     case "6":
-                        roomManagement.manageRoomBooking();
+                        UpdateNews.updateNewsletterProcess();
                         break;
                     case "7":
-                        UserRegistration.register(false);
+                        roomManagement.manageRoomBooking();
                         break;
                     case "8":
-                        UserRemoval.removeUser();
+                        UserRegistration.register(false);
                         break;
                     case "9":
-                        UserBlocking.blockUser(App.getLoggedInUser());
+                        UserRemoval.removeUser();
                         break;
                     case "10":
-                        UserBlocking.unblockUser(App.getLoggedInUser());
+                        UserBlocking.blockUser(App.getLoggedInUser());
                         break;
                     case "11":
-                        AdminService.viewAllUsers();
+                        UserBlocking.unblockUser(App.getLoggedInUser());
                         break;
                     case "12":
-                        payFines();
+                        AdminService.viewAllUsers();
                         break;
                     case "13":
+                        payFines();
+                        break;
+                    case "14":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid option!");
