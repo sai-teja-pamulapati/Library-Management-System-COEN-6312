@@ -12,11 +12,16 @@ import com.university.library.repository.UserRepository;
 
 import java.io.Console;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserRegistration {
 
     private static Scanner scanner = new Scanner(System.in);
     private static UserRepository userRepository = UserRepository.getInstance();
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     public static void register(boolean selfRegistration) {
 
@@ -26,9 +31,7 @@ public class UserRegistration {
         System.out.println(prompt);
         String name = scanner.nextLine();
 
-        prompt = selfRegistration ? "Please enter your email ID:" : "Please enter user's email ID:";
-        System.out.println(prompt);
-        String emailId = scanner.nextLine();
+        String emailId = getEmailId(selfRegistration);
 
         prompt = selfRegistration ? "Please enter your password" : "Please enter user's desired password";
         System.out.println(prompt);
@@ -70,7 +73,7 @@ public class UserRegistration {
             break;
         }
 
-        User newUser = getUserObject(name , emailId , password , mobileNumber , address , dateOfBirth , gender);
+        User newUser = getUserObject(name , emailId , password , mobileNumber , address , dateOfBirth , gender, selfRegistration);
 
         boolean added = userRepository.addUser(newUser);
         if (added) {
@@ -80,16 +83,37 @@ public class UserRegistration {
         }
     }
 
-    private static User getUserObject(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender) {
+    private static String getEmailId(boolean selfRegistration) {
+        String prompt = selfRegistration ? "Please enter your email ID:" : "Please enter user's email ID:";
+        System.out.println(prompt);
+        while(true) {
+            String emailId = scanner.nextLine();
+            if (validateEmailId(emailId)){
+                return emailId;
+            }
+            System.out.println("Wrong email format!! Please enter the email id in this format - xyz@abc.com");
+        }
+    }
+
+    public static boolean validateEmailId(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.matches();
+    }
+
+    private static User getUserObject(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , boolean selfRegistration) {
         UserRole userRole;
         while (true) {
             System.out.println("Please select your role:");
-            UserRole[] roles = UserRole.values();
+            UserRole[] roles;
+            if (selfRegistration){
+                roles = new UserRole[] {UserRole.FREE_USER, UserRole.PAID_USER, UserRole.STUDENT, UserRole.STAFF};
+            } else {
+                roles = UserRole.values();
+            }
             for (int i = 0; i < roles.length; i++) {
                 System.out.println((i + 1) + ". " + roles[i].name());
             }
             try {
-                new User(null, name , emailId , password , mobileNumber , address , dateOfBirth , gender);
                 int roleOption = Integer.parseInt(scanner.nextLine()) - 1;
                 if (roleOption >= 0 && roleOption < roles.length) {
                     userRole = roles[roleOption];
