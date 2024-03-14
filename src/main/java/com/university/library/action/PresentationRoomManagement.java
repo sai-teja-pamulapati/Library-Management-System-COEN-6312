@@ -26,10 +26,10 @@ public class PresentationRoomManagement {
         boolean exit = false;
         while (!exit) {
             System.out.println("Choose from the following options:\n" +
-                "1. Book Room\n" +
-                "2. Cancel Booking\n" +
-                "3. Booking History\n" +
-                "4. Go back");
+                    "1. Book Room\n" +
+                    "2. Cancel Booking\n" +
+                    "3. Booking History\n" +
+                    "4. Go back");
             User currentLoggedInUser = App.getLoggedInUser();
 
             String option = scanner.nextLine();
@@ -78,17 +78,14 @@ public class PresentationRoomManagement {
         }
 
         LocalTime startTime = readTime("Booking Start Time (HH:MM):");
+        LocalDateTime startDateTime = LocalDateTime.of(bookingDate, startTime);
 
-        if (bookingDate.isBefore(LocalDate.now())) {
-            if (startTime.isBefore(LocalTime.now())) {
+        if (startDateTime.isBefore(LocalDateTime.now())) {
             System.out.println("Booking time must be in future.");
             return;
-            }
         }
 
         LocalTime endTime = readTime("Booking End Time (HH:MM):");
-
-        LocalDateTime startDateTime = LocalDateTime.of(bookingDate, startTime);
         LocalDateTime endDateTime = LocalDateTime.of(bookingDate, endTime);
 
         if(endTime.isBefore(startTime)) {
@@ -105,22 +102,14 @@ public class PresentationRoomManagement {
             } else {
                 System.out.println("Failed to Book the room!!");
             }
-        } else {
-                List<RoomBooking> overlappingBookings = getOverlappingBookings(roomId, startDateTime, endDateTime);
-                if (!overlappingBookings.isEmpty()) {
-                    System.out.println("Failed to book the room. Time conflict with the following booking:");
-                    for (RoomBooking booking : overlappingBookings) {
-                        System.out.println(booking);
-                    }
-                }
-            }
         }
+    }
 
     private boolean isValidTimeRange(LocalDateTime startTime, LocalDateTime endTime) {
         LocalDateTime openTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), 10, 0); // 10 a.m.
         LocalDateTime closeTime = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), 22, 0);  // 10 p.m.
         Duration duration = Duration.between(startTime, endTime);
-    
+
         return !startTime.isBefore(openTime) && !endTime.isAfter(closeTime) &&
                 duration.toMinutes() >= 30 && duration.toHours() <= 3;
     }
@@ -140,6 +129,8 @@ public class PresentationRoomManagement {
         List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
         for (RoomBooking booking : roomBookings) {
             if (endTime.isAfter(booking.getStartTime()) && startTime.isBefore(booking.getEndTime())) {
+                System.out.println("Failed to book the room. Time conflict with the following booking:");
+                System.out.println(booking);
                 return false;
             }
         }
@@ -147,21 +138,8 @@ public class PresentationRoomManagement {
 
     }
 
-    private List<RoomBooking> getOverlappingBookings(int roomId, LocalDateTime startTime, LocalDateTime endTime) {
-        List<RoomBooking> overlappingBookings = new ArrayList<>();
-        List<RoomBooking> roomBookings = repository.getRoomBookingsByRoomId(roomId);
-        for (RoomBooking booking : roomBookings) {
-            if (endTime.isAfter(booking.getStartTime()) && startTime.isBefore(booking.getEndTime())) {
-                overlappingBookings.add(booking);
-            }
-        }
-        return overlappingBookings;
-    }
-
-    public static boolean isSameDay(LocalDateTime date1, LocalDateTime date2) {
-        LocalDate localDate1 = date1.toLocalDate();
-        LocalDate localDate2 = date2.toLocalDate();
-        return localDate1.isEqual(localDate2);
+    public static boolean isSameDay(LocalDateTime localDateTime1, LocalDateTime localDateTime2) {
+        return localDateTime1.toLocalDate().isEqual(localDateTime2.toLocalDate());
     }
 
     private boolean userHasBookingOnDate(User user, LocalDate date) {
@@ -207,7 +185,7 @@ public class PresentationRoomManagement {
             PresentationRoom room = rooms.get(roomId);
             System.out.println(index++ + ". " + room);
         }
-        
+
         System.out.println("Select a room by entering its number:");
         try {
             int selection = Integer.parseInt(scanner.nextLine());
@@ -227,26 +205,26 @@ public class PresentationRoomManagement {
 
     private void cancelBookingProcess(User currentLoggedInUser) {
         List<RoomBooking> bookings = repository.getRoomsByUserId(currentLoggedInUser.getUserId());
-        
+
         if (bookings.isEmpty()) {
             System.out.println("You have no bookings to cancel.");
             return;
         }
-        
+
         System.out.println("Select a booking to cancel:");
         for (int i = 0; i < bookings.size(); i++) {
             System.out.println((i + 1) + ": " + bookings.get(i));
         }
-        
+
         int selection = scanner.nextInt();
 
         if (selection < 1 || selection > bookings.size()) {
             System.out.println("Invalid selection. Going back to main menu.");
             return;
         }
-        
+
         RoomBooking bookingToCancel = bookings.get(selection - 1);
-        
+
         if (repository.removeRoom(bookingToCancel)) {
             System.out.println("Booking cancelled successfully.");
         } else {
