@@ -21,9 +21,6 @@ public class ViewNews {
                 .filter(asset -> asset instanceof NewsLetter)
                 .map(asset -> (NewsLetter) asset)
                 .forEach(newsletter -> {
-                    String assetId = newsletter.getAssetId();
-                    String date = dateFormat.format(newsletter.getDate());
-                    String publication = newsletter.getPublication() == null || newsletter.getPublication().isEmpty() ? "Unknown Publication" : newsletter.getPublication();
                     System.out.println(newsletter);
                     System.out.println("******************************************************************************************");
                 });

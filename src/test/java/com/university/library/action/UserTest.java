@@ -1,9 +1,10 @@
 package com.university.library.action;
+
 import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
 import com.university.library.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class UserTest {
@@ -15,7 +16,7 @@ public class UserTest {
     public void setUp() {
         userRepository = UserRepository.getInstance();
         userRepository.clearUsers();
-        testUser = new User("Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male", UserRole.STAFF);
+        testUser = new User(null, "Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male");
     }
 
     @Test
@@ -27,7 +28,7 @@ public class UserTest {
     @Test
     public void testUserRegistrationFailure() {
         userRepository.addUser(testUser);
-        User duplicateUser = new User("Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male", UserRole.STUDENT);
+        User duplicateUser = new User(null, "Test User", "testuser@example.com", "password", "1234567890", "Test Address", "01-01-1990", "Male");
         User registeredUser = User.register(duplicateUser);
         assertNull("Duplicate user registration should fail", registeredUser);
     }

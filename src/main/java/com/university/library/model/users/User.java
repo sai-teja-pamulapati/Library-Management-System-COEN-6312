@@ -10,7 +10,6 @@ public class User {
     private String emailId;
     private String mobileNumber;
     private String address;
-    private UserRole userRole;
     private String dateOfBirth;
     private String gender;
     private boolean blocked;
@@ -24,7 +23,6 @@ public class User {
             }
             return this;
         }
-        System.out.println("Registration failed.");
         return null;
     }
 
@@ -48,8 +46,9 @@ public class User {
 
     public User() {}
 
-    public User(String name, String emailId, String password, String mobileNumber, 
-                String address, String dateOfBirth, String gender, UserRole userRole) {
+    public User(String userId, String name , String emailId , String password , String mobileNumber ,
+                String address , String dateOfBirth , String gender) {
+        this.userId = userId;
         this.name = name;
         this.emailId = emailId;
         this.password = password;
@@ -57,18 +56,8 @@ public class User {
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.userRole = userRole;
     }
 
-    // public static User login(String emailId , String password) {
-    //     User user = userRepository.getUser(emailId);
-    //     if (user == null || !user.getPassword().equals(password)) {
-    //         System.out.println("Invalid Credentials!!");
-    //         return null;
-    //     }
-    //     System.out.println("Login Successful!");
-    //     return user;
-    // }
 
     public static User login(String emailId , String password) {
     User user = userRepository.getUser(emailId);
@@ -131,14 +120,6 @@ public class User {
         this.address = address;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
-
     public String getDateOfBirth() {
         return dateOfBirth;
     }
@@ -164,13 +145,11 @@ public class User {
     }
 
     @Override
-public String toString() {
-    return "UserID: " + getUserId() +
-            ", Name: " + getName() +
-            ", Email: " + getEmailId() +
-            ", Mobile: " + getMobileNumber() +
-            ", Role: " + getUserRole() +
-            ", Blocked: " + (isBlocked() ? "Yes" : "No");
-}
-
+    public String toString() {
+        return "UserID: " + getUserId() +
+                "\nName: " + getName() +
+                "\nEmail: " + getEmailId() +
+                "\nMobile: " + getMobileNumber() +
+                "\nBlocked: " + (isBlocked() ? "Yes" : "No");
+    }
 }

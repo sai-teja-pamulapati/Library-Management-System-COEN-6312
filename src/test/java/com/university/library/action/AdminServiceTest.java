@@ -1,7 +1,6 @@
 package com.university.library.action;
 
 import com.university.library.model.users.User;
-import com.university.library.model.users.UserRole;
 import com.university.library.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AdminServiceTest {
 
@@ -41,8 +39,8 @@ public class AdminServiceTest {
 
     @Test
     public void testViewAllUsersWithUsers() {
-        User user1 = new User("User1", "user1@example.com", "password1", "1234567890", "Address 1", "01-01-1990", "Male", UserRole.STUDENT);
-        User user2 = new User("User2", "user2@example.com", "password2", "0987654321", "Address 2", "02-02-1992", "Female", UserRole.STAFF);
+        User user1 = new User(null, "User1", "user1@example.com", "password1", "1234567890", "Address 1", "01-01-1990", "Male");
+        User user2 = new User(null, "User2", "user2@example.com", "password2", "0987654321", "Address 2", "02-02-1992", "Female");
         userRepository.addUser(user1);
         userRepository.addUser(user2);
 

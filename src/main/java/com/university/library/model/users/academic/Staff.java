@@ -1,13 +1,11 @@
 package com.university.library.model.users.academic;
 
-import com.university.library.model.users.UserRole;
-
 public class Staff extends AcademicUser {
 
     private String department;
 
-    public Staff(String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , UserRole userRole , String universityId , String issueDate , String department) {
-        super(name , emailId , password , mobileNumber , address , dateOfBirth , gender , userRole , universityId , issueDate);
+    public Staff(String userId , String name , String emailId , String password , String mobileNumber , String address , String dateOfBirth , String gender , String universityId , String issueDate , String department) {
+        super(userId, name , emailId , password , mobileNumber , address , dateOfBirth , gender , universityId , issueDate);
         this.department = department;
     }
 
@@ -17,5 +15,10 @@ public class Staff extends AcademicUser {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() +"\n"+ super.toString();
     }
 }

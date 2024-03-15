@@ -1,19 +1,23 @@
 package com.university.library.action;
 
+import com.university.library.App;
+import com.university.library.model.Membership;
+import com.university.library.model.users.User;
+import com.university.library.model.users.nonacademic.FreeUser;
+import com.university.library.model.users.nonacademic.PaidUser;
+import com.university.library.repository.MembershipAssetRepository;
+import com.university.library.repository.UserRepository;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Scanner;
 import java.util.Date;
-
-import com.university.library.App;
-import com.university.library.model.Membership;
-import com.university.library.repository.MembershipAssetRepository;
-import com.university.library.model.users.UserRole;
+import java.util.Scanner;
 
 public class MembershipManager {
     private static Scanner scanner = new Scanner(System.in);
     private static MembershipAssetRepository membershipRepository = new MembershipAssetRepository();
+    private static UserRepository userRepository = new UserRepository();
 
     public static void buyMembership() {
 
@@ -50,10 +54,14 @@ public class MembershipManager {
 
         membershipRepository.addMembership(membership);
 
-        System.out.println("membership successfully purchased");
+        FreeUser loggedInUser = (FreeUser) App.getLoggedInUser();
+
+        System.out.println("membership successfully purchased. Please logout and login to continue.");
+        User paidUser = new PaidUser(loggedInUser.getUserId(), loggedInUser.getName(), loggedInUser.getPassword(), loggedInUser.getEmailId(),
+                loggedInUser.getMobileNumber(), loggedInUser.getAddress(), loggedInUser.getDateOfBirth(), loggedInUser.getGender(), loggedInUser.getOrganisation() );
+        userRepository.updateUser(paidUser);
 
         // displayMembership(App.getLoggedInUser().getUserId());
-        App.getLoggedInUser().setUserRole(UserRole.PAID_USER);
     }
 
     public static void displayMembership(String userId) {
