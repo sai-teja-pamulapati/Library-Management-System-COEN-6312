@@ -19,16 +19,17 @@ public class UserLogin {
     private static PresentationRoomManagement roomManagement = new PresentationRoomManagement();
 
     public static void login() {
-        //Console console = System.console();
-        //if (console == null) {
-            //System.out.println("No console available");
-            //return;
-        //}
+        Console console = System.console();
+        if (console == null) {
+            System.out.println("No console available");
+            return;
+        }
 
         System.out.println("Please enter your email Id:");
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
-        String password = scanner.nextLine();
+        String password = new String(console.readPassword());
+        //String password = scanner.nextLine();
 
         User user = User.login(emailId, password);
         if (user == null) {
@@ -154,12 +155,13 @@ public class UserLogin {
                         "5: Add Book\n" +
                         "6: Remove Book\n" +
                         "7: Update Book Details\n" +
-                        "8: View Library Activities\n" +
-                        "9: Update NewsLetter\n" +
-                        "10. Book/Cancel Presentation Room\n" +
-                        "11: Block User\n" +
-                        "12: Unblock User\n" +
-                        "13: Logout\n" +
+                        "8: Add DigitalBook\n" +
+                        "9: View Library Activities\n" +
+                        "10: Update NewsLetter\n" +
+                        "11. Book/Cancel Presentation Room\n" +
+                        "12: Block User\n" +
+                        "13: Unblock User\n" +
+                        "14: Logout\n" +
                         "******************************************************************************************\n");
                 String librarianCommands = scanner.nextLine();
                 switch (librarianCommands) {
@@ -185,27 +187,28 @@ public class UserLogin {
                         assetManagement.updateBook();
                         break;
                     case "8":
+                        assetManagement.addEBook();
+                        break;
+                    case "9":
 
                         AdminService.viewAllUsers();
                         break;
-                    case "9":
+                    case "10":
                         UpdateNews.updateNewsletterProcess();
 
                         // assetManagement.viewLibraryActivities();
-                       
-                    
 
                         break;
-                    case "10":
+                    case "11":
                         roomManagement.manageRoomBooking();
                         break;
-                    case "11":
+                    case "12":
                         UserBlocking.blockUser(App.getLoggedInUser());
                         break;
-                    case "12":
+                    case "13":
                         UserBlocking.unblockUser(App.getLoggedInUser());
                         break;
-                    case "13":
+                    case "14":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
