@@ -273,8 +273,13 @@ public class AssetManagement {
     // Asset: book functinalities
 
     public void addBook() {
-        System.out.println("Enter Book's title");
-        String title = scanner.nextLine();
+        boolean nullChecker;
+        String title;
+        do{
+            System.out.println("Enter Book's title");
+            title = scanner.nextLine();
+            nullChecker = nullValueChecker(title);
+        }while(!nullChecker);
         System.out.println("Enter URL for Book preview");
         String urlPreview = scanner.nextLine();
         System.out.println("Enter URL for Book's logo");
@@ -344,6 +349,15 @@ public class AssetManagement {
 
     public Asset removeBookFromRepository(String ID){
         return assetRepository.removeAsset(ID);
+    }
+
+    public boolean nullValueChecker(String nullChecker){
+        if (nullChecker == null || nullChecker.isEmpty()){
+            System.out.println("Please enter a valid detail");
+            return false;
+        }
+        System.out.println("******************************************************************************************");
+        return true;
     }
 
     public void updateBook() {
