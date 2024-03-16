@@ -23,6 +23,9 @@ public class UserRegistration {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9]+@[A-Z0-9]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
+    public static final Pattern VALID_PASSWORD_REGEX =
+            Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$");
+
     public static void register(boolean selfRegistration) {
 
 
@@ -94,10 +97,18 @@ public class UserRegistration {
             if (password.equalsIgnoreCase(emailId)){
                 System.out.println("Your password and email id should be different");
                 continue;
+            } else if (!isValidPassword(password)){
+                System.out.println("Your password must have min 8 characters, max 15 characters, one upper case, one lower case, one special character, one number.");
+                continue;
             }
             break;
         }
         return password;
+    }
+
+    private static boolean isValidPassword(String password) {
+        Matcher matcher = VALID_PASSWORD_REGEX.matcher(password);
+        return matcher.matches();
     }
 
     private static String getInputFromUser(boolean selfRegistration , String selfPrompt , String userPrompt) {
