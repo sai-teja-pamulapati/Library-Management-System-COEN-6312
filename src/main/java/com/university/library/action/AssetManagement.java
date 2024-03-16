@@ -341,8 +341,18 @@ public class AssetManagement {
 
     public void removeBook() {
         displayAsstes();
-        System.out.println("Enter the Book ID to Remove the Book");
-        String ID = scanner.nextLine();
+        Asset asset;
+        String ID;
+        int count = 0;
+        do{
+            if (count > 0){
+                System.out.println("No book found with entered book ID");
+            }
+            System.out.println(" Please enter the Book ID to Remove the Book");
+            ID = scanner.nextLine();
+            asset = assetRepository.getAsset(ID);
+            count++;
+        }while(asset == null);
         removeBookFromRepository(ID);
         System.out.println("Book removed Successfully");
     }
