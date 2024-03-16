@@ -341,19 +341,17 @@ public class AssetManagement {
 
     public void removeBook() {
         displayAsstes();
-        Asset asset;
+        boolean availability ;
         String ID;
-        int count = 0;
-        do{
-            if (count > 0){
-                System.out.println("No book found with entered book ID");
-            }
-            System.out.println(" Please enter the Book ID to Remove the Book");
+        while(true) {
+            System.out.println("Enter book ID to remove the book");
             ID = scanner.nextLine();
-            asset = assetRepository.getAsset(ID);
-            count++;
-        }while(asset == null);
-        removeBookFromRepository(ID);
+            availability = bookAvailibilitycheker(ID);
+            if (availability ==  true){
+                removeBookFromRepository(ID);
+                break;
+            }
+        }
         System.out.println("Book removed Successfully");
     }
 
@@ -370,11 +368,33 @@ public class AssetManagement {
         return true;
     }
 
+    public boolean bookAvailibilitycheker(String ID){
+        Asset asset;
+        int count = 0;
+        do{
+            if (count > 0){
+                System.out.println("No book found with entered book ID");
+                return false;
+            }
+            asset = assetRepository.getAsset(ID);
+            count++;
+        }while(asset == null);
+        return true;
+    }
     public void updateBook() {
         displayAsstes();
-        System.out.println("Select/Enter Book ID to update it's content");
-        String id = scanner.nextLine();
-        List<Asset> resultsForSearch = getResultsForSearch(id);
+        displayAsstes();
+        boolean availability ;
+        String ID;
+        while(true) {
+            System.out.println("Enter book ID to update the book");
+            ID = scanner.nextLine();
+            availability = bookAvailibilitycheker(ID);
+            if (availability ==  true){
+                break;
+            }
+        }
+        List<Asset> resultsForSearch = getResultsForSearch(ID);
         while (true) {
             try {
                 System.out.println("Please Select from the following options"
