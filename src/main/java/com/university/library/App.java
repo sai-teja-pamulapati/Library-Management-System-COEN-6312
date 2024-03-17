@@ -1,6 +1,5 @@
 package com.university.library;
 
-
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.university.library.action.UserLogin;
@@ -52,24 +51,25 @@ public class App {
     private static void initializeSystem() {
         // Hardcoded sample users
 
-        new Admin(null,"Admin", "admin@gmail.com", "admin123", "1234567890", "123 Main St", "1990-01-01", "Male",
+        new Admin(null, "Admin", "admin@gmail.com", "admin123", "1234567890", "123 Main St", "1990-01-01", "Male",
                 "42323", "2020-02-02", "1204 Blvd Maisonneuve", "Mon-Fri 9-5", "Permanent").addUser(false);
-        new Staff(null,"John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02", "Female",
+        new Staff(null, "John Smith", "john.smith@gmail.com", "john123", "0987654321", "456 Elm St", "1992-02-02",
+                "Female",
                 "42393", "2020-03-02", "Computer Science").addUser(false);
-        new Librarian(null, "Sam Wilson", "sam.wilson@gmail.com", "sam123", "789 Pine St", "1993-03-03", "Other", "Female",
+        new Librarian(null, "Sam Wilson", "sam.wilson@gmail.com", "sam123", "789 Pine St", "1993-03-03", "Other",
+                "Female",
                 "42323", "2020-02-02").addUser(false);
-        new Student(null,"Sai Teja", "1", "1", "1122334455", "789 Pine St", "1993-03-03", "Other", "42323", "2020-02-02",
+        new Student(null, "Sai Teja", "1", "1", "1122334455", "789 Pine St", "1993-03-03", "Other", "42323",
+                "2020-02-02",
                 "Communication").addUser(false);
-        new Student(null,"AS", "s", "s", "1122334455", "789 Pine St", "1993-03-03", "Other", "42323", "2020-02-02",
+        new Student(null, "AS", "s", "s", "1122334455", "789 Pine St", "1993-03-03", "Other", "42323", "2020-02-02",
                 "Communication").addUser(false);
-        new Student(null,"As", "a", "a", "1122334455", "789 Pine St", "1993-03-03", "Other", "42323", "2020-02-02",
+        new Student(null, "As", "a", "a", "1122334455", "789 Pine St", "1993-03-03", "Other", "42323", "2020-02-02",
                 "Communication").addUser(false);
         new PaidUser(null, "ram", "ram@123", "ram@gmail.com", "9632574125", "852 marc St", "0125-12-12", "Other",
                 "STM").addUser(false);
-        new FreeUser(null, "gy", "3", "3", "789456233", "753 mathie St", "8963-12-12", "Male",
+        new FreeUser(null, "gy", "3", "3", "789456233", "753 mathie St", "2012-12-12", "Male",
                 "Transportation").addUser(false);
-
-
 
         // Hardcoded Assets
         addAssets();
@@ -97,33 +97,30 @@ public class App {
         }
     }
 
-    
     private static void addAssets() {
-    Gson gson = new Gson();
+        Gson gson = new Gson();
 
-    try (JsonReader reader = new JsonReader(new FileReader("assets.json"))) {
-        JsonElement jsonElement = JsonParser.parseReader(reader);
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        try (JsonReader reader = new JsonReader(new FileReader("assets.json"))) {
+            JsonElement jsonElement = JsonParser.parseReader(reader);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
 
-        addAssetsOfType(jsonObject.getAsJsonArray("books"), Book.class, gson);
-        addAssetsOfType(jsonObject.getAsJsonArray("laptops"), Laptop.class, gson);
-        addAssetsOfType(jsonObject.getAsJsonArray("newsletters"), NewsLetter.class, gson);
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-
-private static void addAssetsOfType(JsonArray jsonArray, Class<? extends Asset> assetType, Gson gson) {
-    if (jsonArray != null) {
-        for (JsonElement element : jsonArray) {
-            Asset asset = gson.fromJson(element, assetType);
-            assetRepository.addAsset(asset);
+            addAssetsOfType(jsonObject.getAsJsonArray("books"), Book.class, gson);
+            addAssetsOfType(jsonObject.getAsJsonArray("laptops"), Laptop.class, gson);
+            addAssetsOfType(jsonObject.getAsJsonArray("newsletters"), NewsLetter.class, gson);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-}
 
-
+    private static void addAssetsOfType(JsonArray jsonArray, Class<? extends Asset> assetType, Gson gson) {
+        if (jsonArray != null) {
+            for (JsonElement element : jsonArray) {
+                Asset asset = gson.fromJson(element, assetType);
+                assetRepository.addAsset(asset);
+            }
+        }
+    }
 
 }
