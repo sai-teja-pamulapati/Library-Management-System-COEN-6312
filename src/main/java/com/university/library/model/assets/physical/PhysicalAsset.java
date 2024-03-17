@@ -2,6 +2,8 @@ package com.university.library.model.assets.physical;
 
 import com.university.library.model.assets.Asset;
 
+import java.util.Objects;
+
 public abstract class PhysicalAsset extends Asset {
    
     private String floor;
@@ -58,5 +60,18 @@ public abstract class PhysicalAsset extends Asset {
                 ", section='" + section + '\'' +
                 ", shelf='" + shelf + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof PhysicalAsset)) return false;
+        PhysicalAsset that = (PhysicalAsset) obj;
+        return super.equals(obj) && Objects.equals(floor , that.floor) && Objects.equals(row , that.row) && Objects.equals(section , that.section) && Objects.equals(shelf , that.shelf);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(floor , row , section , shelf);
     }
 }

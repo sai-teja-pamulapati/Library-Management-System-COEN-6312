@@ -1,6 +1,7 @@
 package com.university.library.model.assets.physical;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Book extends PhysicalAsset {
     private String isbn;
@@ -8,7 +9,9 @@ public class Book extends PhysicalAsset {
     private Date published;
     private String author;
     private String subject;
+
     private String description;
+
 
     public Book( String assetID, String title, String urlPreview, String urlLogo, Boolean availability, String floor, String row, String section, String shelf, String isbn, String publisher, Date published, String author, String subject, String description) {
         super(assetID, title, urlPreview, urlLogo, availability, floor, row, section, shelf);
@@ -86,5 +89,18 @@ public class Book extends PhysicalAsset {
                 "preview : " + getPreview() + '\n' +
                 "logo : " + getLogo() + '\n' +
                 "availability : " + isAvailable();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Book book = (Book) obj;
+        return super.equals(obj) && Objects.equals(isbn , book.isbn) && Objects.equals(publisher , book.publisher) && Objects.equals(published , book.published) && Objects.equals(author , book.author) && Objects.equals(subject , book.subject) && Objects.equals(description , book.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn , publisher , published , author , subject , description);
     }
 }
