@@ -8,7 +8,7 @@ import com.university.library.model.users.academic.Staff;
 import com.university.library.model.users.academic.Student;
 import com.university.library.model.users.nonacademic.FreeUser;
 import com.university.library.model.users.nonacademic.PaidUser;
-
+import com.university.library.repository.UserRepository;
 import java.io.Console;
 import java.util.Scanner;
 
@@ -63,7 +63,7 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3: View Newsletter\n" +
                         "4: buy membership\n" +
-                        "5: Logout\n"+
+                        "5: Logout\n" +
                         "******************************************************************************************\n");
                 String freeUserCommands = scanner.nextLine();
                 switch (freeUserCommands) {
@@ -104,7 +104,7 @@ public class UserLogin {
                         "6: display membership\n" +
                         "7: cancel membership\n" +
                         "8 : renew membership\n" +
-                        "9: Logout\n"+
+                        "9: Logout\n" +
                         "******************************************************************************************\n");
 
                 String paidUserCommands = scanner.nextLine();
@@ -158,10 +158,11 @@ public class UserLogin {
                         "8: Add DigitalBook\n" +
                         "9: View Library Activities\n" +
                         "10: Update NewsLetter\n" +
-                        "11. Book/Cancel Presentation Room\n" +
+                        "11: Book/Cancel Presentation Room\n" +
                         "12: Block User\n" +
                         "13: Unblock User\n" +
-                        "14: Logout\n" +
+                        "14: Update office hours\n" +
+                        "15: Logout\n" +
                         "******************************************************************************************\n");
                 String librarianCommands = scanner.nextLine();
                 switch (librarianCommands) {
@@ -190,14 +191,10 @@ public class UserLogin {
                         assetManagement.addEBook();
                         break;
                     case "9":
-
                         AdminService.viewAllUsers();
                         break;
                     case "10":
                         UpdateNews.updateNewsletterProcess();
-
-                        // assetManagement.viewLibraryActivities();
-
                         break;
                     case "11":
                         roomManagement.manageRoomBooking();
@@ -209,6 +206,9 @@ public class UserLogin {
                         UserBlocking.unblockUser(App.getLoggedInUser());
                         break;
                     case "14":
+                        UserRepository.updateOfficehours();
+                        break;
+                    case "15":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
@@ -316,6 +316,7 @@ public class UserLogin {
     }
 
     private static void processAdminUser() {
+
         while (true) {
             try {
                 System.out.print("Choose from the following options\n" +
@@ -332,7 +333,8 @@ public class UserLogin {
                         "11. Unblock User\n" +
                         "12. View All Users\n" +
                         "13. Pay Fines\n" +
-                        "14. Logout\n" +
+                        "14: Update office hours\n" +
+                        "15. Logout\n" +
                         "******************************************************************************************\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
@@ -376,6 +378,8 @@ public class UserLogin {
                         payFines();
                         break;
                     case "14":
+                        UserRepository.updateOfficehours();
+                    case "15":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid option!");

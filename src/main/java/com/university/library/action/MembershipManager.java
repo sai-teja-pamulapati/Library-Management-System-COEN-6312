@@ -3,6 +3,7 @@ package com.university.library.action;
 import com.university.library.App;
 import com.university.library.model.Membership;
 import com.university.library.model.users.User;
+import com.university.library.model.users.UserRole;
 import com.university.library.model.users.nonacademic.FreeUser;
 import com.university.library.model.users.nonacademic.PaidUser;
 import com.university.library.repository.MembershipAssetRepository;
@@ -20,6 +21,12 @@ public class MembershipManager {
     private static UserRepository userRepository = new UserRepository();
 
     public static void buyMembership() {
+        Membership exisiMembership = membershipRepository.getMembership(App.getLoggedInUser().getUserId());
+        if (exisiMembership != null && exisiMembership.isMembershipStatus()) {
+            System.out.println("You already have a membership, free user can only have membership");
+            return;
+
+        }
 
         System.out.println("The membership period is 3 months for 58CAD");
         System.out.println("To continue to purchase click 'b'");
@@ -27,6 +34,21 @@ public class MembershipManager {
         String keyword = scanner.nextLine();
         if (!keyword.equals("b")) {
             System.out.println("invalid keyword, purchase stopped");
+            return;
+        }
+        User userRole = App.getLoggedInUser();
+
+        Calendar dobCalendar = Calendar.getInstance();
+
+        dobCalendar.setTime(userRole.getDateOfBirthAsDate());
+        Calendar now = Calendar.getInstance();
+        int age = now.get(Calendar.YEAR) - dobCalendar.get(Calendar.YEAR);
+        if (now.get(Calendar.MONTH) < dobCalendar.get(Calendar.MONTH)) {
+            age--;
+        }
+
+        if (userRole instanceof FreeUser && age < 12) {
+            System.out.println("Sorry, you must be atleast 12 years old to buy membership");
             return;
         }
 
@@ -57,8 +79,10 @@ public class MembershipManager {
         FreeUser loggedInUser = (FreeUser) App.getLoggedInUser();
 
         System.out.println("membership successfully purchased. Please logout and login to continue.");
-        User paidUser = new PaidUser(loggedInUser.getUserId(), loggedInUser.getName(), loggedInUser.getPassword(), loggedInUser.getEmailId(),
-                loggedInUser.getMobileNumber(), loggedInUser.getAddress(), loggedInUser.getDateOfBirth(), loggedInUser.getGender(), loggedInUser.getOrganisation() );
+        User paidUser = new PaidUser(loggedInUser.getUserId(), loggedInUser.getName(), loggedInUser.getPassword(),
+                loggedInUser.getEmailId(),
+                loggedInUser.getMobileNumber(), loggedInUser.getAddress(), loggedInUser.getDateOfBirth(),
+                loggedInUser.getGender(), loggedInUser.getOrganisation());
         userRepository.updateUser(paidUser);
 
         // displayMembership(App.getLoggedInUser().getUserId());
@@ -115,18 +139,34 @@ public class MembershipManager {
     }
 
     public static void cancelMembership(String userId) {
-        System.out.println("are you sure you want to cancel ur membership ? (yes/no)");
-        String response = scanner.nextLine();
+        Membership membership = membershipRepository.getMembership(userId);
+        if (membership != null) {
+            System.out.println("are you sure you want to cancel ur membership ? (yes/no)");
+            String response = scanner.nextLine();
 
-        if (response.equals("yes")) {
+            if (response.equals("yes")) {
+                Date currenDate = new Date();
+                Date startDate = membership.getStartDate();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(startDate);
+                calendar.add(Calendar.DAY_OF_MONTH, 7);
+                Date cancellationDeadline = calendar.getTime();
+                if (currenDate.before(cancellationDeadline)) {
+                    if (membershipRepository.removeMembership(userId)) {
+                        System.out.println("cancellation successful, sorry to see you go.");
+                    } else {
+                        System.out.println("no active cancellation Thank god");
+                    }
+                } else {
+                    System.out.println("cancellation deadline exceeded , cannot cancel the memberhsip");
+                }
 
-            if (membershipRepository.removeMembership(userId)) {
-                System.out.println("cancellation successful, sorry to see you go.");
             } else {
-                System.out.println("no active cancellation Thank god");
+                System.out.println("cancellation aborted");
             }
         } else {
-            System.out.println("cancellation aborted");
+            System.out.println("No membership found for the user");
+
         }
     }
 
