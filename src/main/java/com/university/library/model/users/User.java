@@ -1,5 +1,9 @@
 package com.university.library.model.users;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import com.university.library.repository.UserRepository;
 
 public class User {
@@ -46,10 +50,11 @@ public class User {
         userRepository.updateUser(this);
     }
 
-    public User() {}
+    public User() {
+    }
 
-    public User(String name, String emailId, String password, String mobileNumber, 
-                String address, String dateOfBirth, String gender, UserRole userRole) {
+    public User(String name, String emailId, String password, String mobileNumber,
+            String address, String dateOfBirth, String gender, UserRole userRole) {
         this.name = name;
         this.emailId = emailId;
         this.password = password;
@@ -60,7 +65,7 @@ public class User {
         this.userRole = userRole;
     }
 
-    public static User login(String emailId , String password) {
+    public static User login(String emailId, String password) {
         User user = userRepository.getUser(emailId);
         if (user == null || !user.getPassword().equals(password)) {
             System.out.println("Invalid Credentials!!");
@@ -146,14 +151,25 @@ public class User {
         this.userId = userId;
     }
 
+    public Date getDateOfBirthAsDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        try {
+            return dateFormat.parse(dateOfBirth);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+
     @Override
-public String toString() {
-    return "UserID: " + getUserId() +
-            ", Name: " + getName() +
-            ", Email: " + getEmailId() +
-            ", Mobile: " + getMobileNumber() +
-            ", Role: " + getUserRole() +
-            ", Blocked: " + (isBlocked() ? "Yes" : "No");
-}
+    public String toString() {
+        return "UserID: " + getUserId() +
+                ", Name: " + getName() +
+                ", Email: " + getEmailId() +
+                ", Mobile: " + getMobileNumber() +
+                ", Role: " + getUserRole() +
+                ", Blocked: " + (isBlocked() ? "Yes" : "No");
+    }
 
 }
