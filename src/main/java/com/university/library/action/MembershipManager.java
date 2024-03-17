@@ -11,14 +11,25 @@ import java.util.Date;
 import com.university.library.App;
 import com.university.library.model.Membership;
 import com.university.library.repository.MembershipAssetRepository;
+import com.university.library.repository.UserRepository;
+import com.university.library.model.users.User;
 import com.university.library.model.users.UserRole;
+import com.university.library.model.users.nonacademic.FreeUser;
+import com.university.library.model.users.nonacademic.PaidUser;
+
 import java.util.Calendar;
 
 public class MembershipManager {
     private static Scanner scanner = new Scanner(System.in);
     private static MembershipAssetRepository membershipRepository = new MembershipAssetRepository();
+    private static UserRepository userRepository = new UserRepository();
 
     public static Membership buyMembership() {
+        Membership exisitMembership = membershipRepository.getMembership(App.getLoggedInUser().getUserId());
+        if (exisitMembership != null && exisitMembership.isMembershipStatus()) {
+            System.out.println("you already have memebrship, free user ca only have one membership");
+            return null;
+        }
 
         System.out.println("The membership period is 3 months for 58CAD");
         System.out.println("To continue to purchase click 'b'");
@@ -68,7 +79,14 @@ public class MembershipManager {
         System.out.println("get userid :  " + membership.getuserId());
 
         membershipRepository.addMembership(membership);
+        FreeUser loggedInUser = (FreeUser) App.getLoggedInUser();
 
+        System.out.println("membership successfully purchased. Please logout and login to continue.");
+        User paidUser = new PaidUser(loggedInUser.getUserId(), loggedInUser.getName(), loggedInUser.getPassword(),
+                loggedInUser.getEmailId(),
+                loggedInUser.getMobileNumber(), loggedInUser.getAddress(), loggedInUser.getDateOfBirth(),
+                loggedInUser.getGender(), null, loggedInUser.getOrganisation(), keyword, keyword, keyword);
+        userRepository.updateUser(paidUser);
         System.out.println("membership successfully purchased");
 
         // displayMembership(App.getLoggedInUser().getUserId());
