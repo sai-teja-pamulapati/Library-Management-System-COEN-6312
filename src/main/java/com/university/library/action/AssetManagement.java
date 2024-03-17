@@ -19,6 +19,7 @@ import com.university.library.repository.LoanAssetRepository;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
+import javax.swing.*;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -274,88 +275,172 @@ public class AssetManagement {
 
     public void addBook() {
         boolean nullChecker;
+        int dateFormatErrorCount = 0;
         String title;
+        String urlPreview;
+        String urlLogo;
+        String isbn;
+        String publisher;
+        String dateStr;
+        Date date = null;
+        String author;
+        String subject;
+        String description;
+        String floor;
+        String row;
+        String section;
+        String shelf;
         do{
             System.out.println("Enter Book's title");
             title = scanner.nextLine();
             nullChecker = nullValueChecker(title);
         }while(!nullChecker);
-        System.out.println("Enter URL for Book preview");
-        String urlPreview = scanner.nextLine();
-        System.out.println("Enter URL for Book's logo");
-        String urlLogo = scanner.nextLine();
+        do{
+            System.out.println("Enter URL for Book preview");
+            urlPreview = scanner.nextLine();
+            nullChecker = nullValueChecker(urlPreview);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter URL for Book logo");
+            urlLogo = scanner.nextLine();
+            nullChecker = nullValueChecker(urlLogo);
+        }while(!nullChecker);
         Boolean availability = true;
-        System.out.println("Enter Book's ISBN");
-        String ISBN = scanner.nextLine();
-        System.out.println("Enter Book's Publisher");
-        String publisher = scanner.nextLine();
-        System.out.println("Enter Published Date in format dd/MM/yyyy");
-        String dateStr = scanner.nextLine();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
-        try {
-            date = sdf.parse(dateStr);
-        } catch (ParseException e) {
-            System.out.println("Invalid Format");
-            return;
-        }
-        System.out.println("Enter Book's Author");
-        String author = scanner.nextLine();
-        System.out.println("Enter Book's subject");
-        String subject = scanner.nextLine();
-        System.out.println("Enter Book's Description");
-        String description = scanner.nextLine();
-        System.out.println("Enter the Floor for Book");
-        String floor = scanner.nextLine();
-        System.out.println("Enter the Row for Book");
-        String row = scanner.nextLine();
-        System.out.println("Enter the Section for Book");
-        String section = scanner.nextLine();
-        System.out.println("Enter the Shelf for Book");
-        String shelf = scanner.nextLine();
-        addBookToRepository(title, urlPreview, urlLogo, availability, floor, section, row, shelf, ISBN, publisher, date, author, subject, description);
+        do{
+            System.out.println("Enter Book's ISBN");
+            isbn = scanner.nextLine();
+            nullChecker = nullValueChecker(isbn);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter Book's Publisher");
+            publisher = scanner.nextLine();
+            nullChecker = nullValueChecker(publisher);
+        }while(!nullChecker);
+        do {
+            dateFormatErrorCount = 0;
+            do{
+                System.out.println("Enter Published Date in format dd/MM/yyyy");
+                dateStr = scanner.nextLine();
+                nullChecker = nullValueChecker(dateStr);
+            }while(!nullChecker);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                date = sdf.parse(dateStr);
+            } catch (ParseException e) {
+                System.out.println("Invalid Format");
+                dateFormatErrorCount ++;
+            }
+
+        }while(dateFormatErrorCount > 0);
+        do{
+            System.out.println("Enter Book's Author");
+            author = scanner.nextLine();
+            nullChecker = nullValueChecker(author);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter Book's subject");
+            subject = scanner.nextLine();
+            nullChecker = nullValueChecker(subject);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter Book's Description");
+            description = scanner.nextLine();
+            nullChecker = nullValueChecker(description);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter the Floor for Book");
+            floor = scanner.nextLine();
+            nullChecker = nullValueChecker(floor);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter the Row for Book");
+            row = scanner.nextLine();
+            nullChecker = nullValueChecker(row);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter the Section for Book");
+            section = scanner.nextLine();
+            nullChecker = nullValueChecker(row);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter the Shelf for Book");
+            shelf = scanner.nextLine();
+            nullChecker = nullValueChecker(shelf);
+        }while(!nullChecker);
+        addBookToRepository(title, urlPreview, urlLogo, availability, floor, section, row, shelf, isbn, publisher, date, author, subject, description);
 
     }
 
     public void addEBook(){
         boolean nullChecker;
+        int dateFormatErrorCount = 0;
+        int bookSize = 0;
         String title;
+        String isbn;
+        String publisher;
+        String dateStr;
+        Date date = null;
+        String author;
+        String subject;
+        String description;
         do{
             System.out.println("Enter Book's title");
             title = scanner.nextLine();
             nullChecker = nullValueChecker(title);
         }while(!nullChecker);
-        int Size;
+
         while(true){
-            System.out.println("Enter the size of Digital Book");
-            Size = scanner.nextInt();
-            if (Size > 30){
-                System.out.println("The maximum upload size should not exceed 30mb");
+            System.out.println("Enter Book's size");
+            bookSize = scanner.nextInt();
+            if (bookSize > 30 || bookSize == 0){
+                System.out.println("The size of a book to upload cannot be 0mb and exceed 30mb");
             }else{
                 break;
             }
         }
-        System.out.println("Enter Book's ISBN");
-        String ISBN = scanner.nextLine();
-        System.out.println("Enter Book's Publisher");
-        String publisher = scanner.nextLine();
-        System.out.println("Enter Published Date in format dd/MM/yyyy");
-        String dateStr = scanner.nextLine();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
-        try {
-            date = sdf.parse(dateStr);
-        } catch (ParseException e) {
-            System.out.println("Invalid Format");
-            return;
-        }
-        System.out.println("Enter Book's Author");
-        String author = scanner.nextLine();
-        System.out.println("Enter Book's subject");
-        String subject = scanner.nextLine();
-        System.out.println("Enter Book's Description");
-        String description = scanner.nextLine();
-        addEBookToRepository(Size,ISBN,publisher,date,author,subject,description);
+        do{
+            System.out.println("Enter Book's ISBN");
+            isbn = scanner.nextLine();
+            nullChecker = nullValueChecker(isbn);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter Book's Publisher");
+            publisher = scanner.nextLine();
+            nullChecker = nullValueChecker(publisher);
+        }while(!nullChecker);
+        do {
+            dateFormatErrorCount = 0;
+            do{
+                System.out.println("Enter Published Date in format dd/MM/yyyy");
+                dateStr = scanner.nextLine();
+                nullChecker = nullValueChecker(dateStr);
+            }while(!nullChecker);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                date = sdf.parse(dateStr);
+            } catch (ParseException e) {
+                System.out.println("Invalid Format");
+                dateFormatErrorCount ++;
+            }
+
+        }while(dateFormatErrorCount > 0);
+        do{
+            System.out.println("Enter Book's Author");
+            author = scanner.nextLine();
+            nullChecker = nullValueChecker(author);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter Book's subject");
+            subject = scanner.nextLine();
+            nullChecker = nullValueChecker(subject);
+        }while(!nullChecker);
+        do{
+            System.out.println("Enter Book's Description");
+            description = scanner.nextLine();
+            nullChecker = nullValueChecker(description);
+        }while(!nullChecker);
+
+        addEBookToRepository(bookSize,isbn,publisher,date,author,subject,description);
 
     }
     public Asset addBookToRepository( String title, String urlPreview, String urlLogo, Boolean availability, String floor, String section, String row, String shelf, String ISBN, String publisher, Date date, String author, String subject, String description) {
@@ -365,7 +450,7 @@ public class AssetManagement {
             System.out.println("Book Added Successfully with ID: " + book.getAssetId());
             return book;
         } else {
-            System.out.println("Book addition failed");
+            System.out.println("Book addition failed or Book already exists");
             return null;
         }
     }
@@ -399,7 +484,7 @@ public class AssetManagement {
             System.out.println("Enter book ID to remove the book");
             ID = scanner.nextLine();
             availability = bookAvailibilitycheker(ID);
-            if (availability ==  true){
+            if (availability){
                 removeBookFromRepository(ID);
                 break;
             }
@@ -434,30 +519,24 @@ public class AssetManagement {
         return true;
     }
 
-    public boolean checkBookBeforeAdd(String title){
-        String title1 = title;
-        List<Asset> resultAssetTitle = getResultsForTitle(title1);
-         System.out.println("in checkBookBeforeAdd");
-        if (resultAssetTitle != null){
-            System.out.println("in checkBookBeforeAdd");
-            return false;
-        }
+    public boolean checkBookBeforeAdd(Book book){
+
+
         return true;
     }
     public void updateBook() {
         displayAsstes();
-        displayAsstes();
         boolean availability ;
-        String ID;
+        String id;
         while(true) {
             System.out.println("Enter book ID to update the book");
-            ID = scanner.nextLine();
-            availability = bookAvailibilitycheker(ID);
-            if (availability ==  true){
+            id = scanner.nextLine();
+            availability = bookAvailibilitycheker(id);
+            if (availability){
                 break;
             }
         }
-        List<Asset> resultsForSearch = getResultsForSearch(ID);
+        List<Asset> resultsForSearch = getResultsForSearch(id);
         while (true) {
             try {
                 System.out.println("Please Select from the following options"
