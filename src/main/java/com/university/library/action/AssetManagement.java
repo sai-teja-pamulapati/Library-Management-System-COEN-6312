@@ -450,7 +450,7 @@ public class AssetManagement {
             System.out.println("Book Added Successfully with ID: " + book.getAssetId());
             return book;
         } else {
-            System.out.println("Book addition failed");
+            System.out.println("Book addition failed or Book already exists");
             return null;
         }
     }
@@ -484,7 +484,7 @@ public class AssetManagement {
             System.out.println("Enter book ID to remove the book");
             ID = scanner.nextLine();
             availability = bookAvailibilitycheker(ID);
-            if (availability ==  true){
+            if (availability){
                 removeBookFromRepository(ID);
                 break;
             }
