@@ -29,6 +29,22 @@ public class MembershipManager {
             return null;
         }
 
+        if (App.getLoggedInUser().getUserRole() == UserRole.FREE_USER) {
+            Calendar dobCalendar = Calendar.getInstance();
+
+            dobCalendar.setTime(App.getLoggedInUser().getDateOfBirthAsDate());
+            Calendar currCalendar = Calendar.getInstance();
+            int age = currCalendar.get(Calendar.YEAR) - dobCalendar.get(Calendar.YEAR);
+            if (currCalendar.get(Calendar.MONTH) < dobCalendar.get(Calendar.MONTH) ||
+                    (currCalendar.get(Calendar.MONTH) == dobCalendar.get(Calendar.MONTH) &&
+                            currCalendar.get(Calendar.DAY_OF_MONTH) < dobCalendar.get(Calendar.DAY_OF_MONTH))) {
+                age--;
+            }
+            if (age < 12) {
+                System.out.println("Sorry, you must be atleast 12 years old to buy membership");
+                return null;
+            }
+        }
         // System.out.println("enter the membership start date(yyyy-MM-dd)");
         // String startDateString = scanner.next();
         Date startDate = new Date(); // parseDate(startDateString);
