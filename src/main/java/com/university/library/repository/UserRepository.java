@@ -2,14 +2,17 @@ package com.university.library.repository;
 
 import com.university.library.App;
 import com.university.library.model.users.User;
+import com.university.library.model.users.academic.*;
 import com.university.library.model.users.academic.Admin;
 import com.university.library.model.users.academic.Librarian;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class UserRepository {
 
@@ -73,6 +76,12 @@ public class UserRepository {
         return user instanceof Admin;
     }
 
+    public boolean checkIfUniversityIdExists(String universityId) {
+        List<String> allUniversityIds = getAllUsers().stream().filter(Objects::nonNull).filter(user -> (user instanceof Student) || (user instanceof Admin) || (user instanceof Librarian) || (user instanceof Staff))
+                .map(user -> (AcademicUser) user).map(AcademicUser::getUniversityId).collect(Collectors.toList());
+        return allUniversityIds.contains(universityId);
+    }
+
     public static void updateOfficehours() {
         User loggedInUser = App.getLoggedInUser();
         Scanner scanner = new Scanner(System.in);
@@ -132,5 +141,4 @@ public class UserRepository {
         }
         return true;
     }
-
 }
