@@ -12,6 +12,7 @@ import com.university.library.App;
 import com.university.library.model.Membership;
 import com.university.library.repository.MembershipAssetRepository;
 import com.university.library.model.users.UserRole;
+import java.util.Calendar;
 
 public class MembershipManager {
     private static Scanner scanner = new Scanner(System.in);
@@ -58,8 +59,6 @@ public class MembershipManager {
         App.getLoggedInUser().setUserRole(UserRole.PAID_USER);
         return membership;
     }
-
-    
 
     public static void displayMembership(String userId) {
         Membership membership = membershipRepository.getMembership(userId);
@@ -112,18 +111,36 @@ public class MembershipManager {
     }
 
     public static void cancelMembership(String userId) {
-        System.out.println("are you sure you want to cancel ur membership ? (yes/no)");
-        String response = scanner.nextLine();
+        Membership membership = membershipRepository.getMembership(userId);
+        if (membership != null) {
+            System.out.println("are you sure you want to cancel ur membership ? (yes/no)");
+            String response = scanner.nextLine();
 
-        if (response.equals("yes")) {
+            if (response.equals("yes")) {
+                Date currentDate = new Date();
+                Date startDate = membership.getStartDate();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(startDate);
+                calendar.add(Calendar.DAY_OF_MONTH, 7);
+                Date cancelationDeadline = calendar.getTime();
 
-            if (membershipRepository.removeMembership(userId)) {
-                System.out.println("cancellation successful, sorry to see you go.");
+                if (currentDate.before(cancelationDeadline)) {
+
+                    if (membershipRepository.removeMembership(userId)) {
+                        System.out.println("cancellation successful, sorry to see you go.");
+                    } else {
+                        System.out.println("no active cancellation Thank god");
+                    }
+
+                } else {
+                    System.out.println("cancellation deadline exceeded , cannot cancel the memberhsip");
+                }
+
             } else {
-                System.out.println("no active cancellation Thank god");
+                System.out.println("cancellation aborted");
             }
         } else {
-            System.out.println("cancellation aborted");
+            System.out.println("No memberhsip found");
         }
     }
 
