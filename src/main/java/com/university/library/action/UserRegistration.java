@@ -150,6 +150,7 @@ public class UserRegistration {
             }
             break;
         }
+
         User newUser = null;
 
         switch (userRole) {

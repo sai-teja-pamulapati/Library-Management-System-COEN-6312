@@ -8,7 +8,7 @@ import com.university.library.model.users.academic.Staff;
 import com.university.library.model.users.academic.Student;
 import com.university.library.model.users.nonacademic.FreeUser;
 import com.university.library.model.users.nonacademic.PaidUser;
-
+import com.university.library.repository.UserRepository;
 import java.io.Console;
 import java.util.Scanner;
 
@@ -29,6 +29,7 @@ public class UserLogin {
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
         String password = new String(console.readPassword());
+        //String password = scanner.nextLine();
 
         User user = User.login(emailId, password);
         if (user == null) {
@@ -62,7 +63,7 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3: View Newsletter\n" +
                         "4: buy membership\n" +
-                        "5: Logout\n"+
+                        "5: Logout\n" +
                         "******************************************************************************************\n");
                 String freeUserCommands = scanner.nextLine();
                 switch (freeUserCommands) {
@@ -103,7 +104,7 @@ public class UserLogin {
                         "6: display membership\n" +
                         "7: cancel membership\n" +
                         "8 : renew membership\n" +
-                        "9: Logout\n"+
+                        "9: Logout\n" +
                         "******************************************************************************************\n");
 
                 String paidUserCommands = scanner.nextLine();
@@ -154,12 +155,14 @@ public class UserLogin {
                         "5: Add Book\n" +
                         "6: Remove Book\n" +
                         "7: Update Book Details\n" +
-                        "8: View Library Activities\n" +
-                        "9: Update NewsLetter\n" +
-                        "10. Book/Cancel Discussion Room\n" +
-                        "11: Block User\n" +
-                        "12: Unblock User\n" +
-                        "13: Logout\n" +
+                        "8: Add DigitalBook\n" +
+                        "9: View Library Activities\n" +
+                        "10: Update NewsLetter\n" +
+                        "11: Book/Cancel Presentation Room\n" +
+                        "12: Block User\n" +
+                        "13: Unblock User\n" +
+                        "14: Update office hours\n" +
+                        "15: Logout\n" +
                         "******************************************************************************************\n");
                 String librarianCommands = scanner.nextLine();
                 switch (librarianCommands) {
@@ -185,27 +188,27 @@ public class UserLogin {
                         assetManagement.updateBook();
                         break;
                     case "8":
-
-                        AdminService.viewAllUsers();
+                        assetManagement.addEBook();
                         break;
                     case "9":
-                        UpdateNews.updateNewsletterProcess();
-
-                        // assetManagement.viewLibraryActivities();
-                       
-                    
-
+                        AdminService.viewAllUsers();
                         break;
                     case "10":
-                        roomManagement.manageRoomBooking();
+                        UpdateNews.updateNewsletterProcess();
                         break;
                     case "11":
-                        UserBlocking.blockUser(App.getLoggedInUser());
+                        roomManagement.manageRoomBooking();
                         break;
                     case "12":
-                        UserBlocking.unblockUser(App.getLoggedInUser());
+                        UserBlocking.blockUser(App.getLoggedInUser());
                         break;
                     case "13":
+                        UserBlocking.unblockUser(App.getLoggedInUser());
+                        break;
+                    case "14":
+                        UserRepository.updateOfficehours();
+                        break;
+                    case "15":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid Option!");
@@ -225,7 +228,7 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3. View Newsletter\n" +
                         "4. View Notifications\n" +
-                        "5. Book/Cancel Discussion Room\n" +
+                        "5. Book/Cancel Presentation Room\n" +
                         "6. Pay Fines\n" +
                         "7. Logout\n" +
                         "******************************************************************************************\n");
@@ -268,7 +271,7 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3. View Newsletter\n" +
                         "4. View Notifications\n" +
-                        "5. Book/Cancel Discussion Room\n" +
+                        "5. Book/Cancel Presentation Room\n" +
                         "6. Pay Fines\n" +
                         "7. Logout\n" +
                         "******************************************************************************************\n");
@@ -313,6 +316,7 @@ public class UserLogin {
     }
 
     private static void processAdminUser() {
+
         while (true) {
             try {
                 System.out.print("Choose from the following options\n" +
@@ -320,15 +324,17 @@ public class UserLogin {
                         "2. View borrowing history\n" +
                         "3. View Notifications\n" +
                         "4. View Newsletter\n" +
-                        "5. Update Newsletter\n" +
-                        "6. Book/Cancel Discussion Room\n" +
-                        "7. Add User\n" +
-                        "8. Remove User\n" +
-                        "9. Block User\n" +
-                        "10. Unblock User\n" +
-                        "11. View All Users\n" +
-                        "12. Pay Fines\n" +
-                        "13. Logout\n" +
+                        "5. Add Newsletter\n" +
+                        "6. Update Newsletter\n" +
+                        "7. Book/Cancel Presentation Room\n" +
+                        "8. Add User\n" +
+                        "9. Remove User\n" +
+                        "10. Block User\n" +
+                        "11. Unblock User\n" +
+                        "12. View All Users\n" +
+                        "13. Pay Fines\n" +
+                        "14: Update office hours\n" +
+                        "15. Logout\n" +
                         "******************************************************************************************\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
@@ -345,30 +351,35 @@ public class UserLogin {
                         ViewNews.viewNewsletters();
                         break;
                     case "5":
-                        UpdateNews.updateNewsletterProcess();
+                        assetManagement.addNewsLetter();
                         break;
                     case "6":
-                        roomManagement.manageRoomBooking();
+                        UpdateNews.updateNewsletterProcess();
                         break;
                     case "7":
-                        UserRegistration.register(false);
+                        roomManagement.manageRoomBooking();
                         break;
                     case "8":
-                        UserRemoval.removeUser();
+                        UserRegistration.register(false);
                         break;
                     case "9":
-                        UserBlocking.blockUser(App.getLoggedInUser());
+                        UserRemoval.removeUser();
                         break;
                     case "10":
-                        UserBlocking.unblockUser(App.getLoggedInUser());
+                        UserBlocking.blockUser(App.getLoggedInUser());
                         break;
                     case "11":
-                        AdminService.viewAllUsers();
+                        UserBlocking.unblockUser(App.getLoggedInUser());
                         break;
                     case "12":
-                        payFines();
+                        AdminService.viewAllUsers();
                         break;
                     case "13":
+                        payFines();
+                        break;
+                    case "14":
+                        UserRepository.updateOfficehours();
+                    case "15":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid option!");
