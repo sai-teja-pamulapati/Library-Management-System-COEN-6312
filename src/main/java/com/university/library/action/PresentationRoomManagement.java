@@ -66,10 +66,7 @@ public class PresentationRoomManagement {
 
         LocalDate bookingDate = readDate("Booking Start Date (YYYY-MM-DD):");
 
-        if (bookingDate.isBefore(LocalDate.now())) {
-            System.out.println("Bookings must be made for future dates.");
-            return;
-        } else if (!isWithinTwoWeeksRange(bookingDate)) {
+        if (!isWithinTwoWeeksRange(bookingDate)) {
             System.out.println("Rooms cannot be booked more than two weeks in advance.");
             return;
         } else if (userHasBookingOnDate(currentLoggedInUser, bookingDate)) {
