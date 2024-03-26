@@ -20,17 +20,16 @@ public class UserLogin {
     private static PresentationRoomManagement roomManagement = new PresentationRoomManagement();
 
     public static void login() {
-        //Console console = System.console();
-        //if (console == null) {
-           // System.out.println("No console available");
-            //return;
-       // }
+        Console console = System.console();
+        if (console == null) {
+            System.out.println("No console available");
+            return;
+        }
 
         System.out.println("Please enter your email Id:");
         String emailId = scanner.nextLine();
         System.out.println("Please enter your password:");
-        //String password = new String(console.readPassword());
-        String password = scanner.nextLine();
+        String password = new String(console.readPassword());
 
         User user = User.login(emailId, password);
         if (user == null) {
