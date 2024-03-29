@@ -9,17 +9,18 @@ public class LoanAsset {
     private String assetId;
     private String userId;
     private Date loanDate;
-    private Date returnDate;
+    private Date expectedReturnDate;
+    private Date actualReturnDate; 
     private Date renewDate;
     private Double fine = 0.0;
     private boolean isFinePaid = false;
 
-    public LoanAsset(String loanAssetId , String assetId , String userId , Date loanDate , Date returnDate , Double fine , boolean isFinePaid , Date renewDate) {
+    public LoanAsset(String loanAssetId, String assetId, String userId, Date loanDate, Date returnDate, Double fine, boolean isFinePaid, Date renewDate) {
         this.loanAssetId = loanAssetId;
         this.assetId = assetId;
         this.userId = userId;
         this.loanDate = loanDate;
-        this.returnDate = returnDate;
+        this.expectedReturnDate = returnDate;
         this.fine = fine;
         this.isFinePaid = isFinePaid;
         this.renewDate = renewDate;
@@ -35,7 +36,7 @@ public class LoanAsset {
     public void setFinePaid(boolean finePaid) {
         isFinePaid = finePaid;
     }
-    
+
     public String getLoanAssetId() {
         return loanAssetId;
     }
@@ -68,12 +69,20 @@ public class LoanAsset {
         this.loanDate = loanDate;
     }
 
-    public Date getReturnDate() {
-        return returnDate;
+    public Date getExpectedReturnDate() {
+        return expectedReturnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
+    public void setExpectedReturnDate(Date returnDate) {
+        this.expectedReturnDate = returnDate;
+    }
+
+    public Date getActualReturnDate() {
+        return actualReturnDate;
+    }
+
+    public void setActualReturnDate(Date actualReturnDate) {
+        this.actualReturnDate = actualReturnDate;
     }
 
     public Double getFine() {
@@ -95,7 +104,8 @@ public class LoanAsset {
     @Override
     public String toString() {
         return "loanDate : " + loanDate + '\n' +
-                "returnDate : " + returnDate + '\n' +
+                "expectedReturnDate : " + expectedReturnDate + '\n' +
+                "actualReturnDate : " + actualReturnDate + '\n' +
                 "fineAmount : " + fine + '\n' +
                 "renewDate : " + renewDate;
     }

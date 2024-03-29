@@ -105,12 +105,12 @@ public abstract class Asset {
         loanAsset.setAssetId(this.getAssetId());
         loanAsset.setUserId(user.getUserId());
         loanAsset.setLoanDate(today);
-        loanAsset.setReturnDate(DateUtils.addDays(today, 30));
+        loanAsset.setExpectedReturnDate(DateUtils.addDays(today, 30));
         this.availability = false;
         this.updateAsset();
         loanAssetRepository.saveLoanAsset(loanAsset);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println("Requested Asset has been borrowed. Please return the item by " + dateFormat.format(loanAsset.getReturnDate()) + ".");
+        System.out.println("Requested Asset has been borrowed. Please return the item by " + dateFormat.format(loanAsset.getExpectedReturnDate()) + ".");
         //System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
         return loanAsset;
 

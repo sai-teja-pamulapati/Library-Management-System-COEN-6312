@@ -273,7 +273,8 @@ public class UserLogin {
                         "4. View Notifications\n" +
                         "5. Book/Cancel Presentation Room\n" +
                         "6. Pay Fines\n" +
-                        "7. Logout\n" +
+                        "7. Returnasset\n" +
+                        "8. Logout\n" +
                         "******************************************************************************************\n");
                 String studentCommands = scanner.nextLine();
                 switch (studentCommands) {
@@ -296,6 +297,9 @@ public class UserLogin {
                         payFines();
                         break;
                     case "7":
+                        assetManagement.returnAsset();
+                        break;
+                    case "8":
                         return;
                     default:
                         throw new IllegalArgumentException("Invalid option!");

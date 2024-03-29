@@ -265,6 +265,7 @@ public class AssetManagement {
             Asset asset = assetRepository.getAsset(loanAsset.getAssetId());
             System.out.println(asset);
             System.out.println(loanAsset);
+           // System.out.println("Press " + asset.getAssetId() + " to return");
         }
         System.out.println("******************************************************************************************");
         return loanedItemsForUser;
@@ -536,7 +537,28 @@ public class AssetManagement {
     }
 
 
-
+///////////////////////////////////////////////////////
+     public void returnAsset() {
+    User user = App.getLoggedInUser();
+    List<LoanAsset> loanedItemsForUser = printAndGetBorrowingHistory(user);
+    
+    System.out.println("Press the asset ID to return:");
+    String assetId = scanner.nextLine();
+    
+    boolean assetReturned = false;
+    for (LoanAsset loan : loanedItemsForUser) {
+        if (loan.getAssetId().equals(assetId) && loan.getActualReturnDate() == null) {
+            loan.setActualReturnDate(new Date());
+            loanAssetRepository.saveLoanAsset(loan);
+            System.out.println("Asset returned successfully.");
+            assetReturned = true;
+            break;
+        }
+    }
+    if (!assetReturned) {
+        System.out.println("Asset is not currently on loan or does not exist.");
+    }
+}
 
 
 }
