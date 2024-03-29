@@ -111,26 +111,54 @@ public class AssetManagement {
         return searchWithGivenParameters(searchWord , assetStringArray , assetSubList);
     }
 
+    // public LoanAsset processCheckout(List<Asset> searchedAssets , String requestedAssetId) {
+    //     User user = App.getLoggedInUser();
+    //     Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
+
+    //     if (requestedAssetOptional.isEmpty()) {
+    //         System.out.println("Requested Object does not exist");
+    //         return null;
+    //     }
+    //     Asset requestedAsset = requestedAssetOptional.get();
+
+    //     int borrowingLimit = getBorrowingLimit(requestedAsset, user);
+    //     long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
+
+    //     if (borrowingLimit != -1 && activeLoans >= borrowingLimit) {
+    //         System.out.println(MessageFormat.format("You have reached your borrowing limit of \"{0}\" {1}s. Please return an item to borrow a new one." , borrowingLimit, requestedAsset.getClass().getSimpleName()));
+    //         return null;
+    //     }
+
+    //     return requestedAsset.loanAsset();
+    // }
+
     public LoanAsset processCheckout(List<Asset> searchedAssets , String requestedAssetId) {
-        User user = App.getLoggedInUser();
-        Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
+    User user = App.getLoggedInUser();
+    Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
 
-        if (requestedAssetOptional.isEmpty()) {
-            System.out.println("Requested Object does not exist");
-            return null;
-        }
-        Asset requestedAsset = requestedAssetOptional.get();
-
-        int borrowingLimit = getBorrowingLimit(requestedAsset, user);
-        long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
-
-        if (borrowingLimit != -1 && activeLoans >= borrowingLimit) {
-            System.out.println(MessageFormat.format("You have reached your borrowing limit of \"{0}\" {1}s. Please return an item to borrow a new one." , borrowingLimit, requestedAsset.getClass().getSimpleName()));
-            return null;
-        }
-
-        return requestedAsset.loanAsset();
+    if (requestedAssetOptional.isEmpty()) {
+        System.out.println("Requested Object does not exist");
+        return null;
     }
+    Asset requestedAsset = requestedAssetOptional.get();
+
+    // Check if the asset is available for borrowing
+    if (!requestedAsset.isAvailable()) {
+        System.out.println("Asset is not available for borrowing.");
+        return null;
+    }
+
+    int borrowingLimit = getBorrowingLimit(requestedAsset, user);
+    long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
+
+    if (borrowingLimit != -1 && activeLoans >= borrowingLimit) {
+        System.out.println(MessageFormat.format("You have reached your borrowing limit of \"{0}\" {1}s. Please return an item to borrow a new one." , borrowingLimit, requestedAsset.getClass().getSimpleName()));
+        return null;
+    }
+
+    return requestedAsset.loanAsset();
+}
+
 
     private int getBorrowingLimit(Asset requestedAsset , User user) {
         if (requestedAsset instanceof Laptop){
