@@ -9,6 +9,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -98,24 +99,48 @@ public abstract class Asset {
         assetRepository.update(this);
     }
 
+    // public LoanAsset loanAsset() {
+    //     LoanAsset loanAsset = new LoanAsset();
+    //     Date today = new Date();
+    //     User user = App.getLoggedInUser();
+    //     loanAsset.setAssetId(this.getAssetId());
+    //     loanAsset.setUserId(user.getUserId());
+    //     loanAsset.setLoanDate(today);
+    //     loanAsset.setExpectedReturnDate(DateUtils.addDays(today, 30));
+    //     this.availability = false;
+    //     this.updateAsset();
+    //     loanAssetRepository.saveLoanAsset(loanAsset);
+    //     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    //     System.out.println("Requested Asset has been borrowed. Please return the item by " + dateFormat.format(loanAsset.getExpectedReturnDate()) + ".");
+    //     //System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
+    //     return loanAsset;
+
+    // }
+
     public LoanAsset loanAsset() {
-        LoanAsset loanAsset = new LoanAsset();
-        Date today = new Date();
-        User user = App.getLoggedInUser();
-        loanAsset.setAssetId(this.getAssetId());
-        loanAsset.setUserId(user.getUserId());
-        loanAsset.setLoanDate(today);
-        loanAsset.setExpectedReturnDate(DateUtils.addDays(today, 30));
-        this.availability = false;
-        this.updateAsset();
-        loanAssetRepository.saveLoanAsset(loanAsset);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println("Requested Asset has been borrowed. Please return the item by " + dateFormat.format(loanAsset.getExpectedReturnDate()) + ".");
-        //System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
-        return loanAsset;
-
-    }
-
+    LoanAsset loanAsset = new LoanAsset();
+    Date today = new Date();
+    User user = App.getLoggedInUser();
+    loanAsset.setAssetId(this.getAssetId());
+    loanAsset.setUserId(user.getUserId());
+    loanAsset.setLoanDate(today);
+    
+    // Set expected return date to 1 minute from now
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(today);
+    calendar.add(Calendar.MINUTE, 1); // Add 1 minute
+    Date expectedReturnDate = calendar.getTime();
+    
+    loanAsset.setExpectedReturnDate(expectedReturnDate);
+    this.availability = false;
+    this.updateAsset();
+    loanAssetRepository.saveLoanAsset(loanAsset);
+    
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    System.out.println("Requested Asset has been borrowed. Please return the item by " + dateFormat.format(expectedReturnDate) + ".");
+    
+    return loanAsset;
+}
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

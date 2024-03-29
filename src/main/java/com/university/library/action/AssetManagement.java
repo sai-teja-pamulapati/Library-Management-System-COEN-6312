@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class AssetManagement {
@@ -568,6 +569,37 @@ public class AssetManagement {
 ///////////////////////////////////////////////////////
 
 
+// public void returnAsset() {
+//     User user = App.getLoggedInUser();
+//     List<LoanAsset> loanedItemsForUser = printAndGetBorrowingHistory(user);
+    
+//     System.out.println("Press the asset ID to return:");
+//     String assetId = scanner.nextLine();
+    
+//     boolean assetReturned = false;
+//     for (LoanAsset loan : loanedItemsForUser) {
+//         if (loan.getAssetId().equals(assetId) && loan.getActualReturnDate() == null) {
+//             loan.setActualReturnDate(new Date());
+//             loanAssetRepository.saveLoanAsset(loan);
+//             System.out.println("Asset returned successfully.");
+//             assetReturned = true;
+            
+//             // Update asset availability
+//             Asset asset = assetRepository.getAsset(assetId);
+//             if (asset != null) {
+//                 asset.setAvailability(true);
+//                 asset.updateAsset();
+//             }
+            
+//             break;
+//         }
+//     }
+//     if (!assetReturned) {
+//         System.out.println("Asset is not currently on loan or does not exist.");
+//     }
+// }
+
+
 public void returnAsset() {
     User user = App.getLoggedInUser();
     List<LoanAsset> loanedItemsForUser = printAndGetBorrowingHistory(user);
@@ -579,6 +611,14 @@ public void returnAsset() {
     for (LoanAsset loan : loanedItemsForUser) {
         if (loan.getAssetId().equals(assetId) && loan.getActualReturnDate() == null) {
             loan.setActualReturnDate(new Date());
+            
+            // Calculate fine if actual return date is later than expected return date
+            if (loan.getActualReturnDate().after(loan.getExpectedReturnDate())) {
+                long daysOverdue = calculateDaysOverdue(loan.getExpectedReturnDate(), loan.getActualReturnDate());
+                double fine = 50.0 + (daysOverdue * 10.0); // Base fine $50 plus $10 for each day overdue
+                loan.setFine(fine);
+            }
+            
             loanAssetRepository.saveLoanAsset(loan);
             System.out.println("Asset returned successfully.");
             assetReturned = true;
@@ -596,6 +636,12 @@ public void returnAsset() {
     if (!assetReturned) {
         System.out.println("Asset is not currently on loan or does not exist.");
     }
+}
+
+private long calculateDaysOverdue(Date expectedReturnDate, Date actualReturnDate) {
+    long diffInMillies = Math.abs(actualReturnDate.getTime() - expectedReturnDate.getTime());
+    long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    return diffInDays;
 }
 
 
