@@ -273,51 +273,93 @@ public class AssetManagement {
     // Asset: book functinalities
 
     public void addBook() {
-        System.out.println("Enter Book's title");
-        String title = scanner.nextLine();
-        System.out.println("Enter URL for Book preview");
-        String urlPreview = scanner.nextLine();
-        System.out.println("Enter URL for Book's logo");
-        String urlLogo = scanner.nextLine();
-        Boolean availability = true;
-        System.out.println("Enter Book's ISBN");
-        String ISBN = scanner.nextLine();
-        System.out.println("Enter Book's Publisher");
-        String publisher = scanner.nextLine();
-        System.out.println("Enter Published Date in format dd/MM/yyyy");
-        String dateStr = scanner.nextLine();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
-        try {
-            date = sdf.parse(dateStr);
-        } catch (ParseException e) {
-            System.out.println("Invalid Format");
-            return;
+        String title = getInputFromUser("Enter Book's title");
+        String urlPreview = getInputFromUser("Enter URL for Book preview");
+        String urlLogo = getInputFromUser("Enter URL for Book logo");
+        String isbn = getInputFromUser("Enter Book's ISBN");
+        String publisher = getInputFromUser("Enter Book's Publisher");
+        String author = getInputFromUser("Enter Book's Author");
+        String subject = getInputFromUser("Enter Book's subject");
+        String description = getInputFromUser("Enter Book's Description");
+        String floor = getInputFromUser("Enter the Floor for Book");
+        String row = getInputFromUser("Enter the Row for Book");
+        String section = getInputFromUser("Enter the Section for Book");
+        String shelf = getInputFromUser("Enter the Shelf for Book");
+        Date date;
+        while (true){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                String dateStr = getInputFromUser("Enter Published Date in format dd/MM/yyyy");
+                date = sdf.parse(dateStr);
+                break;
+            } catch (ParseException e) {
+                System.out.println("Invalid Format");
+            }
         }
-        System.out.println("Enter Book's Author");
-        String author = scanner.nextLine();
-        System.out.println("Enter Book's subject");
-        String subject = scanner.nextLine();
-        System.out.println("Enter Book's Description");
-        String description = scanner.nextLine();
-        System.out.println("Enter the Floor for Book");
-        String floor = scanner.nextLine();
-        System.out.println("Enter the Row for Book");
-        String row = scanner.nextLine();
-        System.out.println("Enter the Section for Book");
-        String section = scanner.nextLine();
-        System.out.println("Enter the Shelf for Book");
-        String shelf = scanner.nextLine();
-        addBookToRepository(title, urlPreview, urlLogo, availability, floor, section, row, shelf, ISBN, publisher, date, author, subject, description);
+
+        addBookToRepository(title, urlPreview, urlLogo, true , floor, section, row, shelf, isbn, publisher, date, author, subject, description);
 
     }
 
+    private String getInputFromUser(String printMessage) {
+        while (true){
+            System.out.println(printMessage);
+            String input = scanner.nextLine();
+            if (input != null && !input.isEmpty()) {
+                return input;
+            }
+            System.out.println("Please enter a valid detail");
+            System.out.println("******************************************************************************************");
+        }
+    }
+
+    public void addEBook(){
+        String isbn = getInputFromUser("Enter Book's ISBN");
+        String publisher = getInputFromUser("Enter Book's Publisher");
+        String author = getInputFromUser("Enter Book's Author");
+        String subject = getInputFromUser("Enter Book's subject");
+        String description = getInputFromUser("Enter Book's Description");
+        int bookSize = 0;
+        Date date;
+        while (true){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                String dateStr = getInputFromUser("Enter Published Date in format dd/MM/yyyy");
+                date = sdf.parse(dateStr);
+                break;
+            } catch (ParseException e) {
+                System.out.println("Invalid Format");
+            }
+        }
+        while(true){
+            System.out.println("Enter Book's size");
+            bookSize = scanner.nextInt();
+            if (bookSize > 30 || bookSize == 0){
+                System.out.println("The size of a book to upload cannot be 0mb and exceed 30mb");
+            }else{
+                break;
+            }
+        }
+        addEBookToRepository(bookSize,isbn,publisher,date,author,subject,description);
+
+    }
     public Asset addBookToRepository( String title, String urlPreview, String urlLogo, Boolean availability, String floor, String section, String row, String shelf, String ISBN, String publisher, Date date, String author, String subject, String description) {
         Book book = new Book( null,title, urlPreview, urlLogo, availability, floor, section, row, shelf, ISBN, publisher, date, author, subject, description);
         boolean checkAdd = assetRepository.addAsset(book);
         if (checkAdd) {
             System.out.println("Book Added Successfully with ID: " + book.getAssetId());
             return book;
+        } else {
+            System.out.println("Book addition failed or Book already exists");
+            return null;
+        }
+    }
+    public Asset addEBookToRepository( int bookSize, String isbn, String publisher, Date published, String author, String subject, String description) {
+        DigitalBook dbook = new DigitalBook("www",bookSize, isbn, publisher, published, author, subject,description);
+        boolean checkAdd = assetRepository.addAsset(dbook);
+        if (checkAdd) {
+            System.out.println("Book Added Successfully with ID: " + dbook.getAssetId());
+            return dbook;
         } else {
             System.out.println("Book addition failed");
             return null;
@@ -336,9 +378,17 @@ public class AssetManagement {
 
     public void removeBook() {
         displayAsstes();
-        System.out.println("Enter the Book ID to Remove the Book");
-        String ID = scanner.nextLine();
-        removeBookFromRepository(ID);
+        boolean availability ;
+        String ID;
+        while(true) {
+            System.out.println("Enter book ID to remove the book");
+            ID = scanner.nextLine();
+            availability = bookAvailibilitycheker(ID);
+            if (availability){
+                removeBookFromRepository(ID);
+                break;
+            }
+        }
         System.out.println("Book removed Successfully");
     }
 
@@ -346,10 +396,38 @@ public class AssetManagement {
         return assetRepository.removeAsset(ID);
     }
 
+
+    public boolean bookAvailibilitycheker(String ID){
+        Asset asset;
+        int count = 0;
+        do{
+            if (count > 0){
+                System.out.println("No book found with entered book ID");
+                return false;
+            }
+            asset = assetRepository.getAsset(ID);
+            count++;
+        }while(asset == null);
+        return true;
+    }
+
+    public boolean checkBookBeforeAdd(Book book){
+
+
+        return true;
+    }
     public void updateBook() {
         displayAsstes();
-        System.out.println("Select/Enter Book ID to update it's content");
-        String id = scanner.nextLine();
+        boolean availability ;
+        String id;
+        while(true) {
+            System.out.println("Enter book ID to update the book");
+            id = scanner.nextLine();
+            availability = bookAvailibilitycheker(id);
+            if (availability){
+                break;
+            }
+        }
         List<Asset> resultsForSearch = getResultsForSearch(id);
         while (true) {
             try {

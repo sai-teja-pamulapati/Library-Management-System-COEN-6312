@@ -6,6 +6,7 @@ import com.university.library.model.assets.digital.NewsLetter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AssetRepository {
@@ -34,9 +35,20 @@ public class AssetRepository {
         return assets.containsKey(assetId);
     }
 
+    private boolean contains(Asset asset){
+        List<Asset> allassets = getAllAssets();
+        for (Asset a : allassets){
+            if(a.equals(asset)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public boolean addAsset(Asset asset) {
         String newAssetId = String.valueOf(assetIdGenerator.getAndIncrement());
-        if (exists(newAssetId)) {
+        if (exists(newAssetId) || contains(asset) ) {
             return false;
         } else {
             asset.setAssetId(newAssetId);

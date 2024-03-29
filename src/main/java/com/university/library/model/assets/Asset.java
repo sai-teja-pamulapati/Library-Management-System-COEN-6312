@@ -10,6 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class Asset {
     
@@ -115,4 +116,16 @@ public abstract class Asset {
 
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Asset)) return false;
+        Asset asset = (Asset) obj;
+        return availability == asset.availability && Objects.equals(assetId , asset.assetId) && Objects.equals(title , asset.title) && Objects.equals(preview , asset.preview) && Objects.equals(logo , asset.logo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(assetId , title , preview , logo , availability);
+    }
 }

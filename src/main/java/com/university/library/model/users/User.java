@@ -1,5 +1,8 @@
 package com.university.library.model.users;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import com.university.library.repository.UserRepository;
 
 public class User {
@@ -13,6 +16,7 @@ public class User {
     private String dateOfBirth;
     private String gender;
     private boolean blocked;
+    private UserRole userRole;
 
     private static UserRepository userRepository = UserRepository.getInstance();
 
@@ -44,10 +48,11 @@ public class User {
         userRepository.updateUser(this);
     }
 
-    public User() {}
+    public User() {
+    }
 
-    public User(String userId, String name , String emailId , String password , String mobileNumber ,
-                String address , String dateOfBirth , String gender) {
+    public User(String userId, String name, String emailId, String password, String mobileNumber,
+            String address, String dateOfBirth, String gender) {
         this.userId = userId;
         this.name = name;
         this.emailId = emailId;
@@ -58,23 +63,21 @@ public class User {
         this.gender = gender;
     }
 
-
-    public static User login(String emailId , String password) {
-    User user = userRepository.getUser(emailId);
-    if (user == null) {
-        System.out.println("Invalid Credentials!!");
-        return null;
-    } else if (user.isBlocked()) {
-        System.out.println("This account is blocked.");
-        return null;
-    } else if (!user.getPassword().equals(password)) {
-        System.out.println("Invalid Credentials!!");
-        return null;
+    public static User login(String emailId, String password) {
+        User user = userRepository.getUser(emailId);
+        if (user == null) {
+            System.out.println("Invalid Credentials!!");
+            return null;
+        } else if (user.isBlocked()) {
+            System.out.println("This account is blocked.");
+            return null;
+        } else if (!user.getPassword().equals(password)) {
+            System.out.println("Invalid Credentials!!");
+            return null;
+        }
+        System.out.println("Login Successful!");
+        return user;
     }
-    System.out.println("Login Successful!");
-    return user;
-}
-
 
     public static User register(User newUser) {
         return newUser.addUser();
@@ -102,6 +105,14 @@ public class User {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public String getMobileNumber() {
@@ -142,6 +153,18 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Date getDateOfBirthAsDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        try {
+            return dateFormat.parse(dateOfBirth);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override

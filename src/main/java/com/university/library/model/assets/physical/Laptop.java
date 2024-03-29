@@ -1,5 +1,7 @@
 package com.university.library.model.assets.physical;
 
+import java.util.Objects;
+
 public class Laptop extends PhysicalAsset {
     private String serialNumber;
     private String brand;
@@ -114,5 +116,18 @@ public class Laptop extends PhysicalAsset {
                 "preview : " + getPreview() + '\n' +
                 "logo : " + getLogo() + '\n' +
                 "availability : " + isAvailable();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Laptop laptop = (Laptop) obj;
+        return super.equals(obj) && Objects.equals(serialNumber , laptop.serialNumber) && Objects.equals(brand , laptop.brand) && Objects.equals(modelNumber , laptop.modelNumber) && Objects.equals(make , laptop.make) && Objects.equals(processor , laptop.processor) && Objects.equals(ram , laptop.ram) && Objects.equals(storage , laptop.storage) && Objects.equals(displaySize , laptop.displaySize) && Objects.equals(weight , laptop.weight);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serialNumber , brand , modelNumber , make , processor , ram , storage , displaySize , weight);
     }
 }
