@@ -538,7 +538,9 @@ public class AssetManagement {
 
 
 ///////////////////////////////////////////////////////
-     public void returnAsset() {
+
+
+public void returnAsset() {
     User user = App.getLoggedInUser();
     List<LoanAsset> loanedItemsForUser = printAndGetBorrowingHistory(user);
     
@@ -552,6 +554,14 @@ public class AssetManagement {
             loanAssetRepository.saveLoanAsset(loan);
             System.out.println("Asset returned successfully.");
             assetReturned = true;
+            
+            // Update asset availability
+            Asset asset = assetRepository.getAsset(assetId);
+            if (asset != null) {
+                asset.setAvailability(true);
+                asset.updateAsset();
+            }
+            
             break;
         }
     }
