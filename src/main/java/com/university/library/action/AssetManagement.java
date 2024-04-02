@@ -113,31 +113,31 @@ public class AssetManagement {
     }
 
     public LoanAsset processCheckout(List<Asset> searchedAssets , String requestedAssetId) {
-    User user = App.getLoggedInUser();
-    Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
+        User user = App.getLoggedInUser();
+        Optional<Asset> requestedAssetOptional = searchedAssets.stream().filter(Objects::nonNull).filter(asset -> Objects.equals(asset.getAssetId(), requestedAssetId)).findFirst();
 
-    if (requestedAssetOptional.isEmpty()) {
-        System.out.println("Requested Object does not exist");
-        return null;
+        if (requestedAssetOptional.isEmpty()) {
+            System.out.println("Requested Object does not exist");
+            return null;
+        }
+        Asset requestedAsset = requestedAssetOptional.get();
+
+        // Check if the asset is available for borrowing
+        if (!requestedAsset.isAvailable()) {
+            System.out.println("Asset is not available for borrowing.");
+            return null;
+        }
+
+        int borrowingLimit = getBorrowingLimit(requestedAsset, user);
+        long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
+
+        if (borrowingLimit != -1 && activeLoans >= borrowingLimit) {
+            System.out.println(MessageFormat.format("You have reached your borrowing limit of \"{0}\" {1}s. Please return an item to borrow a new one." , borrowingLimit, requestedAsset.getClass().getSimpleName()));
+            return null;
+        }
+
+        return requestedAsset.loanAsset();
     }
-    Asset requestedAsset = requestedAssetOptional.get();
-
-    // Check if the asset is available for borrowing
-    if (!requestedAsset.isAvailable()) {
-        System.out.println("Asset is not available for borrowing.");
-        return null;
-    }
-
-    int borrowingLimit = getBorrowingLimit(requestedAsset, user);
-    long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
-
-    if (borrowingLimit != -1 && activeLoans >= borrowingLimit) {
-        System.out.println(MessageFormat.format("You have reached your borrowing limit of \"{0}\" {1}s. Please return an item to borrow a new one." , borrowingLimit, requestedAsset.getClass().getSimpleName()));
-        return null;
-    }
-
-    return requestedAsset.loanAsset();
-}
 
 
     private int getBorrowingLimit(Asset requestedAsset , User user) {
@@ -273,7 +273,7 @@ public class AssetManagement {
             Asset asset = assetRepository.getAsset(loanAsset.getAssetId());
             System.out.println(asset);
             System.out.println(loanAsset);
-           // System.out.println("Press " + asset.getAssetId() + " to return");
+            // System.out.println("Press " + asset.getAssetId() + " to return");
         }
         System.out.println("******************************************************************************************");
         return loanedItemsForUser;
@@ -548,49 +548,49 @@ public class AssetManagement {
 ///////////////////////////////////////////////////////
 
 
-public void returnAsset() {
-    User user = App.getLoggedInUser();
-    List<LoanAsset> loanedItemsForUser = printAndGetBorrowingHistory(user);
-    
-    System.out.println("Press the asset ID to return:");
-    String assetId = scanner.nextLine();
-    
-    boolean assetReturned = false;
-    for (LoanAsset loan : loanedItemsForUser) {
-        if (loan.getAssetId().equals(assetId) && loan.getActualReturnDate() == null) {
-            loan.setActualReturnDate(new Date());
-            
-        
-            if (loan.getActualReturnDate().after(loan.getExpectedReturnDate())) {
-                long daysOverdue = calculateDaysOverdue(loan.getExpectedReturnDate(), loan.getActualReturnDate());
-                double fine = 50.0 + (daysOverdue * 10.0); 
-                loan.setFine(fine);
+    public void returnAsset() {
+        User user = App.getLoggedInUser();
+        List<LoanAsset> loanedItemsForUser = printAndGetBorrowingHistory(user);
+
+        System.out.println("Press the asset ID to return:");
+        String assetId = scanner.nextLine();
+
+        boolean assetReturned = false;
+        for (LoanAsset loan : loanedItemsForUser) {
+            if (loan.getAssetId().equals(assetId) && loan.getActualReturnDate() == null) {
+                loan.setActualReturnDate(new Date());
+
+
+                if (loan.getActualReturnDate().after(loan.getExpectedReturnDate())) {
+                    long daysOverdue = calculateDaysOverdue(loan.getExpectedReturnDate(), loan.getActualReturnDate());
+                    double fine = 50.0 + (daysOverdue * 10.0);
+                    loan.setFine(fine);
+                }
+
+                loanAssetRepository.saveLoanAsset(loan);
+                System.out.println("Asset returned successfully.");
+                assetReturned = true;
+
+
+                Asset asset = assetRepository.getAsset(assetId);
+                if (asset != null) {
+                    asset.setAvailability(true);
+                    asset.updateAsset();
+                }
+
+                break;
             }
-            
-            loanAssetRepository.saveLoanAsset(loan);
-            System.out.println("Asset returned successfully.");
-            assetReturned = true;
-            
-            
-            Asset asset = assetRepository.getAsset(assetId);
-            if (asset != null) {
-                asset.setAvailability(true);
-                asset.updateAsset();
-            }
-            
-            break;
+        }
+        if (!assetReturned) {
+            System.out.println("Asset is not currently on loan or does not exist.");
         }
     }
-    if (!assetReturned) {
-        System.out.println("Asset is not currently on loan or does not exist.");
-    }
-}
 
-private long calculateDaysOverdue(Date expectedReturnDate, Date actualReturnDate) {
-    long diffInMillies = Math.abs(actualReturnDate.getTime() - expectedReturnDate.getTime());
-    long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-    return diffInDays;
-}
+    private long calculateDaysOverdue(Date expectedReturnDate, Date actualReturnDate) {
+        long diffInMillies = Math.abs(actualReturnDate.getTime() - expectedReturnDate.getTime());
+        long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        return diffInDays;
+    }
 
 
 }
