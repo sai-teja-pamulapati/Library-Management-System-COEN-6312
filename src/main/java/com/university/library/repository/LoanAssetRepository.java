@@ -29,15 +29,18 @@ public class LoanAssetRepository {
         return loans.values().stream().filter(Objects::nonNull).filter(loanAsset -> Objects.equals(loanAsset.getUserId() , userId)).collect(Collectors.toList());
     }
 
+
     public void saveLoanAsset(LoanAsset loanAsset) {
+    if (loanAsset.getLoanAssetId() == null) {
         loanAsset.setLoanAssetId(String.valueOf(assetIdGenerator.getAndIncrement()));
-        loans.put(loanAsset.getLoanAssetId(), loanAsset);
+    }
+    loans.put(loanAsset.getLoanAssetId(), loanAsset);
     }
 
      public long countActiveLoansByUserId(String userId) {
         return loans.values().stream()
                      .filter(loanAsset -> Objects.equals(loanAsset.getUserId(), userId))
-                     .filter(loanAsset -> loanAsset.getReturnDate() == null || loanAsset.getReturnDate().after(new Date()))
+                     .filter(loanAsset -> loanAsset.getExpectedReturnDate() == null || loanAsset.getExpectedReturnDate().after(new Date()))
                      .count();
     }
 

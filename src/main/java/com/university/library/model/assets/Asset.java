@@ -5,15 +5,15 @@ import com.university.library.model.LoanAsset;
 import com.university.library.model.users.User;
 import com.university.library.repository.AssetRepository;
 import com.university.library.repository.LoanAssetRepository;
-import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 public abstract class Asset {
-    
+
     private String assetId;
     private String title;
     private String preview;
@@ -23,7 +23,7 @@ public abstract class Asset {
     private static LoanAssetRepository loanAssetRepository = LoanAssetRepository.getInstance();
 
     public Asset() {
-        
+
     }
 
     public Asset(String assetId, String title, String preview, String logo, boolean availability) {
@@ -34,7 +34,7 @@ public abstract class Asset {
         this.availability = availability;
     }
 
-    
+
     public String getAssetId() {
         return assetId;
     }
@@ -98,6 +98,8 @@ public abstract class Asset {
         assetRepository.update(this);
     }
 
+
+
     public LoanAsset loanAsset() {
         LoanAsset loanAsset = new LoanAsset();
         Date today = new Date();
@@ -105,17 +107,23 @@ public abstract class Asset {
         loanAsset.setAssetId(this.getAssetId());
         loanAsset.setUserId(user.getUserId());
         loanAsset.setLoanDate(today);
-        loanAsset.setReturnDate(DateUtils.addDays(today, 30));
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(today);
+        calendar.add(Calendar.MINUTE, 1);//retrun window
+        Date expectedReturnDate = calendar.getTime();
+
+        loanAsset.setExpectedReturnDate(expectedReturnDate);
         this.availability = false;
         this.updateAsset();
         loanAssetRepository.saveLoanAsset(loanAsset);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println("Requested Asset has been borrowed. Please return the item by " + dateFormat.format(loanAsset.getReturnDate()) + ".");
-        //System.out.println("Requested Asset has been borrowed. You have 30 days to return the item.");
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("Requested Asset has been borrowed. Please return the item by " + dateFormat.format(expectedReturnDate) + ".");
+
         return loanAsset;
-
     }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

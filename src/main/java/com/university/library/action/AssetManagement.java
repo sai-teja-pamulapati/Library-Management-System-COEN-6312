@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class AssetManagement {
@@ -121,6 +122,12 @@ public class AssetManagement {
         }
         Asset requestedAsset = requestedAssetOptional.get();
 
+        // Check if the asset is available for borrowing
+        if (!requestedAsset.isAvailable()) {
+            System.out.println("Asset is not available for borrowing.");
+            return null;
+        }
+
         int borrowingLimit = getBorrowingLimit(requestedAsset, user);
         long activeLoans = loanAssetRepository.countActiveLoansByUserId(user.getUserId());
 
@@ -131,6 +138,7 @@ public class AssetManagement {
 
         return requestedAsset.loanAsset();
     }
+
 
     private int getBorrowingLimit(Asset requestedAsset , User user) {
         if (requestedAsset instanceof Laptop){
@@ -265,6 +273,7 @@ public class AssetManagement {
             Asset asset = assetRepository.getAsset(loanAsset.getAssetId());
             System.out.println(asset);
             System.out.println(loanAsset);
+            // System.out.println("Press " + asset.getAssetId() + " to return");
         }
         System.out.println("******************************************************************************************");
         return loanedItemsForUser;
@@ -536,7 +545,52 @@ public class AssetManagement {
     }
 
 
+///////////////////////////////////////////////////////
 
+
+    public void returnAsset() {
+        User user = App.getLoggedInUser();
+        List<LoanAsset> loanedItemsForUser = printAndGetBorrowingHistory(user);
+
+        System.out.println("Press the asset ID to return:");
+        String assetId = scanner.nextLine();
+
+        boolean assetReturned = false;
+        for (LoanAsset loan : loanedItemsForUser) {
+            if (loan.getAssetId().equals(assetId) && loan.getActualReturnDate() == null) {
+                loan.setActualReturnDate(new Date());
+
+
+                if (loan.getActualReturnDate().after(loan.getExpectedReturnDate())) {
+                    long daysOverdue = calculateDaysOverdue(loan.getExpectedReturnDate(), loan.getActualReturnDate());
+                    double fine = 50.0 + (daysOverdue * 10.0);
+                    loan.setFine(fine);
+                }
+
+                loanAssetRepository.saveLoanAsset(loan);
+                System.out.println("Asset returned successfully.");
+                assetReturned = true;
+
+
+                Asset asset = assetRepository.getAsset(assetId);
+                if (asset != null) {
+                    asset.setAvailability(true);
+                    asset.updateAsset();
+                }
+
+                break;
+            }
+        }
+        if (!assetReturned) {
+            System.out.println("Asset is not currently on loan or does not exist.");
+        }
+    }
+
+    private long calculateDaysOverdue(Date expectedReturnDate, Date actualReturnDate) {
+        long diffInMillies = Math.abs(actualReturnDate.getTime() - expectedReturnDate.getTime());
+        long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        return diffInDays;
+    }
 
 
 }
